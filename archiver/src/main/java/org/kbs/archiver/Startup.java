@@ -28,20 +28,28 @@ public class Startup extends HttpServlet {
 			throw new ServletException();
     	}
         try{
+        	SequenceDB bdb=new SequenceDB();
+        	bdb.init();
             Connection conn = DBTools.getConnection();
             String foo = "Got Connection "+conn.toString();
             // test
             Statement stmt = conn.createStatement();
             ResultSet rst =
                     stmt.executeQuery(
-                    " select * from board ");
+                    " select count(*) from board ");
             if(rst.next()) {
                 foo=rst.getString(1);
+                GlobalLogger.getLogger().info("load "+foo+"board");
             }
             conn.close();
             System.out.println(foo);
         }catch(Exception e) {
-        	GlobalLogger.getLogger().error("Get Connection error:",e);
+        	if (e instanceof SimpleException) {
+        		SimpleException se=(SimpleException)e;
+        		GlobalLogger.getLogger().error("Get Connection error:"+se.getInfo()+":"+se.getInfo(),se);
+        	}
+        	else
+        		GlobalLogger.getLogger().error("Get Connection error:",e);
         }
     }
     
@@ -53,6 +61,8 @@ public class Startup extends HttpServlet {
     //Clean up resources
 	@Override
     public void destroy() {
+    	SequenceDB bdb=new SequenceDB();
+    	bdb.shutdown();
     	System.out.println("bbs shut down:");
 	}
 }
