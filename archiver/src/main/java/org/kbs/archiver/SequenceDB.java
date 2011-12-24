@@ -17,7 +17,7 @@ import java.io.FileNotFoundException;
 
 public class SequenceDB {
     private static Database sequenceDb = null;
-
+    
     public void init() throws SimpleException {
 		Properties props=new Properties();
 		try {
