@@ -9,6 +9,7 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jetty.version>6.1.26</jetty.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -39,6 +40,18 @@
 			<artifactId>BerkeleyDB</artifactId>
 			<version>5.2.36</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jsp-2.1-jetty</artifactId>
+			<version>${jetty.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>jetty-servlet-tester</artifactId>
+			<version>${jetty.version}</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>
@@ -90,7 +103,22 @@
 					<path>/archiver</path>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.cactus</groupId>
+				<artifactId>cactus.integration.maven2</artifactId>
+				<version>1.8.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>${jetty.version}</version>
+			</plugin>
 		</plugins>
 
 	</build>
+	<scm>
+		<connection>scm:svn:http://svn.kcn.cn/repos/kcn/archiver/trunk</connection>
+		<url>http://ar.newsmth.net</url>
+	</scm>
+
 </project>
