@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="org.kbs.archiver.Board">
+<mapper namespace="org.kbs.archiver.persistence.BoardMapper">
     <select id="countAll" resultType="int">
         select count(*)  from board;
     </select>
@@ -18,7 +18,11 @@
     </insert>
     
     <update id="update" parameterType="org.kbs.archiver.Board">
-        update board name=#{name} threads=#{threads},articles=#{articles},ishidden=#{ishidden} where boardid=#{boardid}
+        update board set name=#{name},threads=#{threads},articles=#{articles},ishidden=#{ishidden} where boardid=#{boardid}
+    </update>
+    
+    <update id="updateByName" parameterType="org.kbs.archiver.Board">
+        update board set boardid=#{boardid},threads=#{threads},articles=#{articles},ishidden=#{ishidden} where name=#{name}
     </update>
     
     <delete id="delete" parameterType="int">
@@ -28,8 +32,10 @@
     <delete id="deleteByName" parameterType="String">
         delete from board where name=#{name}
     </delete>
-
-    <select id="findByName" parameterType="String" resultType="org.kbs.archiver.Board">
+    <select id="getById" parameterType="String" resultType="org.kbs.archiver.Board">
+        select * from board where boardid=#{boardid}
+    </select>
+    <select id="getByName" parameterType="String" resultType="org.kbs.archiver.Board">
         select * from board where name=#{name}
     </select>
 </mapper>

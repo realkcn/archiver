@@ -15,14 +15,11 @@ public class BoardTest {
 	@Before
 	public void setUp() throws Exception {
 		InitTest.init();
+		boardMapper=(BoardMapper) InitTest.getAppContext().getBean("boardMapper");
 	}
 
-	@Autowired  
+	//@Autowired  
     private BoardMapper boardMapper; 
-
-	public void setBoardMapper(BoardMapper boardMapper) {
-		this.boardMapper = boardMapper;
-	}
 
 	@Test
 	public void testBoardDB() {
@@ -34,8 +31,8 @@ public class BoardTest {
 		board.setIshidden(true);
 
 		// board.flushtoDB();
-		boardMapper.update(board);
-		Board board2 = boardMapper.getBoardByName(board.getName());
+		boardMapper.updateByName(board);
+		Board board2 = boardMapper.getByName(board.getName());
 		assertEquals("hello", board2.getName());
 		assertEquals(board.getBoardid(), board2.getBoardid());
 		assertEquals(board.getArticles(), board2.getArticles());
