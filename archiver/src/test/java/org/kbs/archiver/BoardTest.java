@@ -25,13 +25,14 @@ public class BoardTest {
 	public void testBoardDB() {
 		Board board = new Board();
 		board.setName("hello");
-		board.setBoardid((int) (Math.random() * 10002) + 1);
+		board.setBoardid(10241);
 		board.setArticles((int) (Math.random() * 10002) + 1);
 		board.setThreads((int) (Math.random() * 10002) + 1);
 		board.setIshidden(true);
 
 		// board.flushtoDB();
-		boardMapper.updateByName(board);
+		boardMapper.deleteByName(board.getName());
+		boardMapper.insert(board);
 		Board board2 = boardMapper.getByName(board.getName());
 		assertEquals("hello", board2.getName());
 		assertEquals(board.getBoardid(), board2.getBoardid());

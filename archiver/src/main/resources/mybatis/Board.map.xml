@@ -15,6 +15,7 @@
     
     <insert id="insert" parameterType="org.kbs.archiver.Board">
         insert into board(boardid,threads,articles,ishidden,name) values(#{boardid},#{threads},#{articles},#{ishidden},#{name})
+         ON DUPLICATE KEY UPDATE name=#{name},threads=#{threads},articles=#{articles},ishidden=#{ishidden}
     </insert>
     
     <update id="update" parameterType="org.kbs.archiver.Board">
