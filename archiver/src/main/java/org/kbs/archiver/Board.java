@@ -1,10 +1,5 @@
 package org.kbs.archiver;
 
-import java.sql.*;
-
-
-import org.kbs.library.*;
-
 public class Board {
 
 	private int boardid;
@@ -43,6 +38,7 @@ public class Board {
 	public void setIshidden(boolean ishidden) {
 		this.ishidden = ishidden;
 	}
+	/*
 	public void flushtoDB() {
 		Connection conn=null;
 		PreparedStatement stmt=null;
@@ -100,4 +96,5 @@ public class Board {
 			DBTools.closeQuietly(conn);
 		}
 	}
+	*/
 }
