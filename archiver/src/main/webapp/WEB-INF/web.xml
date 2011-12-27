@@ -9,6 +9,11 @@
 		<servlet-class>org.kbs.archiver.Startup</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.request.RequestContextListener
+		</listener-class>
+	</listener>
 	<servlet-mapping>
 		<servlet-name>Startup</servlet-name>
 		<url-pattern>/StartupLoadServlet</url-pattern>

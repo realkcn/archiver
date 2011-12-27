@@ -39,4 +39,5 @@
     <select id="getByName" parameterType="String" resultType="org.kbs.archiver.Board">
         select * from board where name=#{name}
     </select>
+    <cache eviction="FIFO" flushInterval="3600000" size="1024" readOnly="true" />
 </mapper>

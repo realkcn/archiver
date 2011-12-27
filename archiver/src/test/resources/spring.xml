@@ -4,14 +4,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
-
+    <bean id="configproperties" 
+         class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+          <property name="location" value="archiver.properties"/>
+    </bean>
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>archiver.properties</value>
-			</list>
-		</property>
+		<property name="properties" ref="configproperties"/>
 	</bean>
 
 	<!--创建jdbc数据源 -->
