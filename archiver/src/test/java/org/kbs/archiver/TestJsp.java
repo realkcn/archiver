@@ -8,7 +8,7 @@ import org.apache.jasper.servlet.JspServlet;
 import org.mortbay.jetty.testing.HttpTester;
 import org.mortbay.jetty.testing.ServletTester;
 
-public class JspTest {
+public class TestJsp {
 	ServletTester tester = new ServletTester();
 	HttpTester request = new HttpTester();
 	HttpTester response = new HttpTester();

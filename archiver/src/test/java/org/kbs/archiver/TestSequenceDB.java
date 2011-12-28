@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.kbs.library.InitTest;
 import org.kbs.library.SimpleException;
 
-public class SequenceDBTest {
+public class TestSequenceDB {
 
 	@Before
 	public void initialize() {

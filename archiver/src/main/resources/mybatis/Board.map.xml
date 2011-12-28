@@ -5,10 +5,6 @@
         select count(*)  from board;
     </select>
     
-    <select id="selectOne" resultType="org.kbs.archiver.Board">
-        select * from board where boardid=#{boardid}
-    </select>
-    
     <select id="selectAll" resultType="org.kbs.archiver.Board">
         select * from board order by boardid asc
     </select>
@@ -26,14 +22,17 @@
         update board set boardid=#{boardid},threads=#{threads},articles=#{articles},ishidden=#{ishidden} where name=#{name}
     </update>
     
-    <delete id="delete" parameterType="int">
+    <update id="updateLast" parameterType="org.kbs.archiver.board">
+        update board set lastarticleid=#{lastarticleid},lastdeleteid=#{lastdeleteid} where name=#{name}
+    </update>
+    <delete id="delete" parameterType="long">
         delete from board where boardid=#{boardid}
     </delete>
     
     <delete id="deleteByName" parameterType="String">
         delete from board where name=#{name}
     </delete>
-    <select id="getById" parameterType="String" resultType="org.kbs.archiver.Board">
+    <select id="get" parameterType="long" resultType="org.kbs.archiver.Board">
         select * from board where boardid=#{boardid}
     </select>
     <select id="getByName" parameterType="String" resultType="org.kbs.archiver.Board">

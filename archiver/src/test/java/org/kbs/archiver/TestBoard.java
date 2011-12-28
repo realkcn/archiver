@@ -3,27 +3,27 @@ package org.kbs.archiver;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kbs.archiver.persistence.BoardMapper;
 import org.kbs.library.DBTools;
 import org.kbs.library.InitTest;
-import org.kbs.library.TestDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-public class BoardTest {
-	@Before
-	public void setUp() throws Exception {
+public class TestBoard {
+	@BeforeClass
+	public static void setUp() throws Exception {
 		InitTest.init();
 		boardMapper=(BoardMapper) InitTest.getAppContext().getBean("boardMapper");
 	}
 
 	//@Autowired  
-    private BoardMapper boardMapper; 
+    private static BoardMapper boardMapper; 
 
 	@Test
 	public void testBoardDB() {
-		Board board = new Board();
+		BoardEntity board = new BoardEntity();
 		board.setName("hello");
 		board.setBoardid(10241);
 		board.setArticles((int) (Math.random() * 10002) + 1);
@@ -33,7 +33,7 @@ public class BoardTest {
 		// board.flushtoDB();
 		boardMapper.deleteByName(board.getName());
 		boardMapper.insert(board);
-		Board board2 = boardMapper.getByName(board.getName());
+		BoardEntity board2 = boardMapper.getByName(board.getName());
 		assertEquals("hello", board2.getName());
 		assertEquals(board.getBoardid(), board2.getBoardid());
 		assertEquals(board.getArticles(), board2.getArticles());

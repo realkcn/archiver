@@ -2,14 +2,15 @@ package org.kbs.archiver.persistence;
 
 import java.util.List;
 
-import org.kbs.archiver.Board;
+import org.kbs.archiver.BoardEntity;
 
 public interface BoardMapper {
-	public Board getByid(int boardid);
-	public Board getByName(String name);
+	public BoardEntity get(int boardid);
+	public BoardEntity getByName(String name);
 	public void deleteByName(String name);
-	public void insert(Board board);
-	public void update(Board board);
-	public void updateByName(Board board);
-	public List<Board> selectAll();
+	public void insert(BoardEntity board);
+	public void update(BoardEntity board);
+	public void updateByName(BoardEntity board);
+	public void updateLast(BoardEntity board);
+	public List<BoardEntity> selectAll();
 }

@@ -1,13 +1,28 @@
 package org.kbs.archiver;
 
-public class Board {
+public class BoardEntity {
 
-	private int boardid;
+	private long boardid;
 	private String name;
 	private int threads;
 	private int articles;
 	private boolean ishidden;
-	public int getBoardid() {
+	private long lastarticleid;
+	private long lastdeleteid;
+	
+	public long getLastarticleid() {
+		return lastarticleid;
+	}
+	public void setLastarticleid(long lastarticleid) {
+		this.lastarticleid = lastarticleid;
+	}
+	public long getLastdeleteid() {
+		return lastdeleteid;
+	}
+	public void setLastdeleteid(long lastdeleteid) {
+		this.lastdeleteid = lastdeleteid;
+	}
+	public long getBoardid() {
 		return boardid;
 	}
 	public void setBoardid(int boardid) {

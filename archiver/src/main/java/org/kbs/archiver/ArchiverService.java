@@ -31,7 +31,7 @@ public class ArchiverService extends TimerTask {
 		
 		// 扫描board表并开始遍历更新
 		BoardMapper boardmapper=(BoardMapper) ctx.getBean("boardMapper");
-		List<Board> boards=boardmapper.selectAll();
+		List<BoardEntity> boards=boardmapper.selectAll();
 		int nThreads=0;
 		PropertiesFactoryBean config=(PropertiesFactoryBean) ctx.getBean("configproperties");
 		try {
@@ -44,15 +44,14 @@ public class ArchiverService extends TimerTask {
 				0L, TimeUnit.MILLISECONDS,
 				new LinkedBlockingQueue<Runnable>());
 		LinkedList<Callable<Integer>> tasks=new LinkedList<Callable<Integer>>();
-		for (Board theBoard : boards) {
+		for (BoardEntity theBoard : boards) {
 			ArchiverBoardImpl worker;
-			worker= new ArchiverBoardImpl(ctx,theBoard.getBoardid());
+			worker= new ArchiverBoardImpl(ctx,theBoard);
 			tasks.add(worker);
 		}
 		try {
 			exector.invokeAll(tasks);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//结束

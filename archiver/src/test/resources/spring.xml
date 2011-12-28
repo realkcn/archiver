@@ -4,13 +4,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
-    <bean id="configproperties" 
-         class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-          <property name="location" value="archiver.properties"/>
-    </bean>
+	<bean id="configproperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location" value="archiver.properties" />
+	</bean>
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="properties" ref="configproperties"/>
+		<property name="properties" ref="configproperties" />
 	</bean>
 
 	<!--创建jdbc数据源 -->
@@ -30,12 +30,16 @@
 		<!-- <property name="mapperLocations" value="classpath*:sample/config/mappers/**/*.xml" 
 			/> -->
 	</bean>
-	<!-- sqlSession for batch executor  -->
-	<bean id="batchSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-	  <constructor-arg index="0" ref="sqlSessionFactory" />
-	  <constructor-arg index="1" value="BATCH" />
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
-	
+	<!-- sqlSession for batch executor -->
+	<bean id="batchSqlSession" class="org.mybatis.spring.SqlSessionTemplate"
+		scope="prototype">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+		<constructor-arg index="1" value="BATCH" />
+	</bean>
+
 	<bean
 		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 	<bean id="boardMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
