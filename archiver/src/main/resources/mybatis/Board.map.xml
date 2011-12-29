@@ -26,7 +26,7 @@
     </update>
     
     <update id="updateLast" parameterType="org.kbs.archiver.BoardEntity">
-        update board set lastarticleid=#{lastarticleid},lastdeleteid=#{lastdeleteid} where name=#{name}
+        update board set lastarticleid=#{lastarticleid},lastdeleteid=#{lastdeleteid},threads=#{threads} where name=#{name}
     </update>
     <delete id="delete" parameterType="long">
         delete from board where boardid=#{boardid}

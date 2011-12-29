@@ -12,9 +12,7 @@ public class ArticleEntity {
 	private Date posttime;
 	private int attachment;
 	private String subject;
-	private boolean isfirst;
 	private boolean isvisible;
-	private boolean isdelete;
 	private long originid;
 	private String filename;
 	private long replyid;
@@ -29,6 +27,19 @@ public class ArticleEntity {
 	}
 	public void setArticleid(long articleid) {
 		this.articleid = articleid;
+	}
+	public ArticleEntity() {
+		
+	}
+	@Override
+	public String toString() {
+		return "ArticleEntity [boardid=" + boardid + ", threadid=" + threadid
+				+ ", articleid=" + articleid + ", author=" + author
+				+ ", posttime=" + posttime + ", attachment=" + attachment
+				+ ", subject=" + subject + ", isvisible=" + isvisible
+				+ ", originid=" + originid + ", filename=" + filename
+				+ ", replyid=" + replyid + ", body=" + body.substring(0,body.length()<20?body.length():20) + ", encodingurl="
+				+ encodingurl + "]";
 	}
 	public ArticleEntity(FileHeaderInfo fh) {
 		this.originid=fh.getArticleid();
@@ -80,23 +91,11 @@ public class ArticleEntity {
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-	public boolean isIsfirst() {
-		return isfirst;
-	}
-	public void setIsfirst(boolean isfirst) {
-		this.isfirst = isfirst;
-	}
 	public boolean isIsvisible() {
 		return isvisible;
 	}
 	public void setIsvisible(boolean isvisible) {
 		this.isvisible = isvisible;
-	}
-	public boolean isIsdelete() {
-		return isdelete;
-	}
-	public void setIsdelete(boolean isdelete) {
-		this.isdelete = isdelete;
 	}
 	public long getOriginid() {
 		return originid;

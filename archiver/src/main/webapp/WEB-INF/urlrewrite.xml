@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"  
+        "http://tuckey.org/res/dtds/urlrewrite3.2.dtd">  
+  
+<!--  
+  
+    Configuration file for UrlRewriteFilter  
+    http://tuckey.org/urlrewrite/  
+  
+-->  
+<urlrewrite>  
+      
+     <rule>  
+        <note>
+        rewrite /board-101.html to /baord?id=101  
+        </note>  
+        <from>/board\-([0-9]+).html$</from>  
+        <to>%{context-path}/board?id=$1</to>  
+    </rule>  
+     <rule>  
+        <note>
+        rewrite /thread-101.html to /thread?id=101  
+        </note>  
+        <from>/thread\-([0-9]+).html$</from>  
+        <to>%{context-path}/thread?id=$1</to>  
+    </rule>  
+</urlrewrite>

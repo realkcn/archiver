@@ -28,8 +28,7 @@ public class ThreadEntity {
 		this.lastreply=fh.getOwner();
 		this.lastposttime=fh.getPosttime();
 	}
-	public static ThreadEntity newThread(BoardEntity board,ArticleEntity article) {
-		long threadid=0; //TODO: thread id 的生成问题
+	public static ThreadEntity newThread(long threadid,BoardEntity board,ArticleEntity article) {
 		ThreadEntity thread=new ThreadEntity();
 		thread.setThreadid(threadid); 
 		thread.setArticlenumber(1);//考虑最后再插入
@@ -40,6 +39,7 @@ public class ThreadEntity {
 		thread.setPosttime(article.getPosttime());
 		thread.setSubject(article.getSubject());
 		thread.setEncodingurl(Converter.randomEncodingfromlong(threadid));
+		thread.setOriginid(article.getOriginid());
 		return thread;
 //		thread.setThreadid()
 	}

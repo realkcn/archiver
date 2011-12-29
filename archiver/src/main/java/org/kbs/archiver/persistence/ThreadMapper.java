@@ -9,5 +9,6 @@ public interface ThreadMapper {
 	public ThreadEntity getByOriginId(long orginid);
 	public void insert(ThreadEntity thread);
 	public int update(ThreadEntity thread);
+	public void deleteByBoard(long boardid);
 	public List<ThreadEntity> getThreadsOnBoard(long boardid);
 }

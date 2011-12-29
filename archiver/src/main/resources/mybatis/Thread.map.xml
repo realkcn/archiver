@@ -11,22 +11,24 @@
     
     <insert id="insert" parameterType="org.kbs.archiver.ThreadEntity">
         insert into thread(threadid,boardid,subject,posttime,articlenumber,author,lastreply,lastposttime,
-          orginid,encodingurl) values (#{threadid},#{boardid},#{subject},#{posttime},#{articlenumber},#{author},
-          #{lastreply},#{lastposttime},#{orginid},#{encodingurl})
+          originid,encodingurl) values (#{threadid},#{boardid},#{subject},#{posttime},#{articlenumber},#{author},
+          #{lastreply},#{lastposttime},#{originid},#{encodingurl})
          ON DUPLICATE KEY UPDATE boardid=#{boardid},subject=#{subject},posttime=#{posttime},articlenumber=#{articlenumber},
-          author=#{author},lastreply=#{lastreply},lastposttime=#{lastposttime},orginid=#{orginid},encodingurl=#{encodingurl} 
+          author=#{author},lastreply=#{lastreply},lastposttime=#{lastposttime},originid=#{originid},encodingurl=#{encodingurl} 
     </insert>
     
     <update id="update" parameterType="org.kbs.archiver.ThreadEntity">
         update thread set boardid=#{boardid},subject=#{subject},posttime=#{posttime},articlenumber=#{articlenumber},
-          author=#{author},lastreply=#{lastreply},lastposttime=#{lastposttime},orginid=#{orginid},encodingurl=#{encodingurl} 
+          author=#{author},lastreply=#{lastreply},lastposttime=#{lastposttime},originid=#{originid},encodingurl=#{encodingurl} 
           where threadid=#{threadid}
     </update>
 
     <delete id="delete" parameterType="long">
         delete from thread where threadid=#{threadid}
     </delete>
-
+	<delete id="deleteByBoard" parameterType="long">
+        delete from thread where boardid=#{boardid}
+	</delete>
     <select id="get" parameterType="long" resultType="org.kbs.archiver.ThreadEntity">
         select * from thread where threadid=#{threadid}
     </select>

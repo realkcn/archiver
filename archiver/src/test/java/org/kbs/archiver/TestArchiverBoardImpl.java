@@ -5,7 +5,10 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kbs.archiver.ArchiverBoardImpl;
 import org.kbs.archiver.BoardEntity;
+import org.kbs.archiver.persistence.ArticleMapper;
+import org.kbs.archiver.persistence.AttachmentMapper;
 import org.kbs.archiver.persistence.BoardMapper;
+import org.kbs.archiver.persistence.ThreadMapper;
 import org.kbs.library.InitTest;
 
 
@@ -18,17 +21,25 @@ public class TestArchiverBoardImpl  {
 
 	@Test
 	public void test() {
-		/*
 		BoardEntity theboard=new BoardEntity();
 		theboard.setName("Progress");
+		theboard.setLastarticleid(0);
+		theboard.setBoardid(100);
+		theboard.setThreads(0);
+		theboard.setIshidden(false);
+		ArticleMapper articleMapper=(ArticleMapper) InitTest.getAppContext().getBean("articleMapper");
+		articleMapper.deleteByBoard(theboard.getBoardid());
+		ThreadMapper threadMapper=(ThreadMapper) InitTest.getAppContext().getBean("threadMapper");
+		threadMapper.deleteByBoard(theboard.getBoardid());
+		AttachmentMapper attachmentMapper=(AttachmentMapper) InitTest.getAppContext().getBean("attachmentMapper");
+		attachmentMapper.deleteByBoard(theboard.getBoardid());
 		ArchiverBoardImpl worker=new ArchiverBoardImpl(InitTest.getAppContext(),theboard);
 		try {
 			assertEquals(221,worker.call().intValue());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			fail("fail");
-		}*/
+		}
 	}
 
 }

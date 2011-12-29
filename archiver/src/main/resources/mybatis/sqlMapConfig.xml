@@ -10,5 +10,7 @@
 		<mapper resource="mybatis/Board.map.xml" />
 		<mapper resource="mybatis/Thread.map.xml" />
 		<mapper resource="mybatis/Sequence.map.xml" />
+		<mapper resource="mybatis/Article.map.xml" />
+		<mapper resource="mybatis/Attachment.map.xml" />
 	</mappers>
 </configuration>  

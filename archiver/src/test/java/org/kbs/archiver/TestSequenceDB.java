@@ -12,13 +12,13 @@ import org.kbs.library.SimpleException;
 
 public class TestSequenceDB {
 
-	private CachedSequence threadseq;
-	private CachedSequence articleseq;
+	private static CachedSequence threadseq;
+	private static CachedSequence articleseq;
 	@BeforeClass
-	public void initialize() {
+	public static void initialize() {
 		InitTest.init();
-		threadseq=(CachedSequence) InitTest.getAppContext().getBean("threadseq");
-		articleseq=(CachedSequence) InitTest.getAppContext().getBean("articleseq");
+		threadseq=(CachedSequence) InitTest.getAppContext().getBean("threadSeq");
+		articleseq=(CachedSequence) InitTest.getAppContext().getBean("articleSeq");
 	}
 	
 	@Test
