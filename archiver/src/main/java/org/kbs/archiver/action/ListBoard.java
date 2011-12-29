@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.kbs.archiver.*;
 import org.kbs.archiver.persistence.*;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -26,6 +26,7 @@ public class ListBoard extends ActionSupport {
 	}
 	@Override
 	public String execute() throws Exception {
+//		WebApplicationContext.
 		boardlist=boardMapper.selectAll();
 //		WebApplicationContextUtils.getWebApplicationContext(this.)
 		return SUCCESS;

@@ -13,12 +13,12 @@
     </select>
     
     <insert id="insert" parameterType="org.kbs.archiver.BoardEntity">
-        insert into board(boardid,threads,articles,ishidden,name) values(#{boardid},#{threads},#{articles},#{ishidden},#{name})
-         ON DUPLICATE KEY UPDATE name=#{name},threads=#{threads},articles=#{articles},ishidden=#{ishidden}
+        insert into board(boardid,threads,articles,ishidden,name,cname) values(#{boardid},#{threads},#{articles},#{ishidden},#{name},#{cname})
+         ON DUPLICATE KEY UPDATE name=#{name},cname=#{cname},threads=#{threads},articles=#{articles},ishidden=#{ishidden}
     </insert>
     
     <update id="update" parameterType="org.kbs.archiver.BoardEntity">
-        update board set name=#{name},threads=#{threads},articles=#{articles},ishidden=#{ishidden} where boardid=#{boardid}
+        update board set name=#{name},cname=#{cname},threads=#{threads},articles=#{articles},ishidden=#{ishidden} where boardid=#{boardid}
     </update>
     
     <update id="updateByName" parameterType="org.kbs.archiver.BoardEntity">
@@ -26,7 +26,7 @@
     </update>
     
     <update id="updateLast" parameterType="org.kbs.archiver.BoardEntity">
-        update board set lastarticleid=#{lastarticleid},lastdeleteid=#{lastdeleteid},threads=#{threads} where name=#{name}
+        update board set lastarticleid=#{lastarticleid},lastdeleteid=#{lastdeleteid},threads=threads+#{threads},articles=articles+#{articles} where name=#{name}
     </update>
     <delete id="delete" parameterType="long">
         delete from board where boardid=#{boardid}

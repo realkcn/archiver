@@ -23,10 +23,15 @@ public class TestArchiverBoardImpl  {
 	public void test() {
 		BoardEntity theboard=new BoardEntity();
 		theboard.setName("Progress");
+		theboard.setCname("水木进度");
 		theboard.setLastarticleid(0);
 		theboard.setBoardid(100);
 		theboard.setThreads(0);
+		theboard.setArticles(0);
 		theboard.setIshidden(false);
+		BoardMapper boardMapper=(BoardMapper) InitTest.getAppContext().getBean("boardMapper");
+		boardMapper.deleteByName("Progress");
+		boardMapper.insert(theboard);
 		ArticleMapper articleMapper=(ArticleMapper) InitTest.getAppContext().getBean("articleMapper");
 		articleMapper.deleteByBoard(theboard.getBoardid());
 		ThreadMapper threadMapper=(ThreadMapper) InitTest.getAppContext().getBean("threadMapper");

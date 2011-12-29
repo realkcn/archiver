@@ -5,7 +5,7 @@ import java.util.List;
 import org.kbs.archiver.BoardEntity;
 
 public interface BoardMapper {
-	public BoardEntity get(int boardid);
+	public BoardEntity get(long boardid);
 	public BoardEntity getByName(String name);
 	public void deleteByName(String name);
 	public void insert(BoardEntity board);

@@ -18,6 +18,7 @@ public class Startup extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
     	System.out.println("bbs start up:");
+    	/*
     	try {
 	    	InputStream is = getServletContext().getResourceAsStream("/WEB-INF/log4j.properties");
 	    	GlobalLogger.init(is);
@@ -50,7 +51,7 @@ public class Startup extends HttpServlet {
         	}
         	else
         		GlobalLogger.getLogger().error("Get Connection error:",e);
-        }
+        }*/
     }
     
     @Override

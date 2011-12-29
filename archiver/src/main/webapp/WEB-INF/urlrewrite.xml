@@ -12,16 +12,30 @@
       
      <rule>  
         <note>
-        rewrite /board-101.html to /baord?id=101  
+        rewrite /boards.html to /listboard 
         </note>  
-        <from>/board\-([0-9]+).html$</from>  
-        <to>%{context-path}/board?id=$1</to>  
+        <from>^/boards.html$</from>  
+        <to>%{context-path}/listboard</to>  
     </rule>  
+     <rule>  
+        <note>
+        rewrite /board-101.html to /listthread?id=101  
+        </note>  
+        <from>^/board-([0-9]+).html$</from>  
+        <to>%{context-path}/listthread?boardid=$1</to>  
+    </rule>
+         <rule>  
+        <note>
+        rewrite /board-101-1.html to /listthread?id=101&amp;pageno=1  
+        </note>  
+        <from>^/board-([0-9]+)-([0-9]+).html$</from>  
+        <to>%{context-path}/listthread?boardid=$1&amp;pageno=$2</to>  
+    </rule> 
      <rule>  
         <note>
         rewrite /thread-101.html to /thread?id=101  
         </note>  
         <from>/thread\-([0-9]+).html$</from>  
-        <to>%{context-path}/thread?id=$1</to>  
+        <to>%{context-path}/thread?boardid=$1</to>  
     </rule>  
 </urlrewrite>

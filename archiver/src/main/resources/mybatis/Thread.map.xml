@@ -4,7 +4,7 @@
     <select id="countAll" resultType="int">
         select count(*)  from thread;
     </select>
-    
+
     <select id="selectAll" resultType="org.kbs.archiver.ThreadEntity">
         select * from thread order by threadid asc
     </select>
@@ -32,7 +32,10 @@
     <select id="get" parameterType="long" resultType="org.kbs.archiver.ThreadEntity">
         select * from thread where threadid=#{threadid}
     </select>
-    <select id="getByOriginId" parameterType="long" resultType="org.kbs.archiver.ThreadEntity">
+    <select id="getByBoardPerPage" resultType="org.kbs.archiver.ThreadEntity">
+        SELECT * FROM thread where boardid=#{boardid} ORDER BY threadid limit  #{offset},#{limit}
+      </select>
+          <select id="getByOriginId" parameterType="long" resultType="org.kbs.archiver.ThreadEntity">
         select * from thread where originid=#{originid}
     </select>
     <select id="getByEncodingUrl" parameterType="String" resultType="org.kbs.archiver.ThreadEntity">

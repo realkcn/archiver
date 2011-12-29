@@ -170,7 +170,8 @@ public class ArchiverBoardImpl implements Callable<Integer> {
 		if (articlelist.size() > 0) { // 更新board表的lastid,threads
 			board.setLastarticleid(articlelist.get(articlelist.size() - 1)
 					.getArticleid());
-			board.setThreads(board.getThreads() + threads.size());
+			board.setThreads(threads.size());
+			board.setArticles(articlelist.size());
 			batchsqlsession.update(
 					"org.kbs.archiver.persistence.BoardMapper.updateLast",
 					board);

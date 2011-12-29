@@ -9,7 +9,17 @@ public class BoardEntity {
 	private boolean ishidden;
 	private long lastarticleid;
 	private long lastdeleteid;
+	private String cname;
 	
+	public void setBoardid(long boardid) {
+		this.boardid = boardid;
+	}
+	public String getCname() {
+		return cname;
+	}
+	public void setCname(String cname) {
+		this.cname = cname;
+	}
 	public long getLastarticleid() {
 		return lastarticleid;
 	}

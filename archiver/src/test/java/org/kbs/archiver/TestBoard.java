@@ -40,6 +40,7 @@ public class TestBoard {
 		assertEquals(board.getThreads(), board2.getThreads());
 		assertEquals(true, board2.isIshidden());
 
+		boardMapper.deleteByName("hello");
 		// Board board2=new Board();
 		// board2.loadBoardFromDB("hello");
 
