@@ -1,22 +1,53 @@
 package org.kbs.archiver;
 
+import org.kbs.archiver.persistence.SequenceMapper;
 import org.kbs.library.SimpleException;
 
 public class CachedSequence {
-	String name;
-	java.util.concurrent.atomic.AtomicInteger value;
+	private String name;
+	public String getName() {
+		return name;
+	}
 
-	CachedSequence() {
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public long getValue() {
+		return value.get();
+	}
+
+	public void setValue(long value) {
+		this.value.set(value);
+	}
+
+	private java.util.concurrent.atomic.AtomicLong value=new java.util.concurrent.atomic.AtomicLong();
+
+	private SequenceMapper seqMapper;
+	
+	public SequenceMapper getSeqMapper() {
+		return seqMapper;
+	}
+
+	public void setSeqMapper(SequenceMapper seqMapper) {
+		this.seqMapper = seqMapper;
+	}
+
+	public CachedSequence() {
 		name = "";
 		value.set(0);
 	}
 	
-	CachedSequence(String str) {
+	public CachedSequence(String str) {
 		name = str;
 //		load();
 	}
-
-	void load(SequenceDB db) throws SimpleException {
+	public CachedSequence(String str,SequenceMapper seqMapper) {
+		name = str;
+		setSeqMapper(seqMapper);
+		load();
+	}
+	public synchronized void  load() {
 		/*
 		PreparedStatement stmt=null;
 		ResultSet rs=null;
@@ -48,14 +79,18 @@ public class CachedSequence {
 			DBTools.closeQuietly(stmt2); 
 		}
 		*/
-		value.set(db.get(name));
+		try {
+			value.set(seqMapper.select(name));
+		} catch (org.apache.ibatis.binding.BindingException e) {
+			value.set(0);
+		}
 	}
 
-	int next() {
+	public long next() {
 		return value.incrementAndGet();
 	}
 
-	void flush(SequenceDB db) throws SimpleException {
+	public synchronized void flush() {
 		/*
 		PreparedStatement stmt;
 		try {
@@ -69,6 +104,6 @@ public class CachedSequence {
 			throw new SimpleException("update sequence error:", e.getMessage());
 		}
 		*/
-		db.put(name, value.get());
+		seqMapper.insert(new SequenceEntity(name, value.get()));
 	}
 }

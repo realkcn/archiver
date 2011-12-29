@@ -2,6 +2,9 @@ package org.kbs.archiver;
 
 import java.util.Date;
 
+import org.kbs.library.Converter;
+import org.kbs.library.FileHeaderInfo;
+
 public class ThreadEntity {
 	private long boardid;
 	private String subject;
@@ -12,7 +15,34 @@ public class ThreadEntity {
 	private Date lastposttime;
 	private long threadid;
 	private String encodingurl;
+	private long originid;
 	
+	public long getOriginid() {
+		return originid;
+	}
+	public void setOriginid(long originid) {
+		this.originid = originid;
+	}
+	public void addArticle(FileHeaderInfo fh) {
+		this.articlenumber++;
+		this.lastreply=fh.getOwner();
+		this.lastposttime=fh.getPosttime();
+	}
+	public static ThreadEntity newThread(BoardEntity board,ArticleEntity article) {
+		long threadid=0; //TODO: thread id 的生成问题
+		ThreadEntity thread=new ThreadEntity();
+		thread.setThreadid(threadid); 
+		thread.setArticlenumber(1);//考虑最后再插入
+		thread.setAuthor(article.getAuthor());
+		thread.setBoardid(board.getBoardid());
+		thread.setLastposttime(article.getPosttime());
+		thread.setLastreply(article.getAuthor());
+		thread.setPosttime(article.getPosttime());
+		thread.setSubject(article.getSubject());
+		thread.setEncodingurl(Converter.randomEncodingfromlong(threadid));
+		return thread;
+//		thread.setThreadid()
+	}
 	public long getBoardid() {
 		return boardid;
 	}

@@ -1,0 +1,20 @@
+
+--This line, and those below, will be ignored--
+
+M    src/test/java/org/kbs/archiver/TestArchiverBoardImpl.java
+M    src/test/java/org/kbs/archiver/TestSequenceDB.java
+M    src/test/resources/spring.xml
+M    src/test/resources/log4j.properties
+M    src/main/java/org/kbs/archiver/CachedSequence.java
+M    src/main/java/org/kbs/archiver/ThreadEntity.java
+A    src/main/java/org/kbs/archiver/persistence/ThreadMapper.java
+A    src/main/java/org/kbs/archiver/persistence/SequenceMapper.java
+A    src/main/java/org/kbs/archiver/SequenceEntity.java
+M    src/main/java/org/kbs/archiver/ArchiverBoardImpl.java
+M    src/main/resources/mybatis/sqlMapConfig.xml
+M    src/main/resources/mybatis/Board.map.xml
+A    src/main/resources/mybatis/Thread.map.xml
+A    src/main/resources/mybatis/Sequence.map.xml
+M    src/main/webapp/WEB-INF/web.xml
+M    docs/archive.mwb
+M    pom.xml

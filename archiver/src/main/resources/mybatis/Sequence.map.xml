@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="org.kbs.archiver.persistence.SequenceMapper">
+	<select id="select" resultType="long" parameterType="String">
+		select value from sequence where name=#{name};
+	</select>
+    <insert id="insert" parameterType="org.kbs.archiver.SequenceEntity">
+        insert into sequence(name,value) values(#{name},#{value})
+         ON DUPLICATE KEY UPDATE value=#{value}
+    </insert>
+    
+    <update id="update" parameterType="org.kbs.archiver.SequenceEntity">
+        update board set value=#{value}  where name=#{name}
+    </update>
+</mapper>

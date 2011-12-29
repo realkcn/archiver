@@ -8,6 +8,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import org.apache.ibatis.session.SqlSession;
+import org.kbs.archiver.persistence.ThreadMapper;
 import org.kbs.library.AttachmentData;
 import org.kbs.library.Converter;
 import org.kbs.library.FileHeaderInfo;
@@ -37,17 +39,17 @@ public class ArchiverBoardImpl implements Callable<Integer> {
 			SqlSessionTemplate sqlsession = (SqlSessionTemplate) ctx
 					.getBean("sqlSession");
 
+			ThreadMapper threadMapper=(ThreadMapper)ctx.getBean("threadMapper");
 			String boardpath;
 			boardpath = ((Properties) ctx.getBean("configproperties"))
 					.getProperty("boarddir");
 			boardpath += "/" + board.getName();
 			ArrayList<FileHeaderInfo> dirlist = new ArrayList<FileHeaderInfo>();
-			long lastdirid = 0;
-			if (new java.io.File(boardpath + "/.DELETED").exists()) {
+			if (new java.io.File(boardpath + "/.DIR").exists()) {
 				fhset.readBBSDir(boardpath + "/.DIR");
-				lastdirid = dirlist.get(dirlist.size() - 1).getArticleid();
+//				lastdirid = dirlist.get(dirlist.size() - 1).getArticleid();
 			}
-			/*
+/*
 			ArrayList<FileHeaderInfo> deletedlist = new ArrayList<FileHeaderInfo>();
 			if (new java.io.File(boardpath + "/.DELETED").exists()) {
 				deletedlist = fhset.readBBSDir(boardpath + "/.DELETED");
@@ -56,7 +58,7 @@ public class ArchiverBoardImpl implements Callable<Integer> {
 			//生成需要处理的list
 			articlelist = gennewlist(dirlist);
 			HashMap<Long,ThreadEntity> threads=new HashMap<Long,ThreadEntity>();
-			ArrayList<ThreadEntity> oldthreads=new ArrayList<ThreadEntity>();
+			HashMap<Long,ThreadEntity> oldthreads=new HashMap<Long,ThreadEntity>();
 			
 			for (FileHeaderInfo fh : articlelist) {
 				ArticleEntity article = new ArticleEntity(fh);
@@ -72,25 +74,28 @@ public class ArchiverBoardImpl implements Callable<Integer> {
 				if (fh.getGroupid()>board.getLastarticleid()) {
 					ThreadEntity thread=threads.get(fh.getGroupid());
 					if (thread!=null) {
-						thread.setArticlenumber(thread.getArticlenumber()+1);
+						thread.addArticle(fh);
 					} else {
 						//需要生成新的thread
-						long threadid=0; //TODO: thread id 的生成问题
-						thread=new ThreadEntity();
-						thread.setThreadid(threadid); 
-						thread.setArticlenumber(1);//考虑最后再插入
-						thread.setAuthor(article.getAuthor());
-						thread.setBoardid(board.getBoardid());
-						thread.setLastposttime(article.getPosttime());
-						thread.setLastreply(article.getAuthor());
-						thread.setPosttime(article.getPosttime());
-						thread.setSubject(article.getSubject());
-						thread.setEncodingurl(Converter.randomEncodingfromlong(threadid));
-//						thread.setThreadid()
+						thread=ThreadEntity.newThread(board, article);
 					}
 					threads.put(fh.getGroupid(),thread);
 				} else { //处理已经存在的thread
 					//TODO
+					ThreadEntity thread=oldthreads.get(fh.getGroupid());
+					if (thread==null) {
+						//从数据库中获得原来的thread信息
+						thread=threadMapper.getByOriginId(fh.getGroupid());
+						if (thread==null) {
+							thread=ThreadEntity.newThread(board, article);
+							threads.put(thread.getOriginid(), thread);
+						} else {
+							//加入到oldthread缓存中。
+							thread.addArticle(fh);
+							oldthreads.put(fh.getGroupid(), thread);
+						}
+					} else
+						thread.addArticle(fh);
 				}
 				
 				//插入新记录
@@ -107,11 +112,19 @@ public class ArchiverBoardImpl implements Callable<Integer> {
 						value.getValue());
 			}
 			
-			if (articlelist.size()>0) { //更新
+			//更新已经存在的thread
+			threadset=oldthreads.entrySet();
+			for (Map.Entry<Long,ThreadEntity> value:threadset) {
+				batchsqlsession.update(
+						"org.kbs.archiver.persistence.ThreadMapper.update",
+						value.getValue());
+			}
+			
+			if (articlelist.size()>0) { //更新board表的lastid
 				board.setLastarticleid(articlelist.get(articlelist.size()-1).getArticleid());
 				batchsqlsession.update("org.kbs.archiver.persistence.BoardMapper.updateLast", board);
+				batchsqlsession.commit();
 			}
-			batchsqlsession.commit();
 		} finally {
 			batchsqlsession.close();
 		}

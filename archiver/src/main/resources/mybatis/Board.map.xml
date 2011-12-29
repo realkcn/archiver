@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 <mapper namespace="org.kbs.archiver.persistence.BoardMapper">
+	<select id="maxBoarrId" resultType="int">
+		select max(boardid) from board;
+	</select>
     <select id="countAll" resultType="int">
         select count(*)  from board;
     </select>
     
-    <select id="selectAll" resultType="org.kbs.archiver.Board">
+    <select id="selectAll" resultType="org.kbs.archiver.BoardEntity">
         select * from board order by boardid asc
     </select>
     
-    <insert id="insert" parameterType="org.kbs.archiver.Board">
+    <insert id="insert" parameterType="org.kbs.archiver.BoardEntity">
         insert into board(boardid,threads,articles,ishidden,name) values(#{boardid},#{threads},#{articles},#{ishidden},#{name})
          ON DUPLICATE KEY UPDATE name=#{name},threads=#{threads},articles=#{articles},ishidden=#{ishidden}
     </insert>
     
-    <update id="update" parameterType="org.kbs.archiver.Board">
+    <update id="update" parameterType="org.kbs.archiver.BoardEntity">
         update board set name=#{name},threads=#{threads},articles=#{articles},ishidden=#{ishidden} where boardid=#{boardid}
     </update>
     
-    <update id="updateByName" parameterType="org.kbs.archiver.Board">
+    <update id="updateByName" parameterType="org.kbs.archiver.BoardEntity">
         update board set boardid=#{boardid},threads=#{threads},articles=#{articles},ishidden=#{ishidden} where name=#{name}
     </update>
     
-    <update id="updateLast" parameterType="org.kbs.archiver.board">
+    <update id="updateLast" parameterType="org.kbs.archiver.BoardEntity">
         update board set lastarticleid=#{lastarticleid},lastdeleteid=#{lastdeleteid} where name=#{name}
     </update>
     <delete id="delete" parameterType="long">
@@ -32,10 +35,10 @@
     <delete id="deleteByName" parameterType="String">
         delete from board where name=#{name}
     </delete>
-    <select id="get" parameterType="long" resultType="org.kbs.archiver.Board">
+    <select id="get" parameterType="long" resultType="org.kbs.archiver.BoardEntity">
         select * from board where boardid=#{boardid}
     </select>
-    <select id="getByName" parameterType="String" resultType="org.kbs.archiver.Board">
+    <select id="getByName" parameterType="String" resultType="org.kbs.archiver.BoardEntity">
         select * from board where name=#{name}
     </select>
     <cache eviction="FIFO" flushInterval="3600000" size="1024" readOnly="true" />

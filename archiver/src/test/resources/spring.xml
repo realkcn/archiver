@@ -14,14 +14,14 @@
 	</bean>
 
 	<!--创建jdbc数据源 -->
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
 		<property name="driverClassName" value="${archiver.dbdriver}" />
 		<property name="url" value="${archiver.dburl}" />
 		<property name="username" value="${archiver.dbuser}" />
 		<property name="password" value="${archiver.dbpass}" />
-	</bean>
 
+	</bean>
 	<!-- scope: singleton prototype,request,session,globalsession -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
 		scope="singleton">
@@ -44,6 +44,22 @@
 		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
 	<bean id="boardMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface" value="org.kbs.archiver.persistence.BoardMapper" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="sqlSessionTemplate" ref="sqlSession" />
+	</bean>
+	<bean id="threadMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="org.kbs.archiver.persistence.ThreadMapper" />
+		<property name="sqlSessionTemplate" ref="sqlSession" />
+	</bean>
+	<bean id="sequenceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="org.kbs.archiver.persistence.SequenceMapper" />
+		<property name="sqlSessionTemplate" ref="sqlSession" />
+	</bean>
+	<bean id="threadseq" class="org.kbs.archiver.CachedSequence">
+		<constructor-arg index="0" value="thread" type="String" />
+		<constructor-arg index="1" ref="sequenceMapper" />
+	</bean>
+	<bean id="articleseq" class="org.kbs.archiver.CachedSequence">
+		<constructor-arg index="0" value="article" />
+		<constructor-arg index="1" ref="sequenceMapper" />
 	</bean>
 </beans>
