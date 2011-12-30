@@ -136,8 +136,8 @@ public class ArchiverBoardImpl implements Callable<Integer> {
 					attachment.setBoardid(board.getBoardid());
 					order++;
 					totalattchmentsize+=attachment.getData().length;
-					if (totalattchmentsize>5*1024*1024) {//大于5M flush一次.....
-						batchsqlsession.flushStatements();
+					if (totalattchmentsize>20*1024*1024) {//大于5M flush一次.....
+//						batchsqlsession.flushStatements();
 						totalattchmentsize=attachment.getData().length;
 					}
 					batchsqlsession.insert(
