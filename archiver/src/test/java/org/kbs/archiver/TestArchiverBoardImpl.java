@@ -2,6 +2,7 @@ package org.kbs.archiver;
 import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kbs.archiver.ArchiverBoardImpl;
 import org.kbs.archiver.BoardEntity;
@@ -19,19 +20,20 @@ public class TestArchiverBoardImpl  {
 		InitTest.init();
 	}
 
+	@Ignore("damage data")
 	@Test
 	public void test() {
 		BoardEntity theboard=new BoardEntity();
-		theboard.setName("MyPhoto");
-		theboard.setCname("个人Show");
-		theboard.setCname("水木进度");
+		String boardname="Progress";
+		theboard.setName(boardname);
+		theboard.setCname("测试用");
 		theboard.setLastarticleid(0);
-		theboard.setBoardid(101);
+		theboard.setBoardid(100011);
 		theboard.setThreads(0);
 		theboard.setArticles(0);
 		theboard.setIshidden(false);
 		BoardMapper boardMapper=(BoardMapper) InitTest.getAppContext().getBean("boardMapper");
-		boardMapper.deleteByName("Progress");
+		boardMapper.deleteByName(boardname);
 		boardMapper.insert(theboard);
 		ArticleMapper articleMapper=(ArticleMapper) InitTest.getAppContext().getBean("articleMapper");
 		articleMapper.deleteByBoard(theboard.getBoardid());
