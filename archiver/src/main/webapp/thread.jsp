@@ -27,8 +27,8 @@
    <s:iterator value="articlelist" status="threadindex">
     <tr>
 		<td><s:property value="#threadindex.count+(pageno-1)*pagesize" /></td>
-		<td><a href="article_${encodingurl}.html">${author}</a></td>      
-		<td><a href="article_${encodingurl}.html">${subject}</a></td>      
+		<td><a href="article-${encodingurl}.html">${author}</a></td>      
+		<td><a href="article-${encodingurl}.html">${subject}</a></td>      
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>      
     </tr>
    </s:iterator>
