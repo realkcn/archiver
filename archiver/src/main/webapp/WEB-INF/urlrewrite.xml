@@ -33,9 +33,16 @@
     </rule> 
      <rule>  
         <note>
-        rewrite /thread-101.html to /thread?id=101  
+        rewrite /thread-101.html to /thread?tid=101  
         </note>  
-        <from>/thread\-([0-9]+).html$</from>  
-        <to>%{context-path}/thread?boardid=$1</to>  
+        <from>/thread-([0-9a-zA-Z]+).html$</from>  
+        <to>%{context-path}/listarticle?tid=$1</to>  
     </rule>  
+         <rule>  
+        <note>
+        rewrite /thread-101-1.html to /listarticle?id=101&amp;pageno=1  
+        </note>  
+        <from>^/thread-([0-9a-zA-Z]+)-([0-9]+).html$</from>  
+        <to>%{context-path}/listarticle?tid=$1&amp;pageno=$2</to>  
+    </rule> 
 </urlrewrite>

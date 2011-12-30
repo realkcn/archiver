@@ -13,5 +13,8 @@
     <action name="listthread" class="org.kbs.archiver.action.ListThread" method="execute">  
             <result name="success">/board.jsp</result>  
     </action>  
+    <action name="listarticle" class="org.kbs.archiver.action.ListArticle" method="getByThread">  
+            <result name="success">/thread.jsp</result>  
+    </action>  
     </package>
 </struts>
