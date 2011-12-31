@@ -40,6 +40,9 @@
         <property name="removeAbandoned"><value>true</value></property>  
         <property name="removeAbandonedTimeout"><value>180</value></property>  
         <property name="connectionProperties"><value>clientEncoding=UTF-8</value></property>
+        <property name="timeBetweenEvictionRunsMillis"><value>3600000</value><!--1 hours--> </property>
+        <property name="testWhileIdle"> <value>true</value> </property>
+        <property name="validationQuery"> <value>select 1 from dual</value> </property>
 	</bean>
 	<!-- scope: singleton prototype,request,session,globalsession -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
