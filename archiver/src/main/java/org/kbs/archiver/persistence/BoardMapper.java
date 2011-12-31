@@ -13,4 +13,5 @@ public interface BoardMapper {
 	public void updateByName(BoardEntity board);
 	public void updateLast(BoardEntity board);
 	public List<BoardEntity> selectAll();
+	public List<BoardEntity> selectAllVisible();
 }

@@ -37,7 +37,7 @@
     </select>
     <!--  articleid,author,posttime,attachment,subject,isvisible,encodingurl  -->
         <select id="getByThreadPerPage" resultType="org.kbs.archiver.ArticleEntity">
-        SELECT * FROM article where threadid=#{threadid} ORDER BY articleid limit  #{offset},#{limit}
+        SELECT * FROM article where threadid=#{threadid} and isvisible=true ORDER BY articleid limit  #{offset},#{limit}
       </select>
     <select id="getByOriginId" parameterType="long" resultType="org.kbs.archiver.ArticleEntity">
         select * from article where originid=#{originid}

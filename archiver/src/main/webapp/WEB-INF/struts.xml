@@ -7,6 +7,9 @@
 <struts>
     <constant name="struts.objectFactory" value="spring"/>
     <package name="default" extends="struts-default" namespace="/">
+    <global-results>
+    <result name="error">/error.jsp</result>
+  	</global-results>
     <action name="listboard" class="org.kbs.archiver.action.ListBoard" method="execute">  
             <result name="success">/boards.jsp</result>  
     </action>  

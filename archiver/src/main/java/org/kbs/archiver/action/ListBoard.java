@@ -1,5 +1,6 @@
 package org.kbs.archiver.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kbs.archiver.*;
@@ -27,7 +28,15 @@ public class ListBoard extends ActionSupport {
 	@Override
 	public String execute() throws Exception {
 //		WebApplicationContext.
-		boardlist=boardMapper.selectAll();
+		/*
+		List<BoardEntity>allboardlist=boardMapper.selectAll();
+		boardlist=new ArrayList<BoardEntity>(); 
+		for (BoardEntity board:allboardlist) {
+			if (!board.isIshidden())
+				boardlist.add(board);
+		}
+		*/
+		boardlist=boardMapper.selectAllVisible();
 //		WebApplicationContextUtils.getWebApplicationContext(this.)
 		return SUCCESS;
 	}

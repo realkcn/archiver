@@ -1,5 +1,7 @@
 package org.kbs.archiver;
 
+import org.kbs.library.BoardHeaderInfo;
+
 public class BoardEntity {
 
 	private long boardid;
@@ -11,6 +13,22 @@ public class BoardEntity {
 	private long lastdeleteid;
 	private String cname;
 	
+	public BoardEntity() {
+		
+	}
+	public BoardEntity(BoardHeaderInfo bh) {
+		set(bh);
+	}
+	public void set(BoardHeaderInfo bh) {
+		name=bh.getFilename();
+//		boardid=0;
+//		threads=0;
+//		articles=0;
+		ishidden=!bh.isNormalBoard();
+//		lastarticleid=0;
+//		lastdeleteid=0;
+		cname=bh.getTitle();
+	}
 	public void setBoardid(long boardid) {
 		this.boardid = boardid;
 	}

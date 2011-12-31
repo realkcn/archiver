@@ -19,14 +19,16 @@ import org.kbs.library.TwoObject;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.context.ApplicationContext;
 
-public class ArchiverBoardImpl implements Callable<Integer> {
+public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 
 	private ApplicationContext ctx;
 	private BoardEntity board;
+	private String boardbasedir;
 
-	public ArchiverBoardImpl(ApplicationContext ctx, BoardEntity board) {
+	public ArchiverBoardImpl(ApplicationContext ctx, BoardEntity board,String boardbasedir) {
 		this.ctx = ctx;
 		this.board = board;
+		this.boardbasedir=boardbasedir;
 	}
 
 	public Integer call() throws Exception {
@@ -39,16 +41,15 @@ public class ArchiverBoardImpl implements Callable<Integer> {
 		ArrayList<FileHeaderInfo> articlelist;
 		FileHeaderSet fhset = new FileHeaderSet();
 		Logger logger=Logger.getLogger(ArchiverBoardImpl.class);
+		logger.info(new Date(System.currentTimeMillis())+"Archiver "+board.getName()+"start up:");
 		long totalattchmentsize=0;
 
 //		SqlSessionTemplate sqlsession = (SqlSessionTemplate) ctx
 //				.getBean("sqlSession");
 
 		ThreadMapper threadMapper = (ThreadMapper) ctx.getBean("threadMapper");
-		String boardpath;
-		boardpath = ((Properties) ctx.getBean("configproperties"))
-				.getProperty("boarddir");
-		boardpath += "/" + board.getName() +"/";
+
+		String boardpath = boardbasedir+"/" + board.getName() +"/";
 		ArrayList<FileHeaderInfo> dirlist;
 		if (!(new java.io.File(boardpath + ".DIR").exists())) {
 			logger.error(boardpath + ".DIR no exists");
@@ -89,7 +90,6 @@ public class ArchiverBoardImpl implements Callable<Integer> {
 			logger.debug("deal:"+article.toString());
 //			System.out.println("中文");
 //			System.exit(0);
-			// TODO:处理附件存储
 
 			// 处理thread,需要填写threadid,并看看是否要生成新的thread
 			ThreadEntity thread;
@@ -178,6 +178,7 @@ public class ArchiverBoardImpl implements Callable<Integer> {
 			batchsqlsession.flushStatements();
 		}
 
+		logger.info(new Date(System.currentTimeMillis())+"Archiver "+board.getName()+"end:add "+articlelist.size()+" articles "+threads.size()+" threads,update "+oldthreads.size()+"threads");
 		return articlelist.size();
 	}
 
@@ -195,6 +196,17 @@ public class ArchiverBoardImpl implements Callable<Integer> {
 			}
 		}
 		return articlelist;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		try {
+			call();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

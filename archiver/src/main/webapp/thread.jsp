@@ -17,20 +17,32 @@
   
   <body> 
    <table border="1"> <caption>主题文章列表</caption>
+<!-- 
    <tr>
    <td>序号</td>
    <td>作者</td>
    <td>主题</td>
    <td>发表时间</td>
    </tr>
-   
+ -->   
    <s:iterator value="articlelist" status="threadindex">
     <tr>
-		<td><s:property value="#threadindex.count+(pageno-1)*pagesize" /></td>
-		<td><a href="article-${encodingurl}.html">${author}</a></td>      
-		<td><a href="article-${encodingurl}.html">${subject}</a></td>      
-		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>      
+<!--		<td><s:property value="#threadindex.count+(pageno-1)*pagesize" /></td> 
+-->
+		<td><a href="article-${encodingurl}.html">${author}</a></td>
+		<td>
+		<table board="1">
+		<tr>
+		<td>${subject}</td>      
+		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
+		</tr>
+		<tr><td><pre>${body}</pre>
+		</td>
+		</tr>
+		</table>
+		</td>      
     </tr>
+    
    </s:iterator>
     </table>
     <s:if test="pageno!=1">

@@ -80,10 +80,15 @@ public class ListThread extends ActionSupport {
 		if (pageno==0)
 			pageno=1;
 		board=boardMapper.get(boardid);
-		if (board==null) {
+		if ((board==null)||board.isIshidden()) {
+			this.addActionError("没有找到该版面");
 			return ERROR;
 		}
 //		WebApplicationContext.
+		if (board.getThreads()==0) {
+			this.addActionError("该版面主题数为零");
+			return ERROR;
+		}
 		totalpage=board.getThreads()/pagesize+((board.getThreads()%pagesize>0)?1:0);
 		if ((pageno-1)*pagesize>board.getThreads()) {
 			pageno=board.getThreads()/pagesize+1;

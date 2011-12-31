@@ -12,6 +12,10 @@
         select * from board order by boardid asc
     </select>
     
+    <select id="selectAllVisible" resultType="org.kbs.archiver.BoardEntity">
+        select * from board where ishidden=false order by boardid asc
+    </select>
+    
     <insert id="insert" parameterType="org.kbs.archiver.BoardEntity">
         insert into board(boardid,threads,articles,ishidden,name,cname) values(#{boardid},#{threads},#{articles},#{ishidden},#{name},#{cname})
          ON DUPLICATE KEY UPDATE name=#{name},cname=#{cname},threads=#{threads},articles=#{articles},ishidden=#{ishidden}

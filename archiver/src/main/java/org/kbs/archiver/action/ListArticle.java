@@ -2,6 +2,7 @@ package org.kbs.archiver.action;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.kbs.archiver.ArticleEntity;
 import org.kbs.archiver.BoardEntity;
 import org.kbs.archiver.ThreadEntity;
@@ -84,8 +85,15 @@ public class ListArticle extends ActionSupport {
 	public void setArticlelist(List<ArticleEntity> articlelist) {
 		this.articlelist = articlelist;
 	}
-
+	public BoardMapper getBoardMapper() {
+		return boardMapper;
+	}
+	public void setBoardMapper(BoardMapper boardMapper) {
+		this.boardMapper = boardMapper;
+	}
 	private ArticleMapper articleMapper;
+	private BoardMapper boardMapper;
+	private BoardEntity board;
 
 	public ArticleMapper getArticleMapper() {
 		return articleMapper;
@@ -103,6 +111,13 @@ public class ListArticle extends ActionSupport {
 			pageno = 1;
 		thread = threadMapper.getByEncodingUrl(tid);
 		if (thread == null)
+			return ERROR;
+		board=boardMapper.get(thread.getBoardid());
+		if (board==null) {
+			Logger.getLogger(ListArticle.class).warn("found thread without board:"+threadid+" on boardid:"+thread.getBoardid());
+			return ERROR;
+		}
+		if (board.isIshidden())
 			return ERROR;
 		totalpage = thread.getArticlenumber() / pagesize
 				+ ((thread.getArticlenumber() % pagesize > 0) ? 1 : 0);
