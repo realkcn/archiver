@@ -19,5 +19,8 @@
     <action name="listarticle" class="org.kbs.archiver.action.ListArticle" method="getByThread">  
             <result name="success">/thread.jsp</result>  
     </action>  
+    <action name="listarticlebyauthor" class="org.kbs.archiver.action.ListArticle" method="getByAuthor">  
+            <result name="success">/authorartile.jsp</result>  
+    </action>  
     </package>
 </struts>

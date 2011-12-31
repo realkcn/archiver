@@ -24,6 +24,7 @@ public class ListArticle extends ActionSupport {
 	private long threadid;
 	private ThreadEntity thread;
 	private String tid;
+	private String author;
 
 	public String getTid() {
 		return tid;
@@ -94,6 +95,7 @@ public class ListArticle extends ActionSupport {
 	private ArticleMapper articleMapper;
 	private BoardMapper boardMapper;
 	private BoardEntity board;
+	private int totalsize;
 
 	public ArticleMapper getArticleMapper() {
 		return articleMapper;
@@ -119,17 +121,51 @@ public class ListArticle extends ActionSupport {
 		}
 		if (board.isIshidden())
 			return ERROR;
-		totalpage = thread.getArticlenumber() / pagesize
-				+ ((thread.getArticlenumber() % pagesize > 0) ? 1 : 0);
-		if ((pageno - 1) * pagesize > thread.getArticlenumber()) {
-			pageno = thread.getArticlenumber() / pagesize + 1;
-		} else if ((pageno - 1) * pagesize == thread.getArticlenumber()) {
-			pageno = thread.getArticlenumber() / pagesize;
+		totalsize = thread.getArticlenumber();
+		totalpage = totalsize/ pagesize	+ ((totalsize % pagesize > 0) ? 1 : 0);
+		if ((pageno - 1) * pagesize > totalsize) {
+			pageno = totalsize / pagesize + 1;
+		} else if ((pageno - 1) * pagesize == totalsize) {
+			pageno = totalsize / pagesize;
 		}
 		articlelist = articleMapper.getByThreadPerPage(thread.getThreadid(), (pageno - 1)
 				* pagesize, pagesize);
 		// WebApplicationContextUtils.getWebApplicationContext(this.)
 		return SUCCESS;
+	}
+
+	public int getTotalsize() {
+		return totalsize;
+	}
+
+	public void setTotalsize(int totalsize) {
+		this.totalsize = totalsize;
+	}
+
+	public String getByAuthor() throws Exception {
+		System.out.println(getAuthor());
+		if (pagesize == 0)
+			pagesize = 20;
+		if (pageno == 0)
+			pageno = 1;
+		totalsize = articleMapper.countByAuthor(getAuthor());
+		totalpage = totalsize/ pagesize	+ ((totalsize % pagesize > 0) ? 1 : 0);
+		if ((pageno - 1) * pagesize > totalsize) {
+			pageno = totalsize / pagesize + 1;
+		} else if ((pageno - 1) * pagesize == totalsize) {
+			pageno = totalsize / pagesize;
+		}
+		articlelist = articleMapper.getByAuthorPerPage(getAuthor(), (pageno - 1)
+				* pagesize, pagesize);
+		// WebApplicationContextUtils.getWebApplicationContext(this.)
+		return SUCCESS;
+	}
+	public BoardEntity getBoard() {
+		return board;
+	}
+
+	public void setBoard(BoardEntity board) {
+		this.board = board;
 	}
 
 	public ThreadEntity getThread() {
@@ -138,5 +174,19 @@ public class ListArticle extends ActionSupport {
 
 	public void setThread(ThreadEntity thread) {
 		this.thread = thread;
+	}
+
+	/**
+	 * @return the author
+	 */
+	public String getAuthor() {
+		return author;
+	}
+
+	/**
+	 * @param author the author to set
+	 */
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 }

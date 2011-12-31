@@ -78,7 +78,8 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			article.setSubject(fh.getTitle());
 			article.setReplyid(fh.getReplyid());
 			article.setBoardid(board.getBoardid());
-			article.setIsvisible(!board.isIshidden());
+			article.setIsvisible(true);
+			//!board.isIshidden());
 			TwoObject<String, ArrayList<AttachmentData>> body = fh
 					.getBody(boardpath);
 			article.setArticleid(articleseq.next());
