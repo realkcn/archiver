@@ -13,7 +13,7 @@
     </select>
     
     <select id="selectAllVisible" resultType="org.kbs.archiver.BoardEntity">
-        select * from board where ishidden=false order by name asc
+        select * from board where ishidden=false order by upper(name) asc
     </select>
     
     <insert id="insert" parameterType="org.kbs.archiver.BoardEntity">

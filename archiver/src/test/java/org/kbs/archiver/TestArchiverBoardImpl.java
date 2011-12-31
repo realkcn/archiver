@@ -23,6 +23,7 @@ public class TestArchiverBoardImpl  {
 	@Ignore("damage data")
 	@Test
 	public void test() {
+		/*
 		BoardEntity theboard=new BoardEntity();
 		String boardname="Progress";
 		theboard.setName(boardname);
@@ -41,7 +42,7 @@ public class TestArchiverBoardImpl  {
 		threadMapper.deleteByBoard(theboard.getBoardid());
 		AttachmentMapper attachmentMapper=(AttachmentMapper) InitTest.getAppContext().getBean("attachmentMapper");
 		attachmentMapper.deleteByBoard(theboard.getBoardid());
-		ArchiverBoardImpl worker=new ArchiverBoardImpl(InitTest.getAppContext(),theboard);
+		ArchiverBoardImpl worker=new ArchiverBoardImpl(InitTest.getAppContext(),theboard, "");
 		try {
 //			assertEquals(221,worker.call().intValue());
 			System.out.println("all record:"+worker.call().intValue());
@@ -49,6 +50,7 @@ public class TestArchiverBoardImpl  {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
+		*/
 	}
 
 }

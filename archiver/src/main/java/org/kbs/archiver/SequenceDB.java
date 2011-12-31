@@ -3,6 +3,7 @@ package org.kbs.archiver;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
 import org.kbs.library.*;
 
 import com.sleepycat.db.Database;
@@ -51,7 +52,7 @@ public class SequenceDB {
 			sequenceDb.put(null, key, data);
 		} catch (DatabaseException e) {
 			// TODO Auto-generated catch block
-			GlobalLogger.getLogger().error(e);
+			Logger.getLogger(org.kbs.archiver.SequenceDB.class).error(e);
 		}
     }
     
@@ -67,7 +68,7 @@ public class SequenceDB {
 			value=Integer.valueOf(new String(data.getData())).intValue();
 		} catch (DatabaseException e) {
 			// TODO Auto-generated catch block
-			GlobalLogger.getLogger().error(e);
+			Logger.getLogger(org.kbs.archiver.SequenceDB.class).error(e);
 		}
         return value;
     }
