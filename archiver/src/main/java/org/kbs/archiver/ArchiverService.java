@@ -64,18 +64,20 @@ public class ArchiverService extends TimerTask {
 	public synchronized void updateBoardDB(String filename) {
 		List<BoardHeaderInfo> bhset=BoardHeaderInfo.readDotBoard(filename);
 		for (BoardHeaderInfo bh:bhset) {
-			BoardMapper boardMapper=(BoardMapper) ctx.getBean("boardMapper");
-			CachedSequence boardSeq=(CachedSequence) ctx.getBean("boardSeq");
-			BoardEntity board=boardMapper.getByName(bh.getFilename());
-			if (board==null) {
-				board=new BoardEntity(bh);
-				board.setBoardid(boardSeq.next());
-				boardMapper.insert(board);
-				Logger.getLogger(ArchiverService.class).info("add board:"+board.getBoardid()+" name:"+board.getName()+" cname:"+board.getCname());
-			} else {
-				board.set(bh);
-				boardMapper.update(board);
-				Logger.getLogger(ArchiverService.class).info("update board:"+board.getBoardid()+" name:"+board.getName()+" cname:"+board.getCname());
+			if (!bh.isGroup()) {//非目录版面才处理
+				BoardMapper boardMapper=(BoardMapper) ctx.getBean("boardMapper");
+				CachedSequence boardSeq=(CachedSequence) ctx.getBean("boardSeq");
+				BoardEntity board=boardMapper.getByName(bh.getFilename());
+				if (board==null) {
+					board=new BoardEntity(bh);
+					board.setBoardid(boardSeq.next());
+					boardMapper.insert(board);
+					Logger.getLogger(ArchiverService.class).info("add board:"+board.getBoardid()+" name:"+board.getName()+" cname:"+board.getCname());
+				} else {
+					board.set(bh);
+					boardMapper.update(board);
+					Logger.getLogger(ArchiverService.class).info("update board:"+board.getBoardid()+" name:"+board.getName()+" cname:"+board.getCname());
+				}
 			}
 		}
 	}

@@ -16,9 +16,10 @@
   </head> 
   
   <body>
+  <jsp:include page="header.jsp" />
   一共 ${totalsize} 篇 <br />
       <s:if test="pageno!=1">
-      <a href="thread-${tid}.html">第一页</a>
+      <a href="thread-${tid}-1.html">第一页</a>
       <a href="thread-${tid}-${pageno-1}.html">上一页</a>
     </s:if>
     <s:if test="pageno!=totalpage">
@@ -56,7 +57,7 @@
    </s:iterator>
     </table>
     <s:if test="pageno!=1">
-      <a href="thread-${tid}.html">第一页</a>
+      <a href="thread-${tid}-1.html">第一页</a>
       <a href="thread-${tid}-${pageno-1}.html">上一页</a>
     </s:if>
     <s:if test="pageno!=totalpage">

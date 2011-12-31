@@ -112,16 +112,25 @@ public class ListArticle extends ActionSupport {
 		if (pageno == 0)
 			pageno = 1;
 		thread = threadMapper.getByEncodingUrl(tid);
-		if (thread == null)
+		if (thread == null) {
+			this.addActionError("找不到该主题。");
 			return ERROR;
+		}
 		board=boardMapper.get(thread.getBoardid());
 		if (board==null) {
 			Logger.getLogger(ListArticle.class).warn("found thread without board:"+threadid+" on boardid:"+thread.getBoardid());
+			this.addActionError("找不到该主题。");
 			return ERROR;
 		}
-		if (board.isIshidden())
+		if (board.isIshidden()) {
+			this.addActionError("找不到该主题。");
 			return ERROR;
+		}
 		totalsize = thread.getArticlenumber();
+		if (totalsize==0) {
+			this.addActionError("该主题没有文章。");
+			return ERROR;
+		}
 		totalpage = totalsize/ pagesize	+ ((totalsize % pagesize > 0) ? 1 : 0);
 		if ((pageno - 1) * pagesize > totalsize) {
 			pageno = totalsize / pagesize + 1;
@@ -143,18 +152,23 @@ public class ListArticle extends ActionSupport {
 	}
 
 	public String getByAuthor() throws Exception {
-		System.out.println(getAuthor());
+//		System.out.println(getAuthor());
 		if (pagesize == 0)
 			pagesize = 20;
 		if (pageno == 0)
 			pageno = 1;
 		totalsize = articleMapper.countByAuthor(getAuthor());
+		if (totalsize==0) {
+			this.addActionError(getAuthor()+"没有发表过文章。");
+			return ERROR;
+		}
 		totalpage = totalsize/ pagesize	+ ((totalsize % pagesize > 0) ? 1 : 0);
 		if ((pageno - 1) * pagesize > totalsize) {
 			pageno = totalsize / pagesize + 1;
 		} else if ((pageno - 1) * pagesize == totalsize) {
 			pageno = totalsize / pagesize;
 		}
+//		System.out.println(String.format("getAuthor:%s total:%d totalpage:%d pageno:%d",getAuthor(),totalsize,totalpage,pageno));
 		articlelist = articleMapper.getByAuthorPerPage(getAuthor(), (pageno - 1)
 				* pagesize, pagesize);
 		// WebApplicationContextUtils.getWebApplicationContext(this.)

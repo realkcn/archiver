@@ -16,7 +16,8 @@
   </head> 
   
   <body> 
-   <table border="1"> <caption>版面列表</caption>
+   <jsp:include page="header.jsp" />
+   <table border="1"> <caption>版面主题列表</caption>
    <tr>
    <td>序号</td>
    <td>作者</td>

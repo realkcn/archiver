@@ -15,15 +15,16 @@
  
   </head> 
   
-  <body> 
-  一共 ${totalsize} 篇 <br />
+  <body>
+  <jsp:include page="header.jsp" />
+  ${author} 一共发表了 ${totalsize} 篇文章 <br />
       <s:if test="pageno!=1">
-      <a href="thread-${tid}.html">第一页</a>
-      <a href="thread-${tid}-${pageno-1}.html">上一页</a>
+      <a href="abyu-${author}-1.html">第一页</a>
+      <a href="abyu-${author}-${pageno-1}.html">上一页</a>
     </s:if>
     <s:if test="pageno!=totalpage">
-      <a href="thread-${tid}-${pageno+1}.html">下一页</a>
-      <a href="thread-${tid}-${totalpage}.html">最后一页</a>
+      <a href="abyu-${author}-${pageno+1}.html">下一页</a>
+      <a href="abyu-${author}-${totalpage}.html">最后一页</a>
     </s:if>
  <table border="1"> <caption>作者文章列表</caption>
 <!-- 
@@ -48,12 +49,12 @@
    </s:iterator>
     </table>
     <s:if test="pageno!=1">
-      <a href="thread-${tid}.html">第一页</a>
-      <a href="thread-${tid}-${pageno-1}.html">上一页</a>
+      <a href="abyu-${author}-1.html">第一页</a>
+      <a href="abyu-${author}-${pageno-1}.html">上一页</a>
     </s:if>
     <s:if test="pageno!=totalpage">
-      <a href="thread-${tid}-${pageno+1}.html">下一页</a>
-      <a href="thread-${tid}-${totalpage}.html">最后一页</a>
+      <a href="abyu-${author}-${pageno+1}.html">下一页</a>
+      <a href="abyu-${author}-${totalpage}.html">最后一页</a>
     </s:if>
   </body> 
 </html> 

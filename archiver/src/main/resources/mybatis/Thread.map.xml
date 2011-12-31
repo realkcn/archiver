@@ -37,8 +37,7 @@
 		select * from thread where threadid=#{threadid}
 	</select>
 	<select id="getByBoardPerPage" resultType="org.kbs.archiver.ThreadEntity">
-		SELECT * FROM thread where boardid=#{boardid} and isvisible=true ORDER BY threadid limit
-		#{offset},#{limit}
+		SELECT * FROM thread where boardid=#{boardid} and isvisible=true ORDER BY lastposttime desc limit #{offset},#{limit}
 	</select>
 	<select id="getByOriginId" parameterType="long"
 		resultType="org.kbs.archiver.ThreadEntity">
