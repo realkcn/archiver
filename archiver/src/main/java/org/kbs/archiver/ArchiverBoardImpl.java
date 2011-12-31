@@ -41,7 +41,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		ArrayList<FileHeaderInfo> articlelist;
 		FileHeaderSet fhset = new FileHeaderSet();
 		Logger logger=Logger.getLogger(ArchiverBoardImpl.class);
-		logger.info(new Date(System.currentTimeMillis())+"Archiver "+board.getName()+"start up:");
+		logger.info(new Date(System.currentTimeMillis())+" Archiver "+board.getName()+" start up:");
 		long totalattchmentsize=0;
 
 //		SqlSessionTemplate sqlsession = (SqlSessionTemplate) ctx
@@ -178,7 +178,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			batchsqlsession.flushStatements();
 		}
 
-		logger.info(new Date(System.currentTimeMillis())+"Archiver "+board.getName()+"end:add "+articlelist.size()+" articles "+threads.size()+" threads,update "+oldthreads.size()+"threads");
+		logger.info(new Date(System.currentTimeMillis())+" Archiver "+board.getName()+" end:add "+articlelist.size()+" articles "+threads.size()+" threads,update "+oldthreads.size()+"threads");
 		return articlelist.size();
 	}
 
