@@ -36,7 +36,7 @@ public class ArchiverService extends TimerTask {
 		int nThreads=0;
 		Properties config=(Properties) ctx.getBean("configproperties");
 		if (config.get("workerthreads")!=null)
-			nThreads=(Integer) config.get("workerthreads");
+			nThreads=Integer.parseInt((String)config.get("workerthreads"));
 		if (nThreads<=0) nThreads=4;
 
 		String baordbasedir= config.getProperty("boarddir");
