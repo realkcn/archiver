@@ -1,46 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kbs.archiver.persistence.AttachmentMapper">
-<!-- 
-    <resultMap type="org.kbs.archiver.AttachmentEntity" id="attachmentMapper_resultMap_attachmentEntity">  
-        <id property="name"           column="name"       javaType="String" jdbcType="VARCHAR" />  
-        <result property="data" column="data"  javaType="byte[]" jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler" />    
-        <result property="articleid"  column="articleid"      javaType="Long" jdbcType="BIGINT" />  
-        <result property="order"  column="articleid"      javaType="Integer" jdbcType="INT" />  
-        <result property="articleid"  column="articleid"      javaType="Long" jdbcType="BIGINT" />  
-    </resultMap>
-  -->  
-    <select id="countAll" resultType="int">
-        select count(*)  from attachment;
+	<!-- <resultMap type="org.kbs.archiver.AttachmentEntity" id="attachmentMapper_resultMap_attachmentEntity"> 
+		<id property="name" column="name" javaType="String" jdbcType="VARCHAR" /> 
+		<result property="data" column="data" javaType="byte[]" jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler" 
+		/> <result property="articleid" column="articleid" javaType="Long" jdbcType="BIGINT" 
+		/> <result property="order" column="articleid" javaType="Integer" jdbcType="INT" 
+		/> <result property="articleid" column="articleid" javaType="Long" jdbcType="BIGINT" 
+		/> </resultMap> -->
+	<select id="countAll" resultType="int">
+		select count(*) from
+		attachment;
     </select>
-    
-    <select id="selectAll" resultType="org.kbs.archiver.AttachmentEntity">
-        select name,attachmentid,encodingurl,boardid,articleid from attachment order by attachmentid asc
-    </select>
-    
-    <insert id="insert" parameterType="org.kbs.archiver.AttachmentEntity">
-        insert into attachment(name,attachmentid,articleid,attachmentorder,data,encodingurl,boardid) 
-        	values (#{name},#{attachmentid},#{articleid},#{order},#{data},#{encodingurl},#{boardid})
-         ON DUPLICATE KEY UPDATE name=#{name},articleid=#{articleid},attachmentorder=#{order},encodingurl=#{encodingurl}, data=#{data} ,boardid=#{boardid}
-    </insert>
-    
-    <update id="update" parameterType="org.kbs.archiver.AttachmentEntity">
-        update attachment set name=#{name},articleid=#{articleid},attachmentorder=#{order},encodingurl=#{encodingurl} ,
-          data=#{data},boardid=#{boardid}
-          where attachmentid=#{attachmentid}
-    </update>
 
-    <delete id="delete" parameterType="long">
-        delete from attachment where attachmentid=#{attachmentid}
+	<insert id="insert" parameterType="org.kbs.archiver.AttachmentEntity">
+		insert into
+		attachment(name,attachmentid,articleid,attachmentorder,data,encodingurl,boardid)
+		values
+		(#{name},#{attachmentid},#{articleid},#{order},#{data},#{encodingurl},#{boardid})
+		ON DUPLICATE KEY UPDATE
+		name=#{name},articleid=#{articleid},attachmentorder=#{order},encodingurl=#{encodingurl},
+		data=#{data} ,boardid=#{boardid}
+    </insert>
+
+	<update id="update" parameterType="org.kbs.archiver.AttachmentEntity">
+		update attachment set
+		name=#{name},articleid=#{articleid},attachmentorder=#{order},encodingurl=#{encodingurl}
+		,
+		data=#{data},boardid=#{boardid}
+		where attachmentid=#{attachmentid}
+	</update>
+
+	<delete id="delete" parameterType="long">
+		delete from attachment where
+		attachmentid=#{attachmentid}
     </delete>
-    <delete id="deleteByBoard" parameterType="long">
-        delete from attachment where boardid=#{boardid}
+	<delete id="deleteByBoard" parameterType="long">
+		delete from attachment
+		where boardid=#{boardid}
     </delete>
-    <select id="get" parameterType="long" resultType="org.kbs.archiver.AttachmentEntity">
-        select * from attachment where attachmentid=#{attachmentid}
+	<select id="get" parameterType="long"
+		resultType="org.kbs.archiver.AttachmentEntity">
+		select attachment.*,length(attachment.data) datasize from
+		attachment,board,article where attachment.attachmentid=#{attachmentid}
+		and attachment.articleid=article.articleid
+		and article.isvisible=true
+		and attachment.boardid=board.boardid and
+		board.ishidden=false 
     </select>
-     <select id="getByArticle" parameterType="long" resultType="org.kbs.archiver.AttachmentEntity">
-        select name,attachmentid,encodingurl,boardid from attachment where articleid=#{articleid} order by attachmentorder asc
+	<select id="getByEncodingUrl" parameterType="long"
+		resultType="org.kbs.archiver.AttachmentEntity">
+		select attachment.* from attachment,board,article where
+		attachment.encodingurl=#{encodingurl} and
+		attachment.articleid=article.articleid
+		and article.isvisible=true and
+		attachment.boardid=board.boardid and
+		board.ishidden=false 
     </select>
-    <cache eviction="FIFO" flushInterval="3600000" size="1024" readOnly="true" />
+	<select id="getByArticle" parameterType="long"
+		resultType="org.kbs.archiver.AttachmentEntity">
+		select
+		attachment.name,attachment.attachmentid,attachment.encodingurl,attachment.boardid,length(attachment.data) datasize
+		from attachment,board,article where
+		attachment.articleid=#{articleid} and
+		attachment.articleid=article.articleid
+		and article.isvisible=true and
+		attachment.boardid=board.boardid and
+		board.ishidden=false order by
+		attachment.attachmentorder asc
+    </select>
+	<cache eviction="FIFO" flushInterval="3600000" size="1024"
+		readOnly="true" />
 </mapper>

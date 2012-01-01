@@ -8,6 +8,7 @@ public class AttachmentEntity {
 	private String encodingurl;
 	private byte [] data;
 	private long boardid;
+	private long datasize;
 	public long getBoardid() {
 		return boardid;
 	}
@@ -48,6 +49,13 @@ public class AttachmentEntity {
 		return data;
 	}
 	public void setData(byte[] data) {
+		this.datasize=data.length;
 		this.data = data;
+	}
+	public long getDatasize() {
+		return datasize;
+	}
+	public void setDatasize(long datasize) {
+		this.datasize = datasize;
 	}
 }

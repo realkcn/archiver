@@ -5,23 +5,35 @@
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-    <constant name="struts.objectFactory" value="spring"/>
-    <constant name="struts.ognl.allowStaticMethodAccess" value="true" />
-    <package name="default" extends="struts-default" namespace="/">
-    <global-results>
-    <result name="error">/error.jsp</result>
-  	</global-results>
-    <action name="listboard" class="org.kbs.archiver.action.ListBoard" method="execute">  
-            <result name="success">/boards.jsp</result>  
-    </action>  
-    <action name="listthread" class="org.kbs.archiver.action.ListThread" method="execute">  
-            <result name="success">/board.jsp</result>  
-    </action>  
-    <action name="listarticle" class="org.kbs.archiver.action.ListArticle" method="getByThread">  
-            <result name="success">/thread.jsp</result>  
-    </action>  
-    <action name="listarticlebyauthor" class="org.kbs.archiver.action.ListArticle" method="getByAuthor">  
-            <result name="success">/authorartile.jsp</result>  
-    </action>  
-    </package>
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+	<package name="default" extends="struts-default" namespace="/">
+		<global-results>
+			<result name="error">/error.jsp</result>
+		</global-results>
+		<action name="listboard" class="org.kbs.archiver.action.ListBoard"
+			method="execute">
+			<result name="success">/boards.jsp</result>
+		</action>
+		<action name="listthread" class="org.kbs.archiver.action.ListThread"
+			method="execute">
+			<result name="success">/board.jsp</result>
+		</action>
+		<action name="listarticle" class="org.kbs.archiver.action.ListArticle"
+			method="getByThread">
+			<result name="success">/thread.jsp</result>
+		</action>
+		<action name="listarticlebyauthor" class="org.kbs.archiver.action.ListArticle"
+			method="getByAuthor">
+			<result name="success">/authorartile.jsp</result>
+		</action>
+		<action name="getattachment" class="org.kbs.archiver.action.GetAttachment" method="get">
+			<result name="success" type="stream">
+				<param name="contentType">${contentType}</param>
+				<param name="inputName">InputStream</param>
+				<param name="bufferSize">10240</param>
+				<param name="contentDisposition">filename="${attachment.filename}"</param>
+			</result>
+		</action>
+	</package>
 </struts>

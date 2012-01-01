@@ -1,7 +1,9 @@
 package org.kbs.archiver;
 
 import java.util.Date;
+import java.util.List;
 
+import org.kbs.library.AttachmentData;
 import org.kbs.library.FileHeaderInfo;
 
 public class ArticleEntity {
@@ -16,9 +18,23 @@ public class ArticleEntity {
 	private long originid;
 	private String filename;
 	private long replyid;
+	private int datasize;
+	public int getDatasize() {
+		return datasize;
+	}
+	public void setDatasize(int datasize) {
+		this.datasize = datasize;
+	}
 	private String body;
 	private String encodingurl;
+	private List<AttachmentEntity> attachments;
 	
+	public List<AttachmentEntity> getAttachments() {
+		return attachments;
+	}
+	public void setAttachments(List<AttachmentEntity> attachments) {
+		this.attachments = attachments;
+	}
 	public String getEncodingurl() {
 		return encodingurl;
 	}

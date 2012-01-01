@@ -7,8 +7,10 @@ import org.kbs.archiver.ArticleEntity;
 import org.kbs.archiver.BoardEntity;
 import org.kbs.archiver.ThreadEntity;
 import org.kbs.archiver.persistence.ArticleMapper;
+import org.kbs.archiver.persistence.AttachmentMapper;
 import org.kbs.archiver.persistence.BoardMapper;
 import org.kbs.archiver.persistence.ThreadMapper;
+import org.kbs.library.AttachmentData;
 
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -94,6 +96,15 @@ public class ListArticle extends ActionSupport {
 		this.boardMapper = boardMapper;
 	}
 	private ArticleMapper articleMapper;
+	private AttachmentMapper attachmentMapper;
+	public AttachmentMapper getAttachmentMapper() {
+		return attachmentMapper;
+	}
+
+	public void setAttachmentMapper(AttachmentMapper attachmentMapper) {
+		this.attachmentMapper = attachmentMapper;
+	}
+
 	private BoardMapper boardMapper;
 	private BoardEntity board;
 	private int totalsize;
@@ -140,11 +151,20 @@ public class ListArticle extends ActionSupport {
 		}
 		articlelist = articleMapper.getByThreadPerPage(thread.getThreadid(), (pageno - 1)
 				* pagesize, pagesize);
+		dealAttachment();
 		// WebApplicationContextUtils.getWebApplicationContext(this.)
 		
 		return SUCCESS;
 	}
 
+	public void dealAttachment() {
+		for (ArticleEntity article:articlelist) {
+			if (article.getAttachment()>0) {
+				article.setAttachments(attachmentMapper.getByArticle(article.getArticleid()));
+			}
+		}
+	}
+	
 	public int getTotalsize() {
 		return totalsize;
 	}

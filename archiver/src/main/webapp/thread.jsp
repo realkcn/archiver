@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%> 
+<%@page language="java" import="java.util.*,org.kbs.archiver.*,javax.activation.MimetypesFileTypeMap,com.opensymphony.xwork2.ognl.OgnlValueStack" pageEncoding="UTF-8"%> 
 <%@taglib prefix="s" uri="/struts-tags"%>
  
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 
@@ -47,7 +47,13 @@
 		<td><s:property value="subject" /></td>      
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
 		</tr>
-		<tr><td><pre>${body}</pre>
+		<tr><td><pre>${body}</pre><br /><s:if test="attachments!=null">
+		   <s:iterator value="attachments"><s:set name="filename" value="name" scope="request" /><% {
+		   		String contentType = new MimetypesFileTypeMap().getContentType((String)request.getAttribute("filename"));
+		   		if (contentType.startsWith("image")) {
+		   %><img src="att-${encodingurl}/<s:property value="name" />" /><%} else {%>附件:<a href="att-${encodingurl}/<s:property value="name" />"><s:property value="name" /></a>(大小:${datasize}字节)<br /><% } }%>
+		   </s:iterator>
+		</s:if>
 		</td>
 		</tr>
 		</table>

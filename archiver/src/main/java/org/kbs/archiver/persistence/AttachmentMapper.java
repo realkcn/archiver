@@ -9,6 +9,6 @@ public interface AttachmentMapper {
 	public void deleteByBoard(long boardid);
 	public void insert(AttachmentEntity board);
 	public void update(AttachmentEntity board);
-	public List<AttachmentEntity> selectAll();
 	public List<AttachmentEntity> getByArticle(long articleid);
+	public AttachmentEntity getByEncodingUrl(String url);
 }

@@ -14,6 +14,7 @@
    </head> 
   
   <body>
+  <jsp:include page="header.jsp" />
 <s:actionerror/>
    </body> 
 </html> 
