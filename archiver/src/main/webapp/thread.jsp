@@ -51,7 +51,7 @@
 		   <s:iterator value="attachments"><s:set name="filename" value="name" scope="request" /><% {
 		   		String contentType = new MimetypesFileTypeMap().getContentType((String)request.getAttribute("filename"));
 		   		if (contentType.startsWith("image")) {
-		   %><img src="att-${encodingurl}/<s:property value="name" />" /><%} else {%>附件:<a href="att-${encodingurl}/<s:property value="name" />"><s:property value="name" /></a>(大小:${datasize}字节)<br /><% } }%>
+		   %><img src="att-${encodingurl}/<s:property value="name" />" /><%} else {%>附件:<a href="att-${encodingurl}/<s:property value="name" />" target="_blank"><s:property value="name" /></a>(大小:${datasize}字节)<br /><% } }%>
 		   </s:iterator>
 		</s:if>
 		</td>

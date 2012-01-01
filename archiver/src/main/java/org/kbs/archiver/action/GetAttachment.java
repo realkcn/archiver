@@ -65,7 +65,7 @@ public class GetAttachment extends ActionSupport {
 			return ERROR;
 		}
 		contentType = new MimetypesFileTypeMap().getContentType(attachment
-				.getName());// 保存文件的类型
+				.getName().toLowerCase());// 保存文件的类型
 //		System.out.println("---"+attachment.getName()+"--"+contentType);
 		return SUCCESS;
 	}
