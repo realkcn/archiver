@@ -16,12 +16,20 @@
   </head> 
   
   <body> 
-   <table border="1" width="360"> <caption>版面列表</caption>
+   <table border="1" > <caption>版面列表</caption>
+    <tr>
+       <td>序号</td>
+       <td>英文名</td>
+       <td>中文名</td>
+       <td>主题数</td>
+       <td>文章数</td>
    <s:iterator value="boardlist" status="boardindex">
     <tr>
 		<td><s:property value="#boardindex.count" /></td>
 		<td><a href="board-${boardid}.html"><s:property value="name" /></a></td>      
 		<td><a href="board-${boardid}.html"><s:property value="cname" /></a></td>      
+		<td>${threads}</td>      
+		<td>${articles}</td>      
     </tr>
    </s:iterator>
     </table>

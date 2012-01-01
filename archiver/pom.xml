@@ -309,11 +309,6 @@
 					</warSourceExcludes>
 					<webResources>
 						<resource>
-							<directory>${basedir}/src/main/webapp/META-INF</directory>
-							<filtering>true</filtering>
-							<targetPath>META-INF</targetPath>
-						</resource>
-						<resource>
 							<directory>${basedir}/src/main/webapp/WEB-INF.filtering</directory>
 							<filtering>true</filtering>
 							<targetPath>WEB-INF</targetPath>

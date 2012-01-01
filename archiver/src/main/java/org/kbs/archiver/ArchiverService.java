@@ -63,6 +63,10 @@ public class ArchiverService extends TimerTask {
 
 	public synchronized void updateBoardDB(String filename) {
 		List<BoardHeaderInfo> bhset=BoardHeaderInfo.readDotBoard(filename);
+                if (bhset==null) {
+                   Logger.getLogger(org.kbs.archiver.ArchiverService.class).error("Can't found "+filename);
+ 		   return;
+		}
 		for (BoardHeaderInfo bh:bhset) {
 			if (!bh.isGroup()) {//非目录版面才处理
 				BoardMapper boardMapper=(BoardMapper) ctx.getBean("boardMapper");
