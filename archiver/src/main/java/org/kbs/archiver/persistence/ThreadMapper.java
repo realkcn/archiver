@@ -8,7 +8,7 @@ import org.kbs.archiver.ThreadEntity;
 
 public interface ThreadMapper {
 	public ThreadEntity get(long threadid);
-	public ThreadEntity getByOriginId(long orginid);
+	public ThreadEntity getByOriginId(@Param("boardid")long boardid,@Param("originid")long originid);
 	public ThreadEntity getByEncodingUrl(String encodingurl);
 
 	public void insert(ThreadEntity thread);

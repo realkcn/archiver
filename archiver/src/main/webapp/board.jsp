@@ -27,12 +27,14 @@
    <td>最后回复者</td>
    <td>最后回复时间</td>
    </tr>
-   
+   <%
+    //!-- <%=org.springframework.web.util.HtmlUtils.htmlEscape() 
+    %>
    <s:iterator value="threadlist" status="threadindex">
     <tr>
 		<td><s:property value="#threadindex.count+(pageno-1)*pagesize" /></td>
 		<td><a href="abyu-${author}.html">${author}</a></td>      
-		<td><a href="thread-${encodingurl}.html">${subject}</a></td>      
+		<td><a href="thread-${encodingurl}.html"><s:property value="subject" /></a></td>      
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>      
 		<td>${articlenumber-1}</td>      
 		<td>${lastreply}</td>      

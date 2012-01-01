@@ -44,7 +44,7 @@
 		<td>
 		<table board="1">
 		<tr>
-		<td>${subject}</td>      
+		<td><s:property value="subject" /></td>      
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
 		</tr>
 		<tr><td><pre>${body}</pre>

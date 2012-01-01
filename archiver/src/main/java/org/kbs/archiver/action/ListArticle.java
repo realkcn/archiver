@@ -10,6 +10,7 @@ import org.kbs.archiver.persistence.ArticleMapper;
 import org.kbs.archiver.persistence.BoardMapper;
 import org.kbs.archiver.persistence.ThreadMapper;
 
+
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ListArticle extends ActionSupport {
@@ -140,6 +141,7 @@ public class ListArticle extends ActionSupport {
 		articlelist = articleMapper.getByThreadPerPage(thread.getThreadid(), (pageno - 1)
 				* pagesize, pagesize);
 		// WebApplicationContextUtils.getWebApplicationContext(this.)
+		
 		return SUCCESS;
 	}
 

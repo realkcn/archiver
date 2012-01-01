@@ -6,6 +6,7 @@
 
 <struts>
     <constant name="struts.objectFactory" value="spring"/>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true" />
     <package name="default" extends="struts-default" namespace="/">
     <global-results>
     <result name="error">/error.jsp</result>

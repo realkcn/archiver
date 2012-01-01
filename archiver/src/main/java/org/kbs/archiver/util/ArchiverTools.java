@@ -49,7 +49,7 @@ public class ArchiverTools {
 	}
 
 	private static void updateArticle(CommandLine line) throws Exception {
-		String filename=line.getOptionValue('f', "../library/src/test/resources/data/");
+		String filename=line.getOptionValue('f', "/home/archiver/bbs");
 		if (line.getArgs().length==0) {
 			//todo all board
 			ArchiverService service=new ArchiverService(appContext);

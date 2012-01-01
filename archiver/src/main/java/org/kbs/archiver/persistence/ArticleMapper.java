@@ -6,7 +6,7 @@ import org.kbs.archiver.ArticleEntity;
 
 public interface ArticleMapper {
 		public ArticleEntity get(long articleid);
-		public ArticleEntity getByOriginId(long orginid);
+		public ArticleEntity getByOriginId(@Param("boardid")long boardid,@Param("originid")long originid);
 		public ArticleEntity getByEncodingUrl(String encodingurl);
 		public void deleteByBoard(long boardid);
 		public void insert(ArticleEntity article);

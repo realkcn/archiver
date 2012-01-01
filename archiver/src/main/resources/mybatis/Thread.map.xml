@@ -41,7 +41,7 @@
 	</select>
 	<select id="getByOriginId" parameterType="long"
 		resultType="org.kbs.archiver.ThreadEntity">
-		select * from thread where originid=#{originid}
+		select * from thread where boardid=#{boardid} and originid=#{originid}
 	</select>
 	<select id="getByEncodingUrl" parameterType="String"
 		resultType="org.kbs.archiver.ThreadEntity">

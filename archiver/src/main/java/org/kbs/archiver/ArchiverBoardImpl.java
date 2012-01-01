@@ -109,7 +109,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 				thread = oldthreads.get(fh.getGroupid());
 				if (thread == null) {
 					// 从数据库中获得原来的thread信息
-					thread = threadMapper.getByOriginId(fh.getGroupid());
+					thread = threadMapper.getByOriginId(board.getBoardid(),fh.getGroupid());
 					if (thread == null) {
 						thread = ThreadEntity.newThread(threadseq.next(),
 								board, article);
