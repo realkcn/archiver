@@ -141,15 +141,38 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 						batchsqlsession.flushStatements();
 						totalattchmentsize=attachment.getData().length;
 					}
+/*
+					System.out.println(String.format("insert into attachment name:%s id:%d aid:%d order:%d data:%d url:%s",
+								attachment.getName(),
+								attachment.getAttachmentid(),
+								attachment.getArticleid(),
+								attachment.getOrder(),
+								attachment.getData().length,
+								attachment.getEncodingurl()));
+*/
+					try {
 					batchsqlsession.insert(
 							"org.kbs.archiver.persistence.AttachmentMapper.insert",
 							attachment);
+					} catch (Exception e) {
+						logger.error(String.format("insert into attachment name:%s id:%d aid:%d order:%d data:%d url:%s",
+                                                                attachment.getName(),
+                                                                attachment.getAttachmentid(),
+                                                                attachment.getArticleid(),
+                                                                attachment.getOrder(),
+                                                                attachment.getData().length,
+                                                                attachment.getEncodingurl()),e);	
+					}
 				}
 			}
 			// 插入新记录
+			try {
 			batchsqlsession.insert(
 					"org.kbs.archiver.persistence.ArticleMapper.insert",
 					article);
+                                        } catch (Exception e) {
+                                                logger.error("insert into article "+article.toString(),e);
+                                        }
 		}
 
 		// 加入新的thread

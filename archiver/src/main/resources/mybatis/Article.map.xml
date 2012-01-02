@@ -47,7 +47,7 @@
         SELECT count(*) FROM article,board where article.author=#{author} and article.boardid=board.boardid and board.ishidden=false and article.isvisible=true
       </select>
     <select id="getByOriginId" parameterType="long" resultType="org.kbs.archiver.ArticleEntity">
-        select * from article where boardid=#{boardid} and originid=#{originid}
+        select * from article where boardid=#{boardid} and originid=#{originid} limit 1
     </select>
     <select id="getByEncodingUrl" parameterType="String" resultType="org.kbs.archiver.ArticleEntity">
         select * from article where encodingurl=#{encodingurl}
