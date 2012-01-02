@@ -53,6 +53,7 @@ public class ArchiverTools {
 		if (line.getArgs().length==0) {
 			//todo all board
 			ArchiverService service=new ArchiverService(appContext);
+ 			service.setBoardBaseDir(filename);
 			service.run();
 		} else {
 			String boardname=line.getArgs()[0];

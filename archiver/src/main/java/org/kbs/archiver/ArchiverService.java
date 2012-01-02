@@ -21,9 +21,13 @@ public class ArchiverService extends TimerTask {
 	java.util.concurrent.atomic.AtomicBoolean running=new java.util.concurrent.atomic.AtomicBoolean();
 	
 	private ApplicationContext ctx;
+	private String boardBaseDir=null;
 	
 	public ArchiverService(ApplicationContext ctx) {
 		this.ctx=ctx;
+	}
+	public void setBoardBaseDir(String basedir) {
+		boardBaseDir=basedir;
 	}
 	
 	@Override
@@ -39,14 +43,15 @@ public class ArchiverService extends TimerTask {
 			nThreads=Integer.parseInt((String)config.get("workerthreads"));
 		if (nThreads<=0) nThreads=4;
 
-		String baordbasedir= config.getProperty("boarddir");
+		if (boardBaseDir==null)
+			boardBaseDir= config.getProperty("boarddir");
 		ThreadPoolExecutor exector=new ThreadPoolExecutor(nThreads, nThreads,
 				0L, TimeUnit.MILLISECONDS,
 				new LinkedBlockingQueue<Runnable>());
 //		LinkedList<Callable<Integer>> tasks=new LinkedList<Callable<Integer>>();
 		for (BoardEntity theBoard : boards) {
 			ArchiverBoardImpl worker;
-			worker= new ArchiverBoardImpl(ctx,theBoard,baordbasedir);
+			worker= new ArchiverBoardImpl(ctx,theBoard,boardBaseDir);
 			exector.execute(worker);
 		}
 		exector.shutdown();
