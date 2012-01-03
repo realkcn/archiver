@@ -1,5 +1,6 @@
 package org.kbs.archiver.persistence;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -37,6 +38,11 @@ public class ArticleBodyBDB implements ArticleBodyMapper {
             envConfig.setErrorStream(System.err);
             envConfig.setType(DatabaseType.HASH);
             envConfig.setPartitionByCallback(16,new ArticleBodyBDBPartitionHandler());
+            File[] partitionDirs=new File[16];
+            for (int i=0;i<16;i++) {
+            	partitionDirs[i]=new File(props.getProperty("bdbdir")+"artilebody"+i+".db");
+            }
+            envConfig.setPartitionDirs(partitionDirs);
             bodyDb = new Database(props.getProperty("bdbdir")+"/articlebody.db",
                     "articlebody",
                     envConfig);
