@@ -10,17 +10,17 @@
     </select>
     
     <insert id="insert" parameterType="org.kbs.archiver.ArticleEntity">
-        insert into article(threadid,boardid,articleid,subject,posttime,author,attachment,filename,isvisible,body,replyid,
+        insert into article(threadid,boardid,articleid,subject,posttime,author,attachment,filename,isvisible,replyid,
           originid,encodingurl) values (#{threadid},#{boardid},#{articleid},#{subject},#{posttime},#{author},#{attachment},#{filename},
-          #{isvisible},#{body},#{replyid},#{originid},#{encodingurl})
+          #{isvisible},#{replyid},#{originid},#{encodingurl})
          ON DUPLICATE KEY UPDATE threadid=#{threadid},boardid=#{boardid},subject=#{subject},posttime=#{posttime},
-          author=#{author},attachment=#{attachment},filename=#{filename},isvisible=#{isvisible},body=#{body},replyid=#{replyid},
+          author=#{author},attachment=#{attachment},filename=#{filename},isvisible=#{isvisible},replyid=#{replyid},
           originid=#{originid},encodingurl=#{encodingurl} 
     </insert>
     
     <update id="update" parameterType="org.kbs.archiver.ArticleEntity">
          UPDATE article set threadid=#{threadid},boardid=#{boardid},subject=#{subject},posttime=#{posttime},
-          author=#{author},attachment=#{attachment},filename=#{filename},isvisible=#{isvisible},body=#{body},replyid=#{replyid},
+          author=#{author},attachment=#{attachment},filename=#{filename},isvisible=#{isvisible},replyid=#{replyid},
           originid=#{originid},encodingurl=#{encodingurl} 
           where articleid=#{articleid}
     </update>

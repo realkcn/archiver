@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="org.kbs.archiver.persistence.ArticleMapper">
+    <select id="countAll" resultType="int">
+        select count(*)  from articlebody;
+    </select>
+    
+    <insert id="add">
+        insert into articlebody(articleid,body) values(#{articleid},#{body})
+    </insert>
+    <update id="set">
+         UPDATE articlebody set body=#{body} where articleid=#{articleid}
+    </update>
+    <delete id="delete" parameterType="long">
+        delete from articlebody where articleid=#{articleid}
+    </delete>
+    <select id="get" parameterType="long" resultType="String">
+        select body from articlebody where articleid=#{articleid} limit 1
+    </select>
+    <cache eviction="FIFO" flushInterval="3600000" size="10240" readOnly="true" />
+</mapper>
