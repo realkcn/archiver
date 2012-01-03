@@ -301,6 +301,18 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemProperties>
+						<property>
+							<name>java.library.path</name>
+							<value>${jvm.bdblibrarydir}</value>
+						</property>
+					</systemProperties>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1.1</version>
 				<configuration>
@@ -326,11 +338,6 @@
 					<path>/archiver</path>
 					<update>true</update>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.cactus</groupId>
-				<artifactId>cactus.integration.maven2</artifactId>
-				<version>1.8.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
