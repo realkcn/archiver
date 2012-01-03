@@ -37,12 +37,14 @@ public class ArticleBodyBDB implements ArticleBodyMapper {
             
             envConfig.setErrorStream(System.err);
             envConfig.setType(DatabaseType.HASH);
+            /*
             envConfig.setPartitionByCallback(16,new ArticleBodyBDBPartitionHandler());
             File[] partitionDirs=new File[16];
             for (int i=0;i<16;i++) {
-            	partitionDirs[i]=new File(props.getProperty("bdbdir")+"artilebody"+i+".db");
+            	partitionDirs[i]=new File(props.getProperty("bdbdir")+"/artilebody"+i+".db");
             }
             envConfig.setPartitionDirs(partitionDirs);
+            */
             bodyDb = new Database(props.getProperty("bdbdir")+"/articlebody.db",
                     "articlebody",
                     envConfig);

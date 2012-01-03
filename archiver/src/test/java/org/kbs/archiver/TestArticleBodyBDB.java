@@ -4,10 +4,12 @@ import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kbs.archiver.persistence.ArticleBodyBDB;
 import org.kbs.library.SimpleException;
 
+@Ignore
 public class TestArticleBodyBDB {
 	static ArticleBodyBDB bdb=new ArticleBodyBDB();
 @BeforeClass
