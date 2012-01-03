@@ -23,6 +23,7 @@ public class TestBoard {
 
 	@Test
 	public void testBoardDB() {
+		/*
 		BoardEntity board = new BoardEntity();
 		board.setName("hello");
 		board.setBoardid(10241);
@@ -43,7 +44,7 @@ public class TestBoard {
 		boardMapper.deleteByName("hello");
 		// Board board2=new Board();
 		// board2.loadBoardFromDB("hello");
-
+	*/
 	}
 
 }

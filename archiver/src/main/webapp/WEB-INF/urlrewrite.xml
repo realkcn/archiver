@@ -3,62 +3,62 @@
         "http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
 
 <!-- Configuration file for UrlRewriteFilter http://tuckey.org/urlrewrite/ -->
-<urlrewrite>
+<urlrewrite decode-using="null">
 
 	<rule>
 		<note>
 			rewrite /boards.html to /listboard 
         </note>
 		<from>^/boards.html$</from>
-		<to>%{context-path}/listboard</to>
+		<to last="true">%{context-path}/listboard</to>
 	</rule>
 	<rule>
 		<note>
 			rewrite /board-101.html to /listthread?id=101  
         </note>
 		<from>^/board-([0-9]+).html$</from>
-		<to>%{context-path}/listthread?boardid=$1</to>
+		<to last="true">%{context-path}/listthread?boardid=$1</to>
 	</rule>
 	<rule>
 		<note>
 			rewrite /board-101-1.html to /listthread?id=101&amp;pageno=1  
         </note>
 		<from>^/board-([0-9]+)-([0-9]+).html$</from>
-		<to>%{context-path}/listthread?boardid=$1&amp;pageno=$2</to>
+		<to last="true">%{context-path}/listthread?boardid=$1&amp;pageno=$2</to>
 	</rule>
 	<rule>
 		<note>
 			rewrite /thread-101.html to /thread?tid=101  
         </note>
 		<from>/thread-([0-9a-zA-Z]+).html$</from>
-		<to>%{context-path}/listarticle?tid=$1</to>
+		<to last="true">%{context-path}/listarticle?tid=$1</to>
 	</rule>
 	<rule>
 		<note>
 			rewrite /thread-101-1.html to /listarticle?id=101&amp;pageno=1  
         </note>
 		<from>^/thread-([0-9a-zA-Z]+)-([0-9]+).html$</from>
-		<to>%{context-path}/listarticle?tid=$1&amp;pageno=$2</to>
+		<to last="true">%{context-path}/listarticle?tid=$1&amp;pageno=$2</to>
 	</rule>
 	<rule>
 		<note>
 			rewrite /abyu-KCN.html to /listarticlebyauthor?author=KCN  
         </note>
 		<from>/abyu-([0-9a-zA-Z]+).html$</from>
-		<to>%{context-path}/listarticlebyauthor?author=$1</to>
+		<to last="true">%{context-path}/listarticlebyauthor?author=$1</to>
 	</rule>
 	<rule>
 		<note>
 			rewrite /abyu-KCN.html to /listarticlebyauthor?author=KCN  
         </note>
 		<from>/abyu-([0-9a-zA-Z]+)-([0-9]+).html$</from>
-		<to>%{context-path}/listarticlebyauthor?author=$1&amp;pageno=$2</to>
+		<to last="true">%{context-path}/listarticlebyauthor?author=$1&amp;pageno=$2</to>
 	</rule>
 	<rule>
 		<note>
 			rewrite /att-xxxxx/gfd.gif to /getattachment?encodingURL=xxxxxx
         </note>
 		<from>/att-([0-9a-zA-Z]+)/.*$</from>
-		<to>%{context-path}/getattachment?encodingURL=$1</to>
+		<to last="true">%{context-path}/getattachment?encodingURL=$1</to>
 	</rule>
 </urlrewrite>

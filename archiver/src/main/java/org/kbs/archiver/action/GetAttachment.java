@@ -3,21 +3,24 @@ package org.kbs.archiver.action;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import org.apache.struts2.interceptor.ServletResponseAware;
 import org.kbs.archiver.AttachmentEntity;
 import org.kbs.archiver.persistence.AttachmentMapper;
 
 import com.opensymphony.xwork2.ActionSupport;
 import javax.activation.MimetypesFileTypeMap;
+import javax.servlet.http.HttpServletResponse;
 
-public class GetAttachment extends ActionSupport {
+public class GetAttachment extends ActionSupport implements ServletResponseAware{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1484991006651780114L;
 	private AttachmentEntity attachment;
 	private AttachmentMapper attachmentMapper;
-	String encodingURL;
-	String contentType;
+	private String encodingURL;
+	private String contentType;
+	private HttpServletResponse response;
 
 	public AttachmentEntity getAttachment() {
 		return attachment;
@@ -66,7 +69,13 @@ public class GetAttachment extends ActionSupport {
 		}
 		contentType = new MimetypesFileTypeMap().getContentType(attachment
 				.getName().toLowerCase());// 保存文件的类型
+		response.addHeader("Cache-Control", "max-age=300");
 //		System.out.println("---"+attachment.getName()+"--"+contentType);
 		return SUCCESS;
+	}
+
+	@Override
+	public void setServletResponse(HttpServletResponse response) {
+		this.response=response;
 	}
 }

@@ -7,6 +7,7 @@
 <struts>
 	<constant name="struts.objectFactory" value="spring" />
 	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+	<constant name="struts.configuration.xml.reload" value="true" />
 	<package name="default" extends="struts-default" namespace="/">
 		<global-results>
 			<result name="error">/error.jsp</result>
@@ -32,7 +33,8 @@
 				<param name="contentType">${contentType}</param>
 				<param name="inputName">InputStream</param>
 				<param name="bufferSize">10240</param>
-				<param name="contentDisposition">filename="${attachment.filename}"</param>
+				<param name="contentLength">${attachment.datasize}</param>
+				<param name="contentDisposition">filename="${attachment.name}"</param>
 			</result>
 		</action>
 	</package>
