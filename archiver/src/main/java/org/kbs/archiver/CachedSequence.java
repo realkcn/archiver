@@ -104,6 +104,6 @@ public class CachedSequence {
 			throw new SimpleException("update sequence error:", e.getMessage());
 		}
 		*/
-		seqMapper.insert(new SequenceEntity(name, value.get()));
+		seqMapper.update(new SequenceEntity(name, value.get()));
 	}
 }

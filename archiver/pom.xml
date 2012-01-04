@@ -333,7 +333,7 @@
 					</warSourceExcludes>
 					<webResources>
 						<resource>
-							<directory>${basedir}/src/main/webapp/WEB-INF.filtering</directory>
+							<directory>${basedir}/src/main/webapp/WEB-INF</directory>
 							<filtering>true</filtering>
 							<targetPath>WEB-INF</targetPath>
 						</resource>

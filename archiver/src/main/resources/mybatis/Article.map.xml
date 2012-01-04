@@ -41,8 +41,8 @@
             ORDER BY article.posttime asc limit  #{offset},#{limit}
       </select>
       <select id="getByAuthorPerPage" resultType="org.kbs.archiver.ArticleEntity">
-        SELECT article.* FROM article,board where article.author=#{author} and article.boardid=board.boardid and board.ishidden=false and article.isvisible=true
-        		ORDER BY posttime desc limit  #{offset},#{limit}
+        SELECT article.*,articlebody.body FROM article,board,articlebody where article.author=#{author} and article.boardid=board.boardid and board.ishidden=false and article.isvisible=true
+        		and article.articleid=articlebody.articleid ORDER BY posttime desc limit  #{offset},#{limit}
       </select>
       <select id="countByAuthor" resultType="int">
         SELECT count(*) FROM article,board where article.author=#{author} and article.boardid=board.boardid and board.ishidden=false and article.isvisible=true

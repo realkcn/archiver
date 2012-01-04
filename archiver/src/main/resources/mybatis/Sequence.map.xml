@@ -6,10 +6,9 @@
 	</select>
     <insert id="insert" parameterType="org.kbs.archiver.SequenceEntity">
         insert into sequence(name,value) values(#{name},#{value})
-         ON DUPLICATE KEY UPDATE value=#{value}
     </insert>
     
     <update id="update" parameterType="org.kbs.archiver.SequenceEntity">
-        update board set value=#{value}  where name=#{name}
+        update sequence set value=#{value}  where name=#{name} and #{value}>value
     </update>
 </mapper>
