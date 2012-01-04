@@ -54,7 +54,7 @@ public class ArticleEntity {
 				+ ", posttime=" + posttime + ", attachment=" + attachment
 				+ ", subject=" + subject + ", isvisible=" + isvisible
 				+ ", originid=" + originid + ", filename=" + filename
-				+ ", replyid=" + replyid + ", body=" + body.substring(0,body.length()<20?body.length():20) + ", encodingurl="
+				+ ", replyid=" + replyid + ", body=" + ((body!=null)?body.substring(0,body.length()<20?body.length():20):"null") + ", encodingurl="
 				+ encodingurl + "]";
 	}
 	public ArticleEntity(FileHeaderInfo fh) {

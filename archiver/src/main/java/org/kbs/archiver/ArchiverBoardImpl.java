@@ -181,9 +181,11 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 						"org.kbs.archiver.persistence.ArticleMapper.insert",
 						article);
 				//TODO:fix insert body
+				HashMap<String,Object> map=new HashMap<String,Object>();
+				map.put("articleid", new Long(article.getArticleid()));
+				map.put("body", body.getFirst());
 				batchsqlsession.insert(
-						"org.kbs.archiver.persistence.ArticleBodyMapper.insert"
-						);
+						"org.kbs.archiver.persistence.ArticleBodyMapper.addMap",map);
 			} catch (Exception e) {
 				logger.error("insert into article " + article.toString(), e);
 			}

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -21,12 +22,23 @@ public class ArticleBodyBDB implements ArticleBodyMapper {
     private static Database bodyDb = null;
     private Logger logger;
     
-    public void init() throws SimpleException {
+    @Override
+	public void add(long articleid, String body) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addMap(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void init() throws SimpleException {
 		Properties props=new Properties();
 		try {
 			props.load(getClass().getClassLoader().getResourceAsStream("archiver.properties"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			throw new SimpleException("load properties error"+e.getMessage());
 		}
         try {

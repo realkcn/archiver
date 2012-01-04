@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="org.kbs.archiver.persistence.ArticleMapper">
+<mapper namespace="org.kbs.archiver.persistence.ArticleBodyMapper">
+<parameterMap type="map" id="paramMap"> 
+   <parameter property="articleid" javaType="Long"/> 
+   <parameter property="body" javaType="String"/> 
+</parameterMap> 
     <select id="countAll" resultType="int">
         select count(*)  from articlebody;
     </select>
     
     <insert id="add">
+        insert into articlebody(articleid,body) values(#{articleid},#{body})
+    </insert>
+    <insert id="addMap" parameterMap="paramMap">
         insert into articlebody(articleid,body) values(#{articleid},#{body})
     </insert>
     <update id="set">
