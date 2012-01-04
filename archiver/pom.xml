@@ -287,6 +287,18 @@
 				<directory>${project.basedir}/src/test/resources</directory>
 				<filtering>true</filtering>
 			</testResource>
+			<testResource>
+				<directory>${project.basedir}/src/main/resources/WEB-INF</directory>
+				<targetPath>${project.basedir}/target/test-classes</targetPath>
+				<includes>
+					<include>applicationContext.xml</include>
+				</includes>
+				<excludes>
+				  <exclude>*</exclude>
+				</excludes>
+				<filtering>true</filtering>
+				
+			</testResource>
 		</testResources>
 		<resources>
 			<resource>

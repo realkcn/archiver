@@ -25,10 +25,11 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 	private BoardEntity board;
 	private String boardbasedir;
 
-	public ArchiverBoardImpl(ApplicationContext ctx, BoardEntity board,String boardbasedir) {
+	public ArchiverBoardImpl(ApplicationContext ctx, BoardEntity board,
+			String boardbasedir) {
 		this.ctx = ctx;
 		this.board = board;
-		this.boardbasedir=boardbasedir;
+		this.boardbasedir = boardbasedir;
 	}
 
 	public Integer call() throws Exception {
@@ -37,25 +38,27 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 				.getBean("batchSqlSession");
 		CachedSequence threadseq = (CachedSequence) ctx.getBean("threadSeq");
 		CachedSequence articleseq = (CachedSequence) ctx.getBean("articleSeq");
-		CachedSequence attachmentseq = (CachedSequence) ctx.getBean("attachmentSeq");
+		CachedSequence attachmentseq = (CachedSequence) ctx
+				.getBean("attachmentSeq");
 		ArrayList<FileHeaderInfo> articlelist;
 		FileHeaderSet fhset = new FileHeaderSet();
-		Logger logger=Logger.getLogger(ArchiverBoardImpl.class);
-		logger.info(new Date(System.currentTimeMillis())+" Archiver "+board.getName()+" start up:");
-		long totalattchmentsize=0;
+		Logger logger = Logger.getLogger(ArchiverBoardImpl.class);
+		logger.info(new Date(System.currentTimeMillis()) + " Archiver "
+				+ board.getName() + " start up:");
+		long totalattchmentsize = 0;
 
-//		SqlSessionTemplate sqlsession = (SqlSessionTemplate) ctx
-//				.getBean("sqlSession");
+		// SqlSessionTemplate sqlsession = (SqlSessionTemplate) ctx
+		// .getBean("sqlSession");
 
 		ThreadMapper threadMapper = (ThreadMapper) ctx.getBean("threadMapper");
 
-		String boardpath = boardbasedir+"/" + board.getName() +"/";
+		String boardpath = boardbasedir + "/" + board.getName() + "/";
 		ArrayList<FileHeaderInfo> dirlist;
 		if (!(new java.io.File(boardpath + ".DIR").exists())) {
 			logger.error(boardpath + ".DIR no exists");
 			return 0;
 		}
-		dirlist=fhset.readBBSDir(boardpath + ".DIR");
+		dirlist = fhset.readBBSDir(boardpath + ".DIR");
 		/*
 		 * ArrayList<FileHeaderInfo> deletedlist = new
 		 * ArrayList<FileHeaderInfo>(); if (new java.io.File(boardpath +
@@ -63,9 +66,10 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		 * "/.DELETED"); }
 		 */
 		// 生成需要处理的list
-//		batchsqlsession.execute(new SqlMapClientCallback() {
+		// batchsqlsession.execute(new SqlMapClientCallback() {
 		articlelist = gennewlist(dirlist);
-		logger.info("load "+board.getName()+":"+boardpath + ".DIR:"+articlelist.size()+"/"+dirlist.size());
+		logger.info("load " + board.getName() + ":" + boardpath + ".DIR:"
+				+ articlelist.size() + "/" + dirlist.size());
 		HashMap<Long, ThreadEntity> threads = new HashMap<Long, ThreadEntity>();
 		HashMap<Long, ThreadEntity> oldthreads = new HashMap<Long, ThreadEntity>();
 
@@ -79,18 +83,19 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			article.setReplyid(fh.getReplyid());
 			article.setBoardid(board.getBoardid());
 			article.setIsvisible(true);
-			//!board.isIshidden());
+			// !board.isIshidden());
 			TwoObject<String, ArrayList<AttachmentData>> body = fh
 					.getBody(boardpath);
 			article.setArticleid(articleseq.next());
 			article.setEncodingurl(Converter.randomEncodingfromlong(article
 					.getArticleid()));
-			article.setBody(body.getFirst());
 			article.setAttachment(body.getSecond().size());// 附件个数
 
-			logger.debug("deal:"+article.toString());
-//			System.out.println("中文");
-//			System.exit(0);
+			// 处理正文
+			// article.setBody(body.getFirst());
+			logger.debug("deal:" + article.toString());
+			// System.out.println("中文");
+			// System.exit(0);
 
 			// 处理thread,需要填写threadid,并看看是否要生成新的thread
 			ThreadEntity thread;
@@ -105,11 +110,12 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 				}
 				threads.put(fh.getGroupid(), thread);
 			} else { // 处理已经存在的thread
-				logger.debug("old thread:"+fh.getGroupid());
+				logger.debug("old thread:" + fh.getGroupid());
 				thread = oldthreads.get(fh.getGroupid());
 				if (thread == null) {
 					// 从数据库中获得原来的thread信息
-					thread = threadMapper.getByOriginId(board.getBoardid(),fh.getGroupid());
+					thread = threadMapper.getByOriginId(board.getBoardid(),
+							fh.getGroupid());
 					if (thread == null) {
 						thread = ThreadEntity.newThread(threadseq.next(),
 								board, article);
@@ -124,55 +130,63 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			}
 			article.setThreadid(thread.getThreadid());
 
-			if (body.getSecond().size()!=0) {
-				int order=0;
-				for (AttachmentData data:body.getSecond()) {
-					AttachmentEntity attachment=new AttachmentEntity();
+			if (body.getSecond().size() != 0) {
+				int order = 0;
+				for (AttachmentData data : body.getSecond()) {
+					AttachmentEntity attachment = new AttachmentEntity();
 					attachment.setArticleid(article.getArticleid());
 					attachment.setAttachmentid(attachmentseq.next());
 					attachment.setData(data.getData());
-					attachment.setEncodingurl(Converter.randomEncodingfromlong(attachment.getAttachmentid()));
+					attachment.setEncodingurl(Converter
+							.randomEncodingfromlong(attachment
+									.getAttachmentid()));
 					attachment.setName(data.getName());
 					attachment.setOrder(order);
 					attachment.setBoardid(board.getBoardid());
 					order++;
-					totalattchmentsize+=attachment.getData().length;
-					if (totalattchmentsize>90*1024*1024) {//大于90M flush一次.....
+					totalattchmentsize += attachment.getData().length;
+					if (totalattchmentsize > 90 * 1024 * 1024) {// 大于90M
+																// flush一次.....
 						batchsqlsession.flushStatements();
-						totalattchmentsize=attachment.getData().length;
+						totalattchmentsize = attachment.getData().length;
 					}
-/*
-					System.out.println(String.format("insert into attachment name:%s id:%d aid:%d order:%d data:%d url:%s",
-								attachment.getName(),
-								attachment.getAttachmentid(),
-								attachment.getArticleid(),
-								attachment.getOrder(),
-								attachment.getData().length,
-								attachment.getEncodingurl()));
-*/
+					/*
+					 * System.out.println(String.format(
+					 * "insert into attachment name:%s id:%d aid:%d order:%d data:%d url:%s"
+					 * , attachment.getName(), attachment.getAttachmentid(),
+					 * attachment.getArticleid(), attachment.getOrder(),
+					 * attachment.getData().length,
+					 * attachment.getEncodingurl()));
+					 */
 					try {
-					batchsqlsession.insert(
-							"org.kbs.archiver.persistence.AttachmentMapper.insert",
-							attachment);
+						batchsqlsession
+								.insert("org.kbs.archiver.persistence.AttachmentMapper.insert",
+										attachment);
 					} catch (Exception e) {
-						logger.error(String.format("insert into attachment name:%s id:%d aid:%d order:%d data:%d url:%s",
-                                                                attachment.getName(),
-                                                                attachment.getAttachmentid(),
-                                                                attachment.getArticleid(),
-                                                                attachment.getOrder(),
-                                                                attachment.getData().length,
-                                                                attachment.getEncodingurl()),e);	
+						logger.error(
+								String.format(
+										"insert into attachment name:%s id:%d aid:%d order:%d data:%d url:%s",
+										attachment.getName(),
+										attachment.getAttachmentid(),
+										attachment.getArticleid(),
+										attachment.getOrder(),
+										attachment.getData().length,
+										attachment.getEncodingurl()), e);
 					}
 				}
 			}
 			// 插入新记录
 			try {
-			batchsqlsession.insert(
-					"org.kbs.archiver.persistence.ArticleMapper.insert",
-					article);
-                                        } catch (Exception e) {
-                                                logger.error("insert into article "+article.toString(),e);
-                                        }
+				batchsqlsession.insert(
+						"org.kbs.archiver.persistence.ArticleMapper.insert",
+						article);
+				//TODO:fix insert body
+				batchsqlsession.insert(
+						"org.kbs.archiver.persistence.ArticleBodyMapper.insert"
+						);
+			} catch (Exception e) {
+				logger.error("insert into article " + article.toString(), e);
+			}
 		}
 
 		// 加入新的thread
@@ -202,7 +216,10 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			batchsqlsession.flushStatements();
 		}
 
-		logger.info(new Date(System.currentTimeMillis())+" Archiver "+board.getName()+" end:add "+articlelist.size()+" articles "+threads.size()+" threads,update "+oldthreads.size()+"threads");
+		logger.info(new Date(System.currentTimeMillis()) + " Archiver "
+				+ board.getName() + " end:add " + articlelist.size()
+				+ " articles " + threads.size() + " threads,update "
+				+ oldthreads.size() + "threads");
 		return articlelist.size();
 	}
 
