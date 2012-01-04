@@ -2,6 +2,7 @@ package org.kbs.archiver.action;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.net.URLEncoder;
 
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.kbs.archiver.AttachmentEntity;
@@ -69,6 +70,10 @@ public class GetAttachment extends ActionSupport implements ServletResponseAware
 		}
 		contentType = new MimetypesFileTypeMap().getContentType(attachment
 				.getName().toLowerCase());// 保存文件的类型
+		String filename=attachment.getName();
+		filename.replace('/', '_');
+		filename.replace('\\', '_');
+		attachment.setName(URLEncoder.encode(filename, "UTF-8"));
 		response.addHeader("Cache-Control", "max-age=300");
 //		System.out.println("---"+attachment.getName()+"--"+contentType);
 		return SUCCESS;
