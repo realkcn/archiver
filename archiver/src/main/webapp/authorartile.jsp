@@ -12,6 +12,7 @@
  <meta http-equiv="expires" content="0">    
  <meta http-equiv="description" content="水木社区作者文章列表"> 
   
+ <link rel="stylesheet" type="text/css" href="css/ansi.css" />
  
   </head> 
   
@@ -43,7 +44,9 @@
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
 	</tr>
 	<tr>
-		<td><pre>${body}</pre></td>
+		<td><s:set name="body" value="body" scope="request" /><%
+			out.print(org.kbs.archiver.util.AnsiToHtml.ansiToHtml((String)request.getAttribute("body")));
+		%><br /></td>
     </tr>
     
    </s:iterator>

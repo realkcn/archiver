@@ -11,9 +11,10 @@
  <meta http-equiv="cache-control" content="no-cache"> 
  <meta http-equiv="expires" content="0">    
  <meta http-equiv="description" content="水木社区主题文章列表"> 
-  
  
-  </head> 
+ <link rel="stylesheet" type="text/css" href="css/ansi.css" />
+  
+</head> 
   
   <body>
   <jsp:include page="header.jsp" />
@@ -47,7 +48,9 @@
 		<td><s:property value="subject" /></td>      
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
 		</tr>
-		<tr><td><pre>${body}</pre><br /><s:if test="attachments!=null">
+		<tr><td><s:set name="body" value="body" scope="request" /><%
+			out.print(org.kbs.archiver.util.AnsiToHtml.ansiToHtml((String)request.getAttribute("body")));
+		%><br /><s:if test="attachments!=null">
 		   <s:iterator value="attachments"><s:set name="filename" value="name" scope="request" /><% {
 		   		String contentType = new MimetypesFileTypeMap().getContentType(((String)request.getAttribute("filename")).toLowerCase());
 		   		if (contentType.startsWith("image")) {
