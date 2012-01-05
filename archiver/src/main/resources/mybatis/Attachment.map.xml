@@ -39,6 +39,10 @@
 		delete from attachment
 		where boardid=#{boardid}
     </delete>
+	<delete id="deleteByArticle" parameterType="long">
+		delete from attachment
+		where articleid=#{articleid}
+    </delete>
 	<select id="get" parameterType="long"
 		resultType="org.kbs.archiver.AttachmentEntity">
 		select attachment.*,length(attachment.data) datasize from

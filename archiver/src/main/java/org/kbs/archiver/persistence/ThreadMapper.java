@@ -16,4 +16,5 @@ public interface ThreadMapper {
 	public void deleteByBoard(long boardid);
 	public List<ThreadEntity> getThreadsOnBoard(long boardid);
 	List<ThreadEntity> getByBoardPerPage(@Param("boardid")long boardid,@Param("offset") int offset, @Param("limit") int limit);  //这里修改了，使用了mybatis 3.x提供的注解的方法
+	public void delete(long threadid);
 }

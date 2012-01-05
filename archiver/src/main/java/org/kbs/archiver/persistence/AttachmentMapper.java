@@ -11,4 +11,5 @@ public interface AttachmentMapper {
 	public void update(AttachmentEntity board);
 	public List<AttachmentEntity> getByArticle(long articleid);
 	public AttachmentEntity getByEncodingUrl(String url);
+	public void deleteByArticle(long articleid);
 }

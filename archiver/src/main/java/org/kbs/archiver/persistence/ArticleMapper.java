@@ -15,4 +15,5 @@ public interface ArticleMapper {
 		public List<ArticleEntity> getByThreadPerPage(@Param("threadid")long threadid,@Param("offset") int offset, @Param("limit") int limit);
 		public List<ArticleEntity> getByAuthorPerPage(@Param("author")String author,@Param("offset") int offset, @Param("limit") int limit);
 		public int countByAuthor(@Param("author")String author);
+		public void delete(long articleid);
 }
