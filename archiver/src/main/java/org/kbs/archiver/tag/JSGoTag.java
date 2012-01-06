@@ -1,10 +1,12 @@
 package org.kbs.archiver.tag;
 
+import java.io.IOException;
+
 import javax.servlet.jsp.JspException;
 
 @SuppressWarnings("serial")
 public class JSGoTag extends PagerSupport {
-	private String elementid="pager.gopage";
+	private String elementid = "pager.gopage";
 
 	public final String getElementid() {
 		return elementid;
@@ -17,10 +19,23 @@ public class JSGoTag extends PagerSupport {
 	@Override
 	public int doStartTag() throws JspException {
 		super.doStartTag();
-		if (!getPager().isJsgoGenerated()) {
-			
+		try {
+			pageContext.getOut().append(
+					"<a href=\"\" onclick=\"javascript:_kbspagergo('"
+							+ elementid + "')\">");
+		} catch (IOException e) {
+			throw new JspException(e);
 		}
-		pageContext.getOut().append("javascript:{windows.location.href=document"+);
-		return SKIP_BODY;
+		return EVAL_BODY_INCLUDE;
+	}
+
+	@Override
+	public int doEndTag() throws JspException {
+		try {
+			pageContext.getOut().append("</a>");
+		} catch (IOException e) {
+			throw new JspException(e);
+		}
+		return EVAL_PAGE;
 	}
 }

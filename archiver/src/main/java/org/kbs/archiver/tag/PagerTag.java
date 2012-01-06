@@ -1,5 +1,7 @@
 package org.kbs.archiver.tag;
 
+import java.io.IOException;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
@@ -13,6 +15,25 @@ public class PagerTag extends TagSupport {
 	private int pagesize;
 	private int currentpage;
 	private int maxIndexPages=10;
+	private String urlprefix=null;
+	private String urlsuffix=null;
+	private boolean jsgoGenerate=false;
+
+	public final String getUrlprefix() {
+		return urlprefix;
+	}
+
+	public final void setUrlprefix(String urlprefix) {
+		this.urlprefix = urlprefix;
+	}
+
+	public final String getUrlsuffix() {
+		return urlsuffix;
+	}
+
+	public final void setUrlsuffix(String urlsuffix) {
+		this.urlsuffix = urlsuffix;
+	}
 
 	public final int getMaxIndexPages() {
 		return maxIndexPages;
@@ -26,14 +47,13 @@ public class PagerTag extends TagSupport {
 	private static String defaultid = "__kbs_pager__";
 
 	private int totalpage;
-	private boolean jsgoGenerated=false;
 
-	public boolean isJsgoGenerated() {
-		return jsgoGenerated;
+	public boolean getJsgoGenerate() {
+		return jsgoGenerate;
 	}
 
-	public void setJsgoGenerated(boolean jsgoGenerated) {
-		this.jsgoGenerated = jsgoGenerated;
+	public void setJsgoGenerate(boolean jsgoGenerate) {
+		this.jsgoGenerate = jsgoGenerate;
 	}
 
 	public static final String getDefaultid() {
@@ -128,11 +148,26 @@ public class PagerTag extends TagSupport {
 	public int doEndTag() throws JspException {
 		totalpage = total / pagesize + ((total % pagesize > 0) ? 1 : 0);
 		pageContext.setAttribute("currentPageNumber",new Integer(currentpage));
+		if (jsgoGenerate) {
+			try {
+				pageContext.getOut().append("<script>function _kbspagergo(id) {" +
+						"window.location.href='"+urlprefix
+						+"'+document.getElementById(id)+'"
+						+urlsuffix
+						+"}+</script>"
+						);
+			} catch (IOException e) {
+				throw new JspException(e);
+			}
+		}
 		return EVAL_PAGE;
 	}
 
 	public String generateURL(int newpage) {
-		return String.format(url, newpage);
+		if (url!=null)
+			return String.format(url, newpage);
+		else
+			return urlprefix+newpage+urlsuffix;
 	}
 
 }

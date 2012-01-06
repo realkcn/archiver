@@ -18,7 +18,22 @@
 		</attribute>
 		<attribute>
 			<name>url</name>
-			<required>true</required>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>urlprefix</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>urlsuffix</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>jsgoGenerate</name>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
@@ -68,6 +83,16 @@
 		<bodycontent>JSP</bodycontent>
 		<attribute>
 			<name>newpage</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>jsgo</name>
+		<tagclass>org.kbs.archiver.tag.JSGoTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<attribute>
+			<name>elementid</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
