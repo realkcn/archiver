@@ -6,7 +6,6 @@
 
 <struts>
 	<constant name="struts.objectFactory" value="spring" />
-	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
 	<constant name="struts.configuration.xml.reload" value="true" />
 	<package name="default" extends="struts-default" namespace="/">
 		<global-results>
