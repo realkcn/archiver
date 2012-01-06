@@ -6,7 +6,7 @@
   <classpathentry kind="src" path="src/main/resources" excluding="**/*.java"/>
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/servlet/jsp/jsp-api/2.2/jsp-api-2.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4/mail-1.4.jar"/>
   <classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
   <classpathentry kind="var" path="M2_REPO/asm/asm/3.3/asm-3.3.jar"/>
@@ -42,9 +42,9 @@
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-tx/3.1.0.RELEASE/spring-tx-3.1.0.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/3.1.0.RELEASE/spring-web-3.1.0.RELEASE.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/springframework/spring-webmvc/3.1.0.RELEASE/spring-webmvc-3.1.0.RELEASE.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/struts/struts2-core/2.3.1/struts2-core-2.3.1.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/struts/struts2-spring-plugin/2.3.1/struts2-spring-plugin-2.3.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/struts/struts2-core/2.3.1.1/struts2-core-2.3.1.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/struts/struts2-spring-plugin/2.3.1.1/struts2-spring-plugin-2.3.1.1.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/tuckey/urlrewritefilter/3.2.0/urlrewritefilter-3.2.0.jar"/>
-  <classpathentry kind="var" path="M2_REPO/org/apache/struts/xwork/xwork-core/2.3.1/xwork-core-2.3.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/struts/xwork/xwork-core/2.3.1.1/xwork-core-2.3.1.1.jar"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 </classpath>

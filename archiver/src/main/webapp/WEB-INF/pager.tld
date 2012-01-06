@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE taglib
+  PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+  "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+
+<taglib>
+	<tlibversion>0.1</tlibversion>
+	<jspversion>1.2</jspversion>
+	<shortname>pg</shortname>
+	<tag>
+		<name>pager</name>  <!-- 标签名字 -->
+		<tagclass>org.kbs.archiver.tag.PagerTag</tagclass>  <!-- 指定你的标签的类 -->
+		<bodycontent>JSP</bodycontent>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>url</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>total</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>pagesize</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>currentpage</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>maxIndexPages</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>prev</name>
+		<tagclass>org.kbs.archiver.tag.PrevPageTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+	</tag>
+	<tag>
+		<name>next</name>
+		<tagclass>org.kbs.archiver.tag.NextPageTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+	</tag>
+	<tag>
+		<name>first</name>
+		<tagclass>org.kbs.archiver.tag.FirstPageTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+	</tag>
+	<tag>
+		<name>last</name>
+		<tagclass>org.kbs.archiver.tag.LastPageTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+	</tag>
+	<tag>
+		<name>go</name>
+		<tagclass>org.kbs.archiver.tag.GoPageTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<attribute>
+			<name>newpage</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>pages</name>
+		<tagclass>org.kbs.archiver.tag.PagesTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+	</tag>
+</taglib>

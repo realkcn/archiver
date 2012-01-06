@@ -1,5 +1,6 @@
 <%@page language="java" import="java.util.*,org.kbs.archiver.*,javax.activation.MimetypesFileTypeMap,com.opensymphony.xwork2.ognl.OgnlValueStack" pageEncoding="UTF-8"%> 
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="pg" uri="/WEB-INF/pager.tld"%>
  
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 
 <html> 
@@ -18,15 +19,15 @@
   
   <body>
   <jsp:include page="header.jsp" />
+  <pg:pager total="${totalsize}" url="thread-${tid}-%d.html" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
-      <s:if test="pageno!=1">
-      <a href="thread-${tid}-1.html">第一页</a>
-      <a href="thread-${tid}-${pageno-1}.html">上一页</a>
-    </s:if>
-    <s:if test="pageno!=totalpage">
-      <a href="thread-${tid}-${pageno+1}.html">下一页</a>
-      <a href="thread-${tid}-${totalpage}.html">最后一页</a>
-    </s:if>
+  <pg:first>第一页</pg:first><pg:prev>上一页</pg:prev><pg:pages>  
+                    <s:if test="#attr.currentPageNumber==#attr.pageNumber">    
+                       <font color="red">${attr.pageNumber}</font>  
+                    </s:if><s:else>   
+                       <pg:go newpage="${attr.pageNumber}">${attr.pageNumber}</pg:go>
+                    </s:else>
+               </pg:pages><pg:next>下一页</pg:next><pg:last>最后一页</pg:last>
    <table border="1"> <caption>主题文章列表</caption>
 <!-- 
    <tr>
@@ -65,13 +66,12 @@
     
    </s:iterator>
     </table>
-    <s:if test="pageno!=1">
-      <a href="thread-${tid}-1.html">第一页</a>
-      <a href="thread-${tid}-${pageno-1}.html">上一页</a>
-    </s:if>
-    <s:if test="pageno!=totalpage">
-      <a href="thread-${tid}-${pageno+1}.html">下一页</a>
-      <a href="thread-${tid}-${totalpage}.html">最后一页</a>
-    </s:if>
+  <pg:first>第一页</pg:first><pg:prev>上一页</pg:prev><pg:pages>  
+                    <s:if test="#attr.currentPageNumber==#attr.pageNumber">    
+                       <font color="red">${attr.pageNumber}</font>  
+                    </s:if><s:else>   
+                       <pg:go newpage="${attr.pageNumber}">${attr.pageNumber}</pg:go>
+                    </s:else>
+               </pg:pages><pg:next>下一页</pg:next><pg:last>最后一页</pg:last>
   </body> 
 </html> 

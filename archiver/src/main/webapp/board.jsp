@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%> 
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="pg" uri="/WEB-INF/pager.tld"%>
  
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 
 <html> 
@@ -14,9 +15,17 @@
   
  
   </head> 
-  
+    <pg:pager total="${totalsize}" url="board-${boardid}-%d.html" currentpage="${pageno}" pagesize="${pagesize}" />
+
   <body> 
    <jsp:include page="header.jsp" />
+    <pg:first>第一页</pg:first><pg:prev>上一页</pg:prev><pg:pages>  
+                    <s:if test="#attr.currentPageNumber==#attr.pageNumber">    
+                       <font color="red">${attr.pageNumber}</font>  
+                    </s:if><s:else>   
+                       <pg:go newpage="${attr.pageNumber}">${attr.pageNumber}</pg:go>
+                    </s:else>
+               </pg:pages><pg:next>下一页</pg:next><pg:last>最后一页</pg:last>
    <table border="1"> <caption>版面主题列表</caption>
    <tr>
    <td>序号</td>
@@ -27,9 +36,6 @@
    <td>最后回复者</td>
    <td>最后回复时间</td>
    </tr>
-   <%
-    //!-- <%=org.springframework.web.util.HtmlUtils.htmlEscape() 
-    %>
    <s:iterator value="threadlist" status="threadindex">
     <tr>
 		<td><s:property value="#threadindex.count+(pageno-1)*pagesize" /></td>
@@ -42,13 +48,12 @@
     </tr>
    </s:iterator>
     </table>
-    <s:if test="pageno!=1">
-      <a href="board-${boardid}.html">第一页</a>
-      <a href="board-${boardid}-${pageno-1}.html">上一页</a>
-    </s:if>
-    <s:if test="pageno!=totalpage">
-      <a href="board-${boardid}-${pageno+1}.html">下一页</a>
-      <a href="board-${boardid}-${totalpage}.html">最后一页</a>
-    </s:if>
-  </body> 
+  <pg:first>第一页</pg:first><pg:prev>上一页</pg:prev><pg:pages>  
+                    <s:if test="#attr.currentPageNumber==#attr.pageNumber">    
+                       <font color="red">${attr.pageNumber}</font>  
+                    </s:if><s:else>   
+                       <pg:go newpage="${attr.pageNumber}">${attr.pageNumber}</pg:go>
+                    </s:else>
+               </pg:pages><pg:next>下一页</pg:next><pg:last>最后一页</pg:last>
+   </body> 
 </html> 

@@ -47,6 +47,7 @@ public class ListThread extends ActionSupport {
 	}
 
 	private int pagesize;
+	private int totalsize;
 
 	public List<ThreadEntity> getThreadlist() {
 		return threadlist;
@@ -89,14 +90,21 @@ public class ListThread extends ActionSupport {
 			this.addActionError("该版面主题数为零");
 			return ERROR;
 		}
-		totalpage=board.getThreads()/pagesize+((board.getThreads()%pagesize>0)?1:0);
-		if ((pageno-1)*pagesize>board.getThreads()) {
-			pageno=board.getThreads()/pagesize+1;
-		} else if ((pageno-1)*pagesize==board.getThreads()) {
-			pageno=board.getThreads()/pagesize;
+		totalsize=board.getThreads();
+		totalpage=totalsize/pagesize+((totalsize%pagesize>0)?1:0);
+		if ((pageno-1)*pagesize>totalsize) {
+			pageno=totalsize/pagesize+1;
+		} else if ((pageno-1)*pagesize==totalsize) {
+			pageno=totalsize/pagesize;
 		}
 		threadlist=threadMapper.getByBoardPerPage(boardid, (pageno-1)*pagesize, pagesize);
 //		WebApplicationContextUtils.getWebApplicationContext(this.)
 		return SUCCESS;
+	}
+	public final int getTotalsize() {
+		return totalsize;
+	}
+	public final void setTotalsize(int totalsize) {
+		this.totalsize = totalsize;
 	}
 }
