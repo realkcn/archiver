@@ -26,6 +26,15 @@ public class PagerTag extends TagSupport {
 	private static String defaultid = "__kbs_pager__";
 
 	private int totalpage;
+	private boolean jsgoGenerated=false;
+
+	public boolean isJsgoGenerated() {
+		return jsgoGenerated;
+	}
+
+	public void setJsgoGenerated(boolean jsgoGenerated) {
+		this.jsgoGenerated = jsgoGenerated;
+	}
 
 	public static final String getDefaultid() {
 		return defaultid;
