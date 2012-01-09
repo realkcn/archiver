@@ -1,0 +1,27 @@
+User-agent: msnbot
+Disallow: /abyu*
+Allow: /
+
+User-agent: Sogou
+Disallow: /abyu*
+Allow: /
+
+User-agent: Slurp
+Crawl-delay: 2
+Disallow: /abyu*
+Allow: /
+
+User-agent: Googlebot
+Disallow: /abyu*
+Allow: /
+
+User-agent: Mediapartners-Google
+Disallow: /abyu*
+Allow: /
+
+User-agent: Baiduspider
+Disallow: /abyu*
+Allow: /
+
+User-agent: *
+Disallow: /
