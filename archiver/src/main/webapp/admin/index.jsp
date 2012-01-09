@@ -40,7 +40,7 @@ function loadauthor()
 作者ID<input type="text" id="author" name="author"/><input  type="button" onclick="loadauthor()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
 </form>
 <hr />
-<form action"deleteArticleByOriginId" method="GET">
+<form action="deleteArticleByOriginId" method="GET">
 通过BBS原文ID删除
 文章版面<input type="text" id="boardname" name="boardname"/>文章ID<input type="text" id="articleid" name="articleid" /><input  type="button" onclick="javascript:submit()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
 </form>
