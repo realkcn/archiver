@@ -40,7 +40,7 @@
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
 	</tr>
 	<tr>
-		<td><s:set name="body" value="body" scope="request" /><%
+		<td colSpan="2"><s:set name="body" value="body" scope="request" /><%
 			out.print(org.kbs.archiver.util.AnsiToHtml.ansiToHtml((String)request.getAttribute("body")));
 		%><br /></td>
     </tr>

@@ -43,7 +43,7 @@
 		<td><s:property value="subject" /></td>      
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
 		</tr>
-		<tr><td><s:set name="body" value="body" scope="request" /><%
+		<tr><td colSpan="2"><s:set name="body" value="body" scope="request" /><%
 			out.print(org.kbs.archiver.util.AnsiToHtml.ansiToHtml((String)request.getAttribute("body")));
 		%><br /><s:if test="attachments!=null">
 		   <s:iterator value="attachments"><s:set name="filename" value="name" scope="request" /><% {
