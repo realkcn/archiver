@@ -17,7 +17,7 @@ public class PagerTag extends TagSupport {
 	private int maxIndexPages=10;
 	private String urlprefix=null;
 	private String urlsuffix=null;
-	private boolean jsgoGenerate=false;
+	private boolean jsgoGenerate=true;
 
 	public final String getUrlprefix() {
 		return urlprefix;
@@ -140,21 +140,21 @@ public class PagerTag extends TagSupport {
 
 	@Override
 	public int doStartTag() throws JspException {
-		pageContext.setAttribute(defaultid, this);
+		pageContext.getRequest().setAttribute(defaultid, this);
 		return EVAL_BODY_INCLUDE;
 	}
 
 	@Override
 	public int doEndTag() throws JspException {
 		totalpage = total / pagesize + ((total % pagesize > 0) ? 1 : 0);
-		pageContext.setAttribute("currentPageNumber",new Integer(currentpage));
+		pageContext.getRequest().setAttribute("currentPageNumber",new Integer(currentpage));
 		if (jsgoGenerate) {
 			try {
-				pageContext.getOut().append("<script>function _kbspagergo(id) {" +
+				pageContext.getOut().append("<script type=\"text/javascript\">\nfunction _kbspagergo(a) {\n" +
 						"window.location.href='"+urlprefix
-						+"'+document.getElementById(id)+'"
+						+"'+document.getElementById(a).value+'"
 						+urlsuffix
-						+"}+</script>"
+						+"';\n}</script>"
 						);
 			} catch (IOException e) {
 				throw new JspException(e);

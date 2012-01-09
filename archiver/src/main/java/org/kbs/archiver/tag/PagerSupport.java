@@ -12,7 +12,7 @@ public class PagerSupport extends TagSupport {
 
 	@Override
 	public int doStartTag() throws JspException {
-		setPager((PagerTag) pageContext.getAttribute(PagerTag.getDefaultid()));
+		setPager((PagerTag)pageContext.getRequest().getAttribute(PagerTag.getDefaultid()));
 		return EVAL_BODY_INCLUDE;
 	}
 

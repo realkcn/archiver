@@ -15,17 +15,12 @@
   
  
   </head> 
-    <pg:pager total="${totalsize}" url="board-${boardid}-%d.html" currentpage="${pageno}" pagesize="${pagesize}" />
+    <pg:pager total="${totalsize}" urlprefix="board-${boardid}-" urlsuffix=".html" currentpage="${pageno}" pagesize="${pagesize}" />
 
   <body> 
    <jsp:include page="header.jsp" />
-    <pg:first>第一页</pg:first><pg:prev>上一页</pg:prev><pg:pages>  
-                    <s:if test="#attr.currentPageNumber==#attr.pageNumber">    
-                       <font color="red">${attr.pageNumber}</font>  
-                    </s:if><s:else>   
-                       <pg:go newpage="${attr.pageNumber}">${attr.pageNumber}</pg:go>
-                    </s:else>
-               </pg:pages><pg:next>下一页</pg:next><pg:last>最后一页</pg:last>
+<jsp:include page="include/pagerindex.jsp" />
+
    <table border="1"> <caption>版面主题列表</caption>
    <tr>
    <td>序号</td>
@@ -48,12 +43,6 @@
     </tr>
    </s:iterator>
     </table>
-  <pg:first>第一页</pg:first><pg:prev>上一页</pg:prev><pg:pages>  
-                    <s:if test="#attr.currentPageNumber==#attr.pageNumber">    
-                       <font color="red">${attr.pageNumber}</font>  
-                    </s:if><s:else>   
-                       <pg:go newpage="${attr.pageNumber}">${attr.pageNumber}</pg:go>
-                    </s:else>
-               </pg:pages><pg:next>下一页</pg:next><pg:last>最后一页</pg:last>
+<jsp:include page="include/pagerindex.jsp" />
    </body> 
 </html> 

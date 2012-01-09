@@ -21,14 +21,7 @@
   <jsp:include page="header.jsp" />
   <pg:pager total="${totalsize}" urlprefix="thread-${tid}-" urlsuffix=".html" jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
-  <pg:first>第一页</pg:first><pg:prev>上一页</pg:prev><pg:pages>  
-                    <s:if test="#attr.currentPageNumber==#attr.pageNumber">    
-                       <font color="red">${attr.pageNumber}</font>  
-                    </s:if><s:else>   
-                       <pg:go newpage="${attr.pageNumber}">${attr.pageNumber}</pg:go>
-                    </s:else>
-               </pg:pages><pg:next>下一页</pg:next><pg:last>最后一页</pg:last>&nbsp;<input type="text" id="gopage" maxlength=6 length=6/><pg:jsgo elementid="gopage">跳转</pg:jsgo>
-   <table border="1"> <caption>主题文章列表</caption>
+<jsp:include page="include/pagerindex.jsp" />
 <!-- 
    <tr>
    <td>序号</td>
@@ -38,7 +31,8 @@
    </tr>
  -->   
    
-   <s:iterator value="articlelist" status="threadindex">
+   <table border="1"> <caption>主题文章列表</caption>
+    <s:iterator value="articlelist" status="threadindex">
     <tr>
 <!--		<td><s:property value="#threadindex.count+(pageno-1)*pagesize" /></td> 
 -->
@@ -66,12 +60,6 @@
     
    </s:iterator>
     </table>
-  <pg:first>第一页</pg:first><pg:prev>上一页</pg:prev><pg:pages>  
-                    <s:if test="#attr.currentPageNumber==#attr.pageNumber">    
-                       <font color="red">${attr.pageNumber}</font>  
-                    </s:if><s:else>   
-                       <pg:go newpage="${attr.pageNumber}">${attr.pageNumber}</pg:go>
-                    </s:else>
-               </pg:pages><pg:next>下一页</pg:next><pg:last>最后一页</pg:last>
+<jsp:include page="include/pagerindex.jsp" />
   </body> 
 </html> 
