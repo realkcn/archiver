@@ -7,7 +7,6 @@
 <s:else>
 <s:set name="gopageindex" value="#request.gopageindex+1" scope="request" />
 </s:else>
-echo <s:property value="#request.gopageindex" />--
   <pg:first>第一页</pg:first><pg:prev>上一页</pg:prev><pg:pages>  
                     <s:if test="#request.currentPageNumber==#request.pageNumber">    
                        <font color="red">${request.pageNumber}</font>  
