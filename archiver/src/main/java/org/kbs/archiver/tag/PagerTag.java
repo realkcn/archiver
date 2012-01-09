@@ -148,6 +148,7 @@ public class PagerTag extends TagSupport {
 	public int doEndTag() throws JspException {
 		totalpage = total / pagesize + ((total % pagesize > 0) ? 1 : 0);
 		pageContext.getRequest().setAttribute("currentPageNumber",new Integer(currentpage));
+		pageContext.getRequest().setAttribute("totalpage",new Integer(totalpage));
 		if (jsgoGenerate) {
 			try {
 				pageContext.getOut().append("<script type=\"text/javascript\">\nfunction _kbspagergo(a) {\n" +
