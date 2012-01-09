@@ -21,7 +21,7 @@ public class JSGoTag extends PagerSupport {
 		super.doStartTag();
 		try {
 			pageContext.getOut().append(
-					"<a href=\"\" onclick=\"javascript:_kbspagergo('"
+					"<a href=\"#\" onclick=\"javascript:_kbspagergo('"
 							+ elementid + "')\">");
 		} catch (IOException e) {
 			throw new JspException(e);
