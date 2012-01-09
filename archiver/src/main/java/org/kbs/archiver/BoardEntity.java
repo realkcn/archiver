@@ -13,6 +13,10 @@ public class BoardEntity {
 	private long lastdeleteid;
 	private String cname;
 	
+	@Override
+	public String toString() {
+		return "boardid:"+boardid+" name:"+name+" threads:"+threads+" articles:"+articles+" ishidden:"+ishidden+" lastarticleid:"+lastarticleid+" cname:"+cname;
+	}
 	public BoardEntity() {
 		
 	}

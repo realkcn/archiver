@@ -120,9 +120,12 @@ public class ArchiverService extends TimerTask {
 			attachmentMapper.deleteByArticle(article.getArticleid());
 		}
 		articleMapper.delete(articleid);
+		articleBodyMapper.delete(articleid);
 		// 处理thread
+		if (board!=null)
+			board.setThreads(0);
 		if (thread != null)
-			if (thread.getArticlenumber() > 1) {
+			if (thread.getArticlenumber() > 1) {//是否处理第一篇是该文章的情况？
 				thread.setArticlenumber(thread.getArticlenumber() - 1);
 				threadMapper.update(thread);
 			} else {
@@ -133,7 +136,50 @@ public class ArchiverService extends TimerTask {
 		// 处理board
 		if (board != null) {
 			board.setArticles(-1);
+//			System.out.println(board.toString());
 			boardMapper.updateLast(board); //其实这里和归档进程有竞争问题
+		}
+	}
+	
+	public synchronized void deleteThread(long threadid) {
+		BoardMapper boardMapper = (BoardMapper) ctx.getBean("boardMapper");
+		ThreadMapper threadMapper = (ThreadMapper) ctx.getBean("threadMapper");
+		ArticleMapper articleMapper = (ArticleMapper) ctx
+				.getBean("articleMapper");
+		ArticleBodyMapper articleBodyMapper = (ArticleBodyMapper) ctx
+				.getBean("articleBodyMapper");
+		AttachmentMapper attachmentMapper = (AttachmentMapper) ctx
+				.getBean("attachmentMapper");
+
+		List<ArticleEntity> articlelist = articleMapper.getByThreadPerPage(threadid, 0, -1);
+		ThreadEntity thread = threadMapper.get(threadid);
+		BoardEntity board = boardMapper.get(thread.getBoardid());
+		for (ArticleEntity article:articlelist) {
+			if (article.getAttachment() != 0) {
+				attachmentMapper.deleteByArticle(article.getArticleid());
+			}
+			articleMapper.delete(article.getArticleid());
+			articleBodyMapper.delete(article.getArticleid());
+		}
+		// 处理thread
+		if (thread != null) {
+			threadMapper.delete(thread.getThreadid());
+			if (board != null)
+				board.setThreads(-1);
+		}
+		// 处理board
+		if (board != null) {
+			board.setArticles(-articlelist.size());
+			boardMapper.updateLast(board); //其实这里和归档进程有竞争问题
+		}
+	}
+
+	public void deleteByAuthor(String author) {
+		ArticleMapper articleMapper = (ArticleMapper) ctx
+				.getBean("articleMapper");
+		List<ArticleEntity> articlelist = articleMapper.getByAuthorPerPage(author, 0, -1);
+		for (ArticleEntity article:articlelist) {
+			deleteArticle(article.getArticleid());
 		}
 	}
 }

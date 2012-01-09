@@ -1,11 +1,13 @@
 package org.kbs.archiver.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.kbs.archiver.ArticleEntity;
 import org.kbs.archiver.BoardEntity;
 import org.kbs.archiver.ThreadEntity;
+import org.kbs.archiver.persistence.ArticleBodyMapper;
 import org.kbs.archiver.persistence.ArticleMapper;
 import org.kbs.archiver.persistence.AttachmentMapper;
 import org.kbs.archiver.persistence.BoardMapper;
@@ -28,6 +30,7 @@ public class ListArticle extends ActionSupport {
 	private ThreadEntity thread;
 	private String tid;
 	private String author;
+	private String encodingURL;
 
 	public String getTid() {
 		return tid;
@@ -97,6 +100,15 @@ public class ListArticle extends ActionSupport {
 	}
 	private ArticleMapper articleMapper;
 	private AttachmentMapper attachmentMapper;
+	private ArticleBodyMapper articleBodyMapper;
+	public ArticleBodyMapper getArticleBodyMapper() {
+		return articleBodyMapper;
+	}
+
+	public void setArticleBodyMapper(ArticleBodyMapper articleBodyMapper) {
+		this.articleBodyMapper = articleBodyMapper;
+	}
+
 	public AttachmentMapper getAttachmentMapper() {
 		return attachmentMapper;
 	}
@@ -117,6 +129,23 @@ public class ListArticle extends ActionSupport {
 		this.articleMapper = articleMapper;
 	}
 
+	public String getArticle() throws Exception {
+		if (encodingURL==null) {
+			addActionError("错误的id参数");
+			return ERROR;
+		}
+		ArticleEntity article=articleMapper.getByEncodingUrl(encodingURL);
+		if (article==null)  {
+			addActionError("找不到id为"+encodingURL+"的文章");
+			return ERROR;
+		}
+		article.setBody(articleBodyMapper.get(article.getArticleid()));
+		articlelist=new ArrayList<ArticleEntity>(1);
+		articlelist.add(article);
+		dealAttachment();
+		return SUCCESS;
+	}
+	
 	// action for get articles on thread
 	public String getByThread() throws Exception {
 		if (pagesize == 0)
@@ -224,5 +253,19 @@ public class ListArticle extends ActionSupport {
 	 */
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	/**
+	 * @return the encodingurl
+	 */
+	public String getEncodingURL() {
+		return encodingURL;
+	}
+
+	/**
+	 * @param encodingurl the encodingurl to set
+	 */
+	public void setEncodingURL(String encodingurl) {
+		this.encodingURL = encodingurl;
 	}
 }

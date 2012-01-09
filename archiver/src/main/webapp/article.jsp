@@ -19,12 +19,8 @@
   
   <body>
   <jsp:include page="header.jsp" />
-   <pg:pager total="${totalsize}" urlprefix="abyu-${author}-" urlsuffix=".html" currentpage="${pageno}" pagesize="${pagesize}" />
- 
-  ${author} 一共发表了 ${totalsize} 篇文章 <br />
-<jsp:include page="include/pagerindex.jsp" />
- <table border="1"> <caption>作者文章列表</caption>
-<!-- 
+ <table border="1">
+ <!-- 
    <tr>
    <td>序号</td>
    <td>作者</td>
@@ -32,15 +28,14 @@
    <td>发表时间</td>
    </tr>
  -->   
-   <s:iterator value="articlelist" status="threadindex">
+   <s:iterator value="articlelist">
     <tr>
-<!--		<td><s:property value="#threadindex.count+(pageno-1)*pagesize" /></td> 
--->
+		<td>${author}</td>      
 		<td>${subject}</td>      
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
 	</tr>
 	<tr>
-		<td colSpan="2"><s:set name="body" value="body" scope="request" /><%
+		<td colSpan="3"><s:set name="body" value="body" scope="request" /><%
 			out.print(org.kbs.archiver.util.AnsiToHtml.ansiToHtml((String)request.getAttribute("body")));
 		%><br /><br /><s:if test="attachments!=null">
 		   <s:iterator value="attachments"><s:set name="filename" value="name" scope="request" /><% {
@@ -49,9 +44,7 @@
 		   %><img src="att-${encodingurl}/<s:property value="name" />" /><%} else {%>附件:<a href="att-${encodingurl}/<s:property value="name" />" target="_blank"><s:property value="name" /></a>(大小:${datasize}字节)<br /><% } }%>
 		   </s:iterator></s:if></td>
     </tr>
-    
-   </s:iterator>
-    </table>
-<jsp:include page="include/pagerindex.jsp" />
+    </s:iterator>
+  </table>
   </body> 
 </html> 

@@ -1,60 +1,81 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kbs.archiver.persistence.ArticleMapper">
-    <select id="countAll" resultType="int">
-        select count(*)  from article;
-    </select>
-    
-    <select id="selectAll" resultType="org.kbs.archiver.ArticleEntity">
-        select * from article order by articleid asc
-    </select>
-    
-    <insert id="insert" parameterType="org.kbs.archiver.ArticleEntity">
-        insert into article(threadid,boardid,articleid,subject,posttime,author,attachment,filename,isvisible,replyid,
-          originid,encodingurl) values (#{threadid},#{boardid},#{articleid},#{subject},#{posttime},#{author},#{attachment},#{filename},
-          #{isvisible},#{replyid},#{originid},#{encodingurl})
-         ON DUPLICATE KEY UPDATE threadid=#{threadid},boardid=#{boardid},subject=#{subject},posttime=#{posttime},
-          author=#{author},attachment=#{attachment},filename=#{filename},isvisible=#{isvisible},replyid=#{replyid},
-          originid=#{originid},encodingurl=#{encodingurl} 
-    </insert>
-    
-    <update id="update" parameterType="org.kbs.archiver.ArticleEntity">
-         UPDATE article set threadid=#{threadid},boardid=#{boardid},subject=#{subject},posttime=#{posttime},
-          author=#{author},attachment=#{attachment},filename=#{filename},isvisible=#{isvisible},replyid=#{replyid},
-          originid=#{originid},encodingurl=#{encodingurl} 
-          where articleid=#{articleid}
-    </update>
+	<select id="countAll" resultType="int">
+		select count(*) from article;
+	</select>
 
-    <delete id="delete" parameterType="long">
-        delete from article where articleid=#{articleid}
-    </delete>
+	<select id="selectAll" resultType="org.kbs.archiver.ArticleEntity">
+		select * from article order by articleid asc
+	</select>
+
+	<insert id="insert" parameterType="org.kbs.archiver.ArticleEntity">
+		insert into
+		article(threadid,boardid,articleid,subject,posttime,author,attachment,filename,isvisible,replyid,
+		originid,encodingurl) values
+		(#{threadid},#{boardid},#{articleid},#{subject},#{posttime},#{author},#{attachment},#{filename},
+		#{isvisible},#{replyid},#{originid},#{encodingurl})
+		ON DUPLICATE KEY UPDATE
+		threadid=#{threadid},boardid=#{boardid},subject=#{subject},posttime=#{posttime},
+		author=#{author},attachment=#{attachment},filename=#{filename},isvisible=#{isvisible},replyid=#{replyid},
+		originid=#{originid},encodingurl=#{encodingurl}
+	</insert>
+
+	<update id="update" parameterType="org.kbs.archiver.ArticleEntity">
+		UPDATE article set
+		threadid=#{threadid},boardid=#{boardid},subject=#{subject},posttime=#{posttime},
+		author=#{author},attachment=#{attachment},filename=#{filename},isvisible=#{isvisible},replyid=#{replyid},
+		originid=#{originid},encodingurl=#{encodingurl}
+		where articleid=#{articleid}
+	</update>
+
+	<delete id="delete" parameterType="long">
+		delete from article where articleid=#{articleid}
+	</delete>
 
 	<delete id="deleteByBoard" parameterType="long">
-        delete from article where boardid=#{boardid}
+		delete from article where boardid=#{boardid}
 	</delete>
-    <select id="get" parameterType="long" resultType="org.kbs.archiver.ArticleEntity">
-        select * from article where articleid=#{articleid}
-    </select>
-    <!--  articleid,author,posttime,attachment,subject,isvisible,encodingurl  -->
-        <select id="getByThreadPerPage" resultType="org.kbs.archiver.ArticleEntity">
-        SELECT article.*,articlebody.body FROM article,articlebody where article.threadid=#{threadid} and article.isvisible=true and article.articleid=articlebody.articleid
-            ORDER BY article.posttime asc limit  #{offset},#{limit}
-      </select>
-      <select id="getByAuthorPerPage" resultType="org.kbs.archiver.ArticleEntity">
-        SELECT article.*,articlebody.body FROM article,board,articlebody where article.author=#{author} and article.boardid=board.boardid and board.ishidden=false and article.isvisible=true
-        		and article.articleid=articlebody.articleid ORDER BY posttime desc limit  #{offset},#{limit}
-      </select>
-      <select id="countByAuthor" resultType="int">
-        SELECT count(*) FROM article,board where article.author=#{author} and article.boardid=board.boardid and board.ishidden=false and article.isvisible=true
-      </select>
-    <select id="getByOriginId" parameterType="long" resultType="org.kbs.archiver.ArticleEntity">
-        select * from article where boardid=#{boardid} and originid=#{originid} limit 1
-    </select>
-    <select id="getByEncodingUrl" parameterType="String" resultType="org.kbs.archiver.ArticleEntity">
-        select * from article where encodingurl=#{encodingurl}
-    </select>
-    <select id="getArticlesOnThread" parameterType="long" resultType="org.kbs.archiver.ArticleEntity">
-        select * from article where articleid=#{articleid}
-    </select>
-    <cache eviction="FIFO" flushInterval="3600000" size="10240" readOnly="true" />
+	<select id="get" parameterType="long" resultType="org.kbs.archiver.ArticleEntity">
+		select * from article where articleid=#{articleid}
+	</select>
+	<!-- articleid,author,posttime,attachment,subject,isvisible,encodingurl -->
+	<select id="getByThreadPerPage" resultType="org.kbs.archiver.ArticleEntity">
+		SELECT article.*,articlebody.body FROM article,articlebody where
+		article.threadid=#{threadid} and article.isvisible=true and
+		article.articleid=articlebody.articleid
+		<if test="limit!=-1">
+			ORDER BY article.posttime asc limit #{offset},#{limit}
+		</if>
+	</select>
+	<select id="getByAuthorPerPage" resultType="org.kbs.archiver.ArticleEntity">
+		SELECT article.*,articlebody.body FROM article,board,articlebody where
+		article.author=#{author} and article.boardid=board.boardid and
+		board.ishidden=false and article.isvisible=true
+		and article.articleid=articlebody.articleid
+		<if test="limit!=-1">
+			ORDER BY posttime desc limit
+			#{offset},#{limit}
+		</if>
+	</select>
+	<select id="countByAuthor" resultType="int">
+		SELECT count(*) FROM article,board where article.author=#{author} and
+		article.boardid=board.boardid and board.ishidden=false and
+		article.isvisible=true
+	</select>
+	<select id="getByOriginId" parameterType="long"
+		resultType="org.kbs.archiver.ArticleEntity">
+		select * from article where boardid=#{boardid} and originid=#{originid}
+		limit 1
+	</select>
+	<select id="getByEncodingUrl" parameterType="String"
+		resultType="org.kbs.archiver.ArticleEntity">
+		select * from article where encodingurl=#{encodingurl}
+	</select>
+	<select id="getArticlesOnThread" parameterType="long"
+		resultType="org.kbs.archiver.ArticleEntity">
+		select * from article where articleid=#{articleid}
+	</select>
+	<cache eviction="FIFO" flushInterval="3600000" size="10240"
+		readOnly="true" />
 </mapper>

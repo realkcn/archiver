@@ -61,4 +61,11 @@
 		<from>/att-([0-9a-zA-Z]+)/.*$</from>
 		<to last="true">%{context-path}/getattachment?encodingURL=$1</to>
 	</rule>
+	<rule>
+		<note>
+			rewrite /article-xxxxx.html to /getArticle?encodingURL=xxxxx
+        </note>
+		<from>/article-([0-9a-zA-Z]+)\.html$</from>
+		<to last="true">%{context-path}/getarticle?encodingURL=$1</to>
+	</rule>
 </urlrewrite>

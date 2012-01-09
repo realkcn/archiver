@@ -24,6 +24,10 @@
 			method="getByThread">
 			<result name="success">/thread.jsp</result>
 		</action>
+		<action name="getarticle" class="org.kbs.archiver.action.ListArticle"
+			method="getArticle">
+			<result name="success">/article.jsp</result>
+		</action>
 		<action name="listarticlebyauthor" class="org.kbs.archiver.action.ListArticle"
 			method="getByAuthor">
 			<result name="success">/authorartile.jsp</result>
@@ -36,6 +40,23 @@
 				<param name="contentLength">${attachment.datasize}</param>
 				<param name="contentDisposition">filename="${attachment.name}"</param>
 			</result>
+		</action>
+	</package>
+	<package name="admin" extends="struts-default" namespace="/admin">
+		<action name="deleteArticle" class="org.kbs.archiver.action.admin.Delete"
+			method="deleteArticle">
+			<result name="success">index.jsp</result>
+			<result name="error">index.jsp</result>
+		</action>
+		<action name="deleteThread" class="org.kbs.archiver.action.admin.Delete"
+			method="deleteThread">
+			<result name="success">index.jsp</result>
+			<result name="error">index.jsp</result>
+		</action>
+		<action name="deleteByAuthor" class="org.kbs.archiver.action.admin.Delete"
+			method="deleteByAuthor">
+			<result name="success">index.jsp</result>
+			<result name="error">index.jsp</result>
 		</action>
 	</package>
 </struts>
