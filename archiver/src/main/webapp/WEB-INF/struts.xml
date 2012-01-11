@@ -58,5 +58,15 @@
 			<result name="success">index.jsp</result>
 			<result name="error">index.jsp</result>
 		</action>
+		<action name="SearchByOriginId" class="org.kbs.archiver.action.admin.Delete"
+			method="SearchByOriginId">
+			<result name="success">index.jsp</result>
+			<result name="error">index.jsp</result>
+		</action>
+		<action name="deleteArticleByOriginId" class="org.kbs.archiver.action.admin.Delete"
+			method="DeleteArticleByOriginId">
+			<result name="success">index.jsp</result>
+			<result name="error">index.jsp</result>
+		</action>
 	</package>
 </struts>

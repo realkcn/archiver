@@ -21,30 +21,39 @@ function loadauthor()
 {
 	document.getElementById("show").src="../abyu-"+document.getElementById("author").value+".html";
 }
+function searchoriginid()
+{
+	document.searchoriginidform.action="SearchByOriginId";
+}
 </script>
 <body>
-<s:if test="#showurl==null">
-<s:set name="showurl" value="" />
+<s:if test="#request.showurl==null">
+<s:set name="frameurl" value="''"/>
 </s:if>
+<s:else>
+<s:if test='#request.showurl=="article"'>
+<s:set name="frameurl" value="'../article-'+#attr.articleid+'.html'" />
+</s:if>
+</s:else>
 <s:actionerror/>
 <s:actionmessage/>
 <form action="deleteArticle" method="GET">
-文章ID<input type="text" id="articleid" name="articleid" /><input  type="button" onclick="loadarticle()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
+文章ID<input type="text" id="articleid" name="articleid" value="${articleid}"/><input  type="button" onclick="loadarticle()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
 </form>
 <hr />
 <form action="deleteThread" method="GET">
-主题ID<input type="text" id="threadid" name="threadid"/><input  type="button" onclick="loadthread()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
+主题ID<input type="text" id="threadid" name="threadid" value="${threadid}"/><input  type="button" onclick="loadthread()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
 </form>
 <hr />
 <form action="deleteByAuthor" method="GET">
 作者ID<input type="text" id="author" name="author"/><input  type="button" onclick="loadauthor()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
 </form>
 <hr />
-<form action="deleteArticleByOriginId" method="GET">
+<form name="searchoriginidform" action="deleteArticleByOriginId" method="GET">
 通过BBS原文ID删除
-文章版面<input type="text" id="boardname" name="boardname"/>文章ID<input type="text" id="articleid" name="articleid" /><input  type="button" onclick="javascript:submit()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
+文章版面<input type="text" id="boardname" name="boardname" value="${boardname}" />文章ID<input type="text" id="originid" name="originid"  value="${originid}" /><input  type="submit" onclick="javascript:searchoriginid()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
 </form>
 <br/>
-<iframe width="100%" height="80%"  scroll="true" name="show"  id="show" src="${showurl}"/>
+<iframe width="100%" height="80%"  scroll="true" name="show"  id="show" src="${frameurl}" ></iframe>
 </body>
 </html>
