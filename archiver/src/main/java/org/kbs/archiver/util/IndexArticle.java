@@ -83,10 +83,10 @@ public class IndexArticle {
 				writer.addDocument(doc);
 			}
 			//writer.optimize();
-			writer.close();
 			long endTime = new Date().getTime();
 			System.out.println("共建索引数：" + writer.numDocs());
 			System.out.println("时间：" + (endTime - startTime) + " 毫秒");
+			writer.close();
 			rs.close();
 			connection.close();
 		} catch (SQLException e) {
