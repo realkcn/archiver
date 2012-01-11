@@ -27,6 +27,7 @@ function searchoriginid()
 }
 </script>
 <body>
+<jsp:include page="../header.jsp" />
 <s:if test="#request.showurl==null">
 <s:set name="frameurl" value="''"/>
 </s:if>
