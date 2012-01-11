@@ -73,17 +73,22 @@ public class IndexArticle {
 			Connection connection = ds.getConnection();
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement
-					.executeQuery("select articleid,subject from article");
+					.executeQuery("select articleid,subject from article where isvisible=true");
+			int count=0;
 			while (rs.next()) {
 				Document doc = new Document();
+				count++;
 				doc.add(new Field("subject", rs.getString("subject"),
 						Field.Store.YES, Field.Index.ANALYZED));
 				doc.add(new Field("articleid", rs.getString("articleid"),
 						Field.Store.YES, Field.Index.NOT_ANALYZED));
 				writer.addDocument(doc);
+				if ((count%200000)==0)
+					System.out.println("索引文章 "+count+" 篇");
 			}
 			//writer.optimize();
 			long endTime = new Date().getTime();
+			System.out.println("文章数：" + count);
 			System.out.println("共建索引数：" + writer.numDocs());
 			System.out.println("时间：" + (endTime - startTime) + " 毫秒");
 			writer.close();
