@@ -17,6 +17,7 @@ import org.apache.lucene.util.Version;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.LimitTokenCountAnalyzer;
 import org.kbs.archiver.lucene.Tools;
+import org.kbs.archiver.persistence.ArticleBodyMapper;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
@@ -51,12 +52,13 @@ public class IndexArticle {
 		DataSource ds = (DataSource) appContext.getBean("dataSource");
 		try {
 			Properties config = (Properties) appContext.getBean("configproperties");
+			ArticleBodyMapper articleBodyMapper=(ArticleBodyMapper) appContext.getBean("articleBodyMapper");
 			File index = new File(Tools.getLucenceDirectory(appContext));
 			Analyzer analyzer = new IKAnalyzer();// 采用的分词器
 			LimitTokenCountAnalyzer limitanalyzer=new LimitTokenCountAnalyzer(analyzer,1000);
 			IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35,
 					limitanalyzer);
-			conf.setMaxBufferedDocs(10240);
+//			conf.setMaxBufferedDocs(10240);
 			conf.setOpenMode(OpenMode.CREATE);
 			int nThreads = 0;
 			if (config.get("workerthreads") != null)
@@ -75,15 +77,17 @@ public class IndexArticle {
 			Connection connection = ds.getConnection();
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement
-					.executeQuery("select article.articleid,articlebody.body,article.subject from article,articlebody,board where article.articleid=articlebody.articleid and board.boardid=article.boardid and board.ishidden=false and article.isvisible=true");
+					.executeQuery("select article.articleid,article.subject from article,board where board.boardid=article.boardid and board.ishidden=false and article.isvisible=true");
 			int count=0;
 			while (rs.next()) {
 				Document doc = new Document();
 				count++;
 				doc.add(new Field("subject", rs.getString("subject"),
 						Field.Store.NO, Field.Index.ANALYZED));
-				doc.add(new Field("body", rs.getString("body"),
-						Field.Store.NO, Field.Index.ANALYZED));
+				String body=articleBodyMapper.get(rs.getLong("articleid"));
+				if (body!=null)
+					doc.add(new Field("body", body,
+							Field.Store.NO, Field.Index.ANALYZED));
 				doc.add(new Field("articleid", rs.getString("articleid"),
 						Field.Store.YES, Field.Index.NO));
 				writer.addDocument(doc);
@@ -102,13 +106,10 @@ public class IndexArticle {
 			System.err.println("数据库操作失败：");
 			e.printStackTrace();
 		} catch (CorruptIndexException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (LockObtainFailedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
