@@ -28,6 +28,7 @@ import org.kbs.archiver.persistence.AttachmentMapper;
 import org.kbs.archiver.persistence.BoardMapper;
 import org.kbs.archiver.persistence.ThreadMapper;
 import org.kbs.library.BoardHeaderInfo;
+import org.kbs.library.SimpleException;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.wltea.analyzer.lucene.IKAnalyzer;
@@ -67,22 +68,10 @@ public class ArchiverService extends TimerTask {
 				0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 		// LinkedList<Callable<Integer>> tasks=new
 		// LinkedList<Callable<Integer>>();
-		File index = new File(Tools.getLucenceDirectory(ctx));
-		Analyzer analyzer = new IKAnalyzer();// 采用的分词器
-		LimitTokenCountAnalyzer limitanalyzer = new LimitTokenCountAnalyzer(
-				analyzer, 1000);
-		IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35,
-				limitanalyzer);
-		conf.setOpenMode(OpenMode.APPEND);
-		IndexWriter writer = null;
+		IndexWriter writer = Tools.OpenWriter(ctx);
 		try {
-			try {
-				writer = new IndexWriter(FSDirectory.open(index), conf);
-			} catch (Exception e) {
-				e.printStackTrace();
-				return;
-			}
-
+			if (writer==null)
+				throw new SimpleException("Can't open index writer");
 			for (BoardEntity theBoard : boards) {
 				ArchiverBoardImpl worker;
 				worker = new ArchiverBoardImpl(ctx, theBoard, boardBaseDir,
@@ -102,11 +91,13 @@ public class ArchiverService extends TimerTask {
 			 */
 			// 结束
 			try {
-				System.out.println("索引文章数:"+writer.numDocs());
+				System.out.println("索引文章总数:"+writer.numDocs());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			running.set(false);
+		} catch (SimpleException e) {
+			e.printStackTrace();
 		} finally {
 			if (writer != null)
 				try {

@@ -114,14 +114,7 @@ public class IndexArticle {
 					.getBean("configproperties");
 			ArticleBodyMapper articleBodyMapper = (ArticleBodyMapper) appContext
 					.getBean("articleBodyMapper");
-			File index = new File(Tools.getLucenceDirectory(appContext)+"new");
-			Analyzer analyzer = new IKAnalyzer();// 采用的分词器
-			LimitTokenCountAnalyzer limitanalyzer = new LimitTokenCountAnalyzer(
-					analyzer, 1000);
-			IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35,
-					limitanalyzer);
-			conf.setOpenMode(OpenMode.CREATE);
-			IndexWriter writer = new IndexWriter(FSDirectory.open(index), conf);
+			IndexWriter writer = Tools.OpenWriter(appContext,OpenMode.CREATE,"new");
 
 			int nThreads = 0;
 			if (config.get("workerthreads") != null)
