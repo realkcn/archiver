@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.TimerTask;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -73,35 +74,41 @@ public class ArchiverService extends TimerTask {
 
 		if (boardBaseDir == null)
 			boardBaseDir = config.getProperty("boarddir");
-		ThreadPoolExecutor exector = new ThreadPoolExecutor(nThreads, nThreads,
-				0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 		// LinkedList<Callable<Integer>> tasks=new
 		// LinkedList<Callable<Integer>>();
 		IndexWriter writer = Tools.OpenWriter(ctx);
 		try {
-			if (writer==null)
+			if (writer == null)
 				throw new SimpleException("Can't open index writer");
-			for (BoardEntity theBoard : boards) {
-				ArchiverBoardImpl worker;
-				worker = new ArchiverBoardImpl(ctx, theBoard, boardBaseDir,
-						writer);
+			Thread[] workerthread = new Thread[nThreads];
+			ArrayBlockingQueue<BoardEntity> workqueue = new ArrayBlockingQueue<BoardEntity>(
+					20);
+			for (int i = 0; i < nThreads; i++) {
+				ArchiverBoardImpl worker = new ArchiverBoardImpl(ctx,
+						workqueue, boardBaseDir, writer);
 				worker.setTestonly(testonly);
-				exector.execute(worker);
+				workerthread[i] = new Thread(worker);
+				workerthread[i].start();
 			}
-			exector.shutdown();
 			try {
-				while (!exector.isTerminated())
-					exector.awaitTermination(1, TimeUnit.MINUTES);
+				for (BoardEntity theBoard : boards) {
+					workqueue.put(theBoard);
+				}
+				// 设置线程结束标志
+				BoardEntity board = new BoardEntity();
+				board.setBoardid(-1);
+				for (int i = 0; i < nThreads; i++) {
+					workqueue.put(board);
+				}
+				for (int i = 0; i < nThreads; i++) {
+					workerthread[i].join();
+				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			/*
-			 * try { exector.invokeAll(tasks); } catch (InterruptedException e)
-			 * { e.printStackTrace(); }
-			 */
 			// 结束
 			try {
-				System.out.println("索引文章总数:"+writer.numDocs());
+				System.out.println("索引文章总数:" + writer.numDocs());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -127,8 +134,7 @@ public class ArchiverService extends TimerTask {
 					"Can't found " + filename);
 			return;
 		}
-		CachedSequence boardSeq = (CachedSequence) ctx
-				.getBean("boardSeq");
+		CachedSequence boardSeq = (CachedSequence) ctx.getBean("boardSeq");
 		boardSeq.setReadonly(testonly);
 		for (BoardHeaderInfo bh : bhset) {
 			if (!bh.isGroup()) {// 非目录版面才处理

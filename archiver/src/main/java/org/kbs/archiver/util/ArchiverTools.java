@@ -74,9 +74,9 @@ public class ArchiverTools {
 			BoardMapper boardMapper=(BoardMapper) appContext.getBean("boardMapper");
 			BoardEntity board=boardMapper.getByName(boardname);
 			if (board!=null) {
-				ArchiverBoardImpl service=new ArchiverBoardImpl(appContext,board,filename,writer);
+				ArchiverBoardImpl service=new ArchiverBoardImpl(appContext,null,filename,writer);
 				service.setTestonly(testonly);
-				service.call();
+				service.work(board);
 			} else {
 				System.out.println("Board "+boardname+" not found.");
 			}
