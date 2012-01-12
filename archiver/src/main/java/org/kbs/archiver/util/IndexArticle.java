@@ -69,7 +69,7 @@ public class IndexArticle {
 			Connection connection = ds.getConnection();
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement
-					.executeQuery("select articleid,subject from article where isvisible=true");
+					.executeQuery("select article.articleid,article.subject from article,board where board.boardid=article.boardid and board.ishidden=false and article.isvisible=true");
 			int count=0;
 			while (rs.next()) {
 				Document doc = new Document();

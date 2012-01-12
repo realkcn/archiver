@@ -32,6 +32,9 @@ public class SearchArticle extends ActionSupport {
 	private int inputPageno;
 	private ArrayList<ArticleEntity> articlelist = null;
 
+	private void CheckIndex() {
+		
+	}
 	public String Search() throws Exception {
 		int maxSerach = 10000;
 		if (indexReader == null) {
@@ -41,8 +44,17 @@ public class SearchArticle extends ActionSupport {
 							.getRequiredWebApplicationContext(ServletActionContext
 									.getServletContext());
 					indexReader = IndexReader.open(FSDirectory.open(new File(
-							Tools.getLucenceDirectory(webApplicationContext))));
+							Tools.getLucenceDirectory(webApplicationContext))),
+							true);
+					// readonly indexreader
 				}
+			}
+		}
+		synchronized (SearchArticle.class) {
+			IndexReader newReader = IndexReader
+					.openIfChanged(indexReader, true);
+			if (newReader != null) {
+				indexReader = newReader;
 			}
 		}
 		IndexSearcher searcher = new IndexSearcher(indexReader);
@@ -55,13 +67,13 @@ public class SearchArticle extends ActionSupport {
 		TopDocs hits = searcher.search(query, maxSerach);
 		int totalsize = hits.totalHits;
 		pager = new Pager(inputPageno, 0, totalsize);
-		articlelist=new ArrayList<ArticleEntity>(pager.getPagesize());
+		articlelist = new ArrayList<ArticleEntity>(pager.getPagesize());
 		for (int i = pager.getStart(); (i < pager.getEnd()) && (i < totalsize); i++) {
 			ScoreDoc sdoc = hits.scoreDocs[i];
 			Document doc = searcher.doc(sdoc.doc);
 			long articleid = Long.parseLong(doc.get("articleid"));
-			ArticleEntity article=articleMapper.get(articleid);
-			if (article==null) {
+			ArticleEntity article = articleMapper.get(articleid);
+			if (article == null) {
 				// todo
 			} else
 				articlelist.add(article);
