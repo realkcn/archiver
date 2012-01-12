@@ -1,9 +1,11 @@
 package org.kbs.archiver.util;
 import java.util.List;
 import org.kbs.archiver.*;
+import org.kbs.archiver.lucene.Tools;
 import org.kbs.archiver.persistence.BoardMapper;
 import org.kbs.library.*;
 import org.apache.commons.cli.*;
+import org.apache.lucene.index.IndexWriter;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class ArchiverTools {
@@ -50,6 +52,9 @@ public class ArchiverTools {
 
 	private static void updateArticle(CommandLine line) throws Exception {
 		String filename=line.getOptionValue('f', "/home/archiver/bbs");
+		IndexWriter writer=Tools.OpenWriter(appContext);
+		if (writer==null)
+			return;
 		if (line.getArgs().length==0) {
 			//todo all board
 			ArchiverService service=new ArchiverService(appContext);
@@ -60,7 +65,7 @@ public class ArchiverTools {
 			BoardMapper boardMapper=(BoardMapper) appContext.getBean("boardMapper");
 			BoardEntity board=boardMapper.getByName(boardname);
 			if (board!=null) {
-				ArchiverBoardImpl service=new ArchiverBoardImpl(appContext,board,filename);
+				ArchiverBoardImpl service=new ArchiverBoardImpl(appContext,board,filename,writer);
 				service.call();
 			} else {
 				System.out.println("Board "+boardname+" not found.");
