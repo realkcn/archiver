@@ -92,7 +92,11 @@ public class SearchArticle extends ActionSupport {
 		if (subject==null)
 			return SUCCESS;
 		try {
-			int maxSerach = 10000;
+			int maxSearch = 10000;
+			if (inputPageno*20>maxSearch) {
+				addActionError("别看那么多结果，服务器抗议！");
+				return ERROR;
+			}
 			if (indexReader == null) {
 				synchronized (SearchArticle.class) {
 					if (indexReader == null) {
@@ -116,7 +120,7 @@ public class SearchArticle extends ActionSupport {
 			QueryParser queryParser = new QueryParser(Version.LUCENE_35,
 					"subject", analyzer);
 			Query query = queryParser.parse(subject);
-			TopDocs hits = searcher.search(query, maxSerach);
+			TopDocs hits = searcher.search(query, maxSearch);
 			int totalsize = hits.totalHits;
 			pager = new Pager(inputPageno, 0, totalsize);
 			articlelist = new ArrayList<ArticleEntity>(pager.getPagesize());
