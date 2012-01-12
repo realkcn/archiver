@@ -26,9 +26,9 @@ public class Pager {
 		return (pageno-1)*pagesize;
 	}
 	public int getEnd() {
-		if (pageno+pagesize>totalsize)
+		if ((pageno+1)*pagesize>totalsize)
 			return totalsize;
-		return pageno+pagesize;
+		return (pageno+1)*pagesize;
 	}
 	public int getTotalsize() {
 		return totalsize;

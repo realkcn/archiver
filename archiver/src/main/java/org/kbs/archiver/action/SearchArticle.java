@@ -69,6 +69,9 @@ public class SearchArticle extends ActionSupport {
 	public int getPagesize() {
 		return pager.getPagesize();
 	}
+	public int getPageno() {
+		return pager.getPageno();
+	}
 
 	private static long checkTime = new Date().getTime();
 
@@ -117,6 +120,7 @@ public class SearchArticle extends ActionSupport {
 			int totalsize = hits.totalHits;
 			pager = new Pager(inputPageno, 0, totalsize);
 			articlelist = new ArrayList<ArticleEntity>(pager.getPagesize());
+			//System.out.println("get from "+pager.getStart()+" to "+pager.getEnd());
 			for (int i = pager.getStart(); (i < pager.getEnd())
 					&& (i < totalsize); i++) {
 				ScoreDoc sdoc = hits.scoreDocs[i];
