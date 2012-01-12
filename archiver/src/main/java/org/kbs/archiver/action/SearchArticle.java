@@ -100,7 +100,7 @@ public class SearchArticle extends ActionSupport {
 	}
 
 	public String Search() throws Exception {
-		if ((subject==null)&&(body==null))
+		if (((subject==null)||subject.isEmpty()) &&((body==null)||body.isEmpty()))
 			return SUCCESS;
 		try {
 			int maxSearch = 10000;
@@ -129,8 +129,8 @@ public class SearchArticle extends ActionSupport {
 			// Query query = IKQueryParser.parse("subject", subject);
 			Analyzer analyzer = new IKAnalyzer();
 			Query query;
-			if ((subject==null)||(body==null)) {
-				if (subject==null) {
+			if ((subject==null)||(body==null)||subject.isEmpty()||body.isEmpty()) {
+				if ((subject==null)||subject.isEmpty()) {
 					QueryParser queryParser = new QueryParser(Version.LUCENE_35,
 							"body", analyzer);
 					query = queryParser.parse(body);
