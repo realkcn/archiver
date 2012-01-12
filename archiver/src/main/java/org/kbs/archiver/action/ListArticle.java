@@ -12,6 +12,7 @@ import org.kbs.archiver.persistence.ArticleMapper;
 import org.kbs.archiver.persistence.AttachmentMapper;
 import org.kbs.archiver.persistence.BoardMapper;
 import org.kbs.archiver.persistence.ThreadMapper;
+import org.kbs.archiver.util.Pager;
 import org.kbs.library.AttachmentData;
 
 
@@ -31,7 +32,10 @@ public class ListArticle extends ActionSupport {
 	private String tid;
 	private String author;
 	private String encodingURL;
-
+	private BoardMapper boardMapper;
+	private BoardEntity board;
+	private Pager pager;
+	
 	public String getTid() {
 		return tid;
 	}
@@ -48,15 +52,9 @@ public class ListArticle extends ActionSupport {
 		this.threadid = threadid;
 	}
 
-	private int pageno;
-	private int pagesize;
 
 	public int getPagesize() {
-		return pagesize;
-	}
-
-	public void setPagesize(int pagesize) {
-		this.pagesize = pagesize;
+		return pager.getPagesize();
 	}
 
 	public ThreadMapper getThreadMapper() {
@@ -68,22 +66,16 @@ public class ListArticle extends ActionSupport {
 	}
 
 	public int getPageno() {
-		return pageno;
+		return pager.getPageno();
 	}
 
-	public void setPageno(int pageno) {
-		this.pageno = pageno;
+	private int inputPageno;
+	public void setPageno(int no) {
+		this.inputPageno=no;
 	}
-
 	public int getTotalpage() {
-		return totalpage;
+		return pager.getTotalpage();
 	}
-
-	public void setTotalpage(int totalpage) {
-		this.totalpage = totalpage;
-	}
-
-	private int totalpage;
 
 	public List<ArticleEntity> getArticlelist() {
 		return articlelist;
@@ -117,9 +109,6 @@ public class ListArticle extends ActionSupport {
 		this.attachmentMapper = attachmentMapper;
 	}
 
-	private BoardMapper boardMapper;
-	private BoardEntity board;
-	private int totalsize;
 
 	public ArticleMapper getArticleMapper() {
 		return articleMapper;
@@ -148,10 +137,6 @@ public class ListArticle extends ActionSupport {
 	
 	// action for get articles on thread
 	public String getByThread() throws Exception {
-		if (pagesize == 0)
-			pagesize = 20;
-		if (pageno == 0)
-			pageno = 1;
 		thread = threadMapper.getByEncodingUrl(tid);
 		if (thread == null) {
 			this.addActionError("找不到该主题。");
@@ -167,19 +152,13 @@ public class ListArticle extends ActionSupport {
 			this.addActionError("找不到该主题。");
 			return ERROR;
 		}
-		totalsize = thread.getArticlenumber();
+		int totalsize = thread.getArticlenumber();
 		if (totalsize==0) {
 			this.addActionError("该主题没有文章。");
 			return ERROR;
 		}
-		totalpage = totalsize/ pagesize	+ ((totalsize % pagesize > 0) ? 1 : 0);
-		if ((pageno - 1) * pagesize > totalsize) {
-			pageno = totalsize / pagesize + 1;
-		} else if ((pageno - 1) * pagesize == totalsize) {
-			pageno = totalsize / pagesize;
-		}
-		articlelist = articleMapper.getByThreadPerPage(thread.getThreadid(), (pageno - 1)
-				* pagesize, pagesize);
+		pager=new Pager(inputPageno, 0, totalsize);
+		articlelist = articleMapper.getByThreadPerPage(thread.getThreadid(), pager.getStart(), pager.getPagesize());
 		dealAttachment();
 		// WebApplicationContextUtils.getWebApplicationContext(this.)
 		
@@ -195,33 +174,19 @@ public class ListArticle extends ActionSupport {
 	}
 	
 	public int getTotalsize() {
-		return totalsize;
-	}
-
-	public void setTotalsize(int totalsize) {
-		this.totalsize = totalsize;
+		return pager.getTotalsize();
 	}
 
 	public String getByAuthor() throws Exception {
 //		System.out.println(getAuthor());
-		if (pagesize == 0)
-			pagesize = 20;
-		if (pageno == 0)
-			pageno = 1;
-		totalsize = articleMapper.countByAuthor(getAuthor());
+		int totalsize = articleMapper.countByAuthor(getAuthor());
 		if (totalsize==0) {
 			this.addActionError(getAuthor()+"没有发表过文章。");
 			return ERROR;
 		}
-		totalpage = totalsize/ pagesize	+ ((totalsize % pagesize > 0) ? 1 : 0);
-		if ((pageno - 1) * pagesize > totalsize) {
-			pageno = totalsize / pagesize + 1;
-		} else if ((pageno - 1) * pagesize == totalsize) {
-			pageno = totalsize / pagesize;
-		}
+		pager=new Pager(inputPageno, 0, totalsize);
 //		System.out.println(String.format("getAuthor:%s total:%d totalpage:%d pageno:%d",getAuthor(),totalsize,totalpage,pageno));
-		articlelist = articleMapper.getByAuthorPerPage(getAuthor(), (pageno - 1)
-				* pagesize, pagesize);
+		articlelist = articleMapper.getByAuthorPerPage(getAuthor(), pager.getStart(), pager.getPagesize());
 		// WebApplicationContextUtils.getWebApplicationContext(this.)
 		return SUCCESS;
 	}

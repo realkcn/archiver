@@ -15,6 +15,7 @@ import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.kbs.archiver.lucene.Tools;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
@@ -48,13 +49,8 @@ public class IndexArticle {
 		init();
 		DataSource ds = (DataSource) appContext.getBean("dataSource");
 		try {
-			Properties config = (Properties) appContext
-					.getBean("configproperties");
-			String workdir = ".";
-			if (config.get("workdir") != null) {
-				workdir = config.get("workdir") + "/lucene";
-			}
-			File index = new File(workdir);
+			Properties config = (Properties) appContext.getBean("configproperties");
+			File index = new File(Tools.getLucenceDirectory(appContext));
 			Analyzer analyzer = new IKAnalyzer();// 采用的分词器
 			IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35,
 					analyzer);
