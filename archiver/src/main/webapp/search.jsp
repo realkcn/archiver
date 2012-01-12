@@ -19,7 +19,8 @@
   
   <body>
   <jsp:include page="header.jsp" />
-  <form action="searchArticle" method="get">标题关键词<input type="text" name="subject" value="<s:property value="subject" />" /><input type="submit" value="搜索"/></form>
+  <form action="searchArticle" method="get">标题关键词<input type="text" name="subject" value="<s:property value="subject" />" /><br />
+  全文检索<input type="text" name="body" value="<s:property value="body" />" /><input type="submit" value="搜索"/></form>
   <br />
   <s:actionerror/>
   <s:if test="articlelist!=null">

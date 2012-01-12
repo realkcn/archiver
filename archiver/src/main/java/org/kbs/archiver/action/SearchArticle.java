@@ -8,7 +8,9 @@ import java.util.Date;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -30,12 +32,21 @@ import com.opensymphony.xwork2.ActionSupport;
 @SuppressWarnings("serial")
 public class SearchArticle extends ActionSupport {
 	private String subject = null;
+	private String body=null;
 	public String getSubject() {
 		return subject;
 	}
 
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	private ArticleMapper articleMapper = null;
@@ -89,7 +100,7 @@ public class SearchArticle extends ActionSupport {
 	}
 
 	public String Search() throws Exception {
-		if (subject==null)
+		if ((subject==null)&&(body==null))
 			return SUCCESS;
 		try {
 			int maxSearch = 10000;
@@ -117,9 +128,29 @@ public class SearchArticle extends ActionSupport {
 			searcher.setSimilarity(new IKSimilarity());
 			// Query query = IKQueryParser.parse("subject", subject);
 			Analyzer analyzer = new IKAnalyzer();
-			QueryParser queryParser = new QueryParser(Version.LUCENE_35,
-					"subject", analyzer);
-			Query query = queryParser.parse(subject);
+			Query query;
+			if ((subject==null)||(body==null)) {
+				if (subject==null) {
+					QueryParser queryParser = new QueryParser(Version.LUCENE_35,
+							"body", analyzer);
+					query = queryParser.parse(body);
+				} else  {
+					QueryParser queryParser = new QueryParser(Version.LUCENE_35,
+							"subject", analyzer);
+					query = queryParser.parse(subject);
+				}
+			} else {
+				BooleanClause.Occur[] flags = new BooleanClause.Occur[] {
+					     BooleanClause.Occur.MUST, BooleanClause.Occur.MUST};
+				query=MultiFieldQueryParser.parse(
+						Version.LUCENE_35,
+						new String [] {subject,body},
+						new String [] {"subject","body"},
+						flags,
+						analyzer
+						);
+				
+			}
 			TopDocs hits = searcher.search(query, maxSearch);
 			int totalsize = hits.totalHits;
 			pager = new Pager(inputPageno, 0, totalsize);
