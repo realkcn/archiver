@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationContext;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 public class Tools {
+	private static IndexWriter writer;
 	public static String getLucenceDirectory(ApplicationContext appContext) {
 		Properties config = (Properties) appContext.getBean("configproperties");
 		String workdir = ".";
@@ -23,19 +24,29 @@ public class Tools {
 		return workdir;
 	}
 	public static IndexWriter OpenWriter(ApplicationContext appContext,OpenMode mode,String dirsuffix) {
-		File index = new File(Tools.getLucenceDirectory(appContext)+dirsuffix);
+		if (writer!=null)
+			return writer;
+		synchronized (Tools.class) {
+		if (writer!=null)
+                        return writer;
+		try {
+		String indexDirectory=Tools.getLucenceDirectory(appContext)+dirsuffix;
+		File index = new File(indexDirectory);
+		FSDirectory indexdir=FSDirectory.open(index);
+		if(IndexWriter.isLocked(indexdir)) {
+			IndexWriter.unlock(indexdir);
+		}
 		Analyzer analyzer = new IKAnalyzer();// 采用的分词器
 		LimitTokenCountAnalyzer limitanalyzer = new LimitTokenCountAnalyzer(
 				analyzer, 1000);
 		IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35,
 				limitanalyzer);
 		conf.setOpenMode(mode);
-		IndexWriter writer;
-		try {
-			writer = new IndexWriter(FSDirectory.open(index), conf);
+			writer = new IndexWriter(indexdir, conf);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
 		}
 		return writer;
 	}
