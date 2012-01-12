@@ -5,6 +5,16 @@ import org.kbs.library.SimpleException;
 
 public class CachedSequence {
 	private String name;
+	private boolean readonly=true;
+	
+	public boolean isReadonly() {
+		return readonly;
+	}
+
+	public void setReadonly(boolean readonly) {
+		this.readonly = readonly;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -104,6 +114,7 @@ public class CachedSequence {
 			throw new SimpleException("update sequence error:", e.getMessage());
 		}
 		*/
-		seqMapper.update(new SequenceEntity(name, value.get()));
+		if (!readonly)
+			seqMapper.update(new SequenceEntity(name, value.get()));
 	}
 }

@@ -3,6 +3,8 @@ package org.kbs.archiver;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -13,7 +15,7 @@ import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
-import org.kbs.archiver.persistence.ThreadMapper;
+import org.kbs.archiver.persistence.*;
 import org.kbs.library.AttachmentData;
 import org.kbs.library.Converter;
 import org.kbs.library.FileHeaderInfo;
@@ -32,6 +34,8 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 	private Field articleidField;
 	private Field bodyField;
 	private Field subjectField;
+	private HashSet<String> filenameset;
+	private boolean testonly=true;
 
 	public ArchiverBoardImpl(ApplicationContext ctx, BoardEntity board,
 			String boardbasedir, IndexWriter writer) {
@@ -47,13 +51,18 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 	}
 
 	public Integer call() throws Exception {
-
 		SqlSessionTemplate batchsqlsession = (SqlSessionTemplate) ctx
 				.getBean("batchSqlSession");
 		CachedSequence threadseq = (CachedSequence) ctx.getBean("threadSeq");
 		CachedSequence articleseq = (CachedSequence) ctx.getBean("articleSeq");
 		CachedSequence attachmentseq = (CachedSequence) ctx
 				.getBean("attachmentSeq");
+		
+		if (!testonly) {
+			threadseq.setReadonly(false);
+			articleseq.setReadonly(false);
+			attachmentseq.setReadonly(false);
+		}
 		ArrayList<FileHeaderInfo> articlelist;
 		FileHeaderSet fhset = new FileHeaderSet();
 		Logger logger = Logger.getLogger(ArchiverBoardImpl.class);
@@ -64,7 +73,14 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		// SqlSessionTemplate sqlsession = (SqlSessionTemplate) ctx
 		// .getBean("sqlSession");
 
+		
 		ThreadMapper threadMapper = (ThreadMapper) ctx.getBean("threadMapper");
+		ArticleMapper articleMapper = (ArticleMapper) ctx.getBean("articleMapper");
+		List<String> filenames=articleMapper.getFilenamesByBoard(board.getBoardid());
+		filenameset=new HashSet<String>();
+		for (String f:filenames) {
+			filenameset.add(f);
+		}
 
 		String boardpath = boardbasedir + "/" + board.getName() + "/";
 		ArrayList<FileHeaderInfo> dirlist;
@@ -108,10 +124,10 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			// 处理正文
 			// article.setBody(body.getFirst());
 			logger.debug("deal:" + article.toString());
-			// System.out.println("中文");
-			// System.exit(0);
+			logger.info("add "+board.getName()+"/"+fh.getFilename());
+			
 			// lucene索引
-			if (!board.isIshidden()) {
+			if (!testonly&&!board.isIshidden()) {
 				articleidField
 						.setValue(new Long(article.getArticleid()).toString());
 				bodyField.setValue(body.getFirst());
@@ -174,7 +190,8 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 					totalattchmentsize += attachment.getData().length;
 					if (totalattchmentsize > 90 * 1024 * 1024) {// 大于90M
 																// flush一次.....
-						batchsqlsession.flushStatements();
+						if (!testonly)
+							batchsqlsession.flushStatements();
 						totalattchmentsize = attachment.getData().length;
 					}
 					/*
@@ -186,7 +203,8 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 					 * attachment.getEncodingurl()));
 					 */
 					try {
-						batchsqlsession
+						if (!testonly)
+							batchsqlsession
 								.insert("org.kbs.archiver.persistence.AttachmentMapper.insert",
 										attachment);
 					} catch (Exception e) {
@@ -204,14 +222,16 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			}
 			// 插入新记录
 			try {
-				batchsqlsession.insert(
+				if (!testonly)
+					batchsqlsession.insert(
 						"org.kbs.archiver.persistence.ArticleMapper.insert",
 						article);
 				// TODO:fix insert body
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("articleid", new Long(article.getArticleid()));
 				map.put("body", body.getFirst());
-				batchsqlsession
+				if (!testonly)
+					batchsqlsession
 						.insert("org.kbs.archiver.persistence.ArticleBodyMapper.addMap",
 								map);
 			} catch (Exception e) {
@@ -222,7 +242,8 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		// 加入新的thread
 		Set<Map.Entry<Long, ThreadEntity>> threadset = threads.entrySet();
 		for (Map.Entry<Long, ThreadEntity> value : threadset) {
-			batchsqlsession.insert(
+			if (!testonly)
+				batchsqlsession.insert(
 					"org.kbs.archiver.persistence.ThreadMapper.insert",
 					value.getValue());
 		}
@@ -230,7 +251,8 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		// 更新已经存在的thread
 		threadset = oldthreads.entrySet();
 		for (Map.Entry<Long, ThreadEntity> value : threadset) {
-			batchsqlsession.update(
+			if (!testonly)
+				batchsqlsession.update(
 					"org.kbs.archiver.persistence.ThreadMapper.update",
 					value.getValue());
 		}
@@ -240,10 +262,12 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 					.getArticleid());
 			board.setThreads(threads.size());
 			board.setArticles(articlelist.size());
-			batchsqlsession.update(
+			if (!testonly) {
+				batchsqlsession.update(
 					"org.kbs.archiver.persistence.BoardMapper.updateLast",
 					board);
-			batchsqlsession.flushStatements();
+				batchsqlsession.flushStatements();
+			}
 		}
 
 		logger.info(new Date(System.currentTimeMillis()) + " Archiver "
@@ -262,7 +286,8 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 
 		// TODO:处理更多异常情况，比如articleid重置，版面合并id重置等
 		for (FileHeaderInfo fh : dirlist) {
-			if (fh.getArticleid() > board.getLastarticleid()) { // new data
+//			if (fh.getArticleid() > board.getLastarticleid()) { // new data
+			if (!filenameset.contains(fh.getFilename())) {
 				articlelist.add(fh);
 			}
 		}
@@ -278,6 +303,14 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public boolean isTestonly() {
+		return testonly;
+	}
+
+	public void setTestonly(boolean testonly) {
+		this.testonly = testonly;
 	}
 
 }

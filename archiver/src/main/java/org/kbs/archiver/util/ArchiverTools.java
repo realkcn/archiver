@@ -27,6 +27,7 @@ public class ArchiverTools {
 		options.addOption("b", "board", false, "create board table.");
 		options.addOption("a","article",false,"update article on board");
 		options.addOption("f", "file", true, ".BOARDS file or .DIR file");
+		options.addOption("t", "test", false, "test only");
 		CommandLineParser parser = new PosixParser();
 		System.out.println("==========start util==========");
 		try {
@@ -52,20 +53,29 @@ public class ArchiverTools {
 
 	private static void updateArticle(CommandLine line) throws Exception {
 		String filename=line.getOptionValue('f', "/home/archiver/bbs");
-		IndexWriter writer=Tools.OpenWriter(appContext);
-		if (writer==null)
-			return;
+		boolean testonly=line.hasOption('t');
+		System.out.println("Set test only mode:"+testonly);
 		if (line.getArgs().length==0) {
 			//todo all board
 			ArchiverService service=new ArchiverService(appContext);
+			service.setTestonly(testonly);
  			service.setBoardBaseDir(filename);
 			service.run();
 		} else {
+			IndexWriter writer=null;
+			if (!testonly) {
+				writer=Tools.OpenWriter(appContext);
+				if (writer==null) {
+					System.err.println("Can't open indexwriter.");
+					return;
+				}
+			}
 			String boardname=line.getArgs()[0];
 			BoardMapper boardMapper=(BoardMapper) appContext.getBean("boardMapper");
 			BoardEntity board=boardMapper.getByName(boardname);
 			if (board!=null) {
 				ArchiverBoardImpl service=new ArchiverBoardImpl(appContext,board,filename,writer);
+				service.setTestonly(testonly);
 				service.call();
 			} else {
 				System.out.println("Board "+boardname+" not found.");

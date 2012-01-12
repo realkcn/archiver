@@ -39,6 +39,15 @@ public class ArchiverService extends TimerTask {
 
 	private ApplicationContext ctx;
 	private String boardBaseDir = null;
+	private boolean testonly;
+
+	public boolean isTestonly() {
+		return testonly;
+	}
+
+	public void setTestonly(boolean testonly) {
+		this.testonly = testonly;
+	}
 
 	public ArchiverService(ApplicationContext ctx) {
 		this.ctx = ctx;
@@ -76,6 +85,7 @@ public class ArchiverService extends TimerTask {
 				ArchiverBoardImpl worker;
 				worker = new ArchiverBoardImpl(ctx, theBoard, boardBaseDir,
 						writer);
+				worker.setTestonly(testonly);
 				exector.execute(worker);
 			}
 			exector.shutdown();
@@ -117,24 +127,27 @@ public class ArchiverService extends TimerTask {
 					"Can't found " + filename);
 			return;
 		}
+		CachedSequence boardSeq = (CachedSequence) ctx
+				.getBean("boardSeq");
+		boardSeq.setReadonly(testonly);
 		for (BoardHeaderInfo bh : bhset) {
 			if (!bh.isGroup()) {// 非目录版面才处理
 				BoardMapper boardMapper = (BoardMapper) ctx
 						.getBean("boardMapper");
-				CachedSequence boardSeq = (CachedSequence) ctx
-						.getBean("boardSeq");
 				BoardEntity board = boardMapper.getByName(bh.getFilename());
 				if (board == null) {
 					board = new BoardEntity(bh);
 					board.setBoardid(boardSeq.next());
-					boardMapper.insert(board);
+					if (!testonly)
+						boardMapper.insert(board);
 					Logger.getLogger(ArchiverService.class).info(
 							"add board:" + board.getBoardid() + " name:"
 									+ board.getName() + " cname:"
 									+ board.getCname());
 				} else {
 					board.set(bh);
-					boardMapper.update(board);
+					if (!testonly)
+						boardMapper.update(board);
 					Logger.getLogger(ArchiverService.class).info(
 							"update board:" + board.getBoardid() + " name:"
 									+ board.getName() + " cname:"
