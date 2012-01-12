@@ -120,19 +120,16 @@ public class IndexArticle {
 					analyzer, 1000);
 			IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35,
 					limitanalyzer);
-			// conf.setMaxBufferedDocs(10240);
 			conf.setOpenMode(OpenMode.CREATE);
+			IndexWriter writer = new IndexWriter(FSDirectory.open(index), conf);
+
 			int nThreads = 0;
 			if (config.get("workerthreads") != null)
 				nThreads = Integer.parseInt((String) config
 						.get("workerthreads"));
 			if (nThreads <= 0)
 				nThreads = 4;
-			//conf.setMaxThreadStates(nThreads);
-			// conf.setMaxBufferedDocs(500);
 
-			IndexWriter writer = new IndexWriter(FSDirectory.open(index), conf);
-			// writer.setMaxFieldLength(200);
 			long startTime = new Date().getTime();
 
 			Connection connection = ds.getConnection();
@@ -147,7 +144,6 @@ public class IndexArticle {
 				workerthread[i].start();
 			}
 			while (rs.next()) {
-				Document doc = new Document();
 				count++;
 				ArticleEntity article;
 				article=new ArticleEntity();

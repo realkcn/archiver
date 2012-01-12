@@ -1,5 +1,6 @@
 package org.kbs.archiver;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +12,16 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.LimitTokenCountAnalyzer;
+import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.LockObtainFailedException;
+import org.apache.lucene.util.Version;
+import org.kbs.archiver.lucene.Tools;
 import org.kbs.archiver.persistence.ArticleBodyMapper;
 import org.kbs.archiver.persistence.ArticleMapper;
 import org.kbs.archiver.persistence.AttachmentMapper;
@@ -19,6 +30,7 @@ import org.kbs.archiver.persistence.ThreadMapper;
 import org.kbs.library.BoardHeaderInfo;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 public class ArchiverService extends TimerTask {
 
@@ -55,9 +67,24 @@ public class ArchiverService extends TimerTask {
 				0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 		// LinkedList<Callable<Integer>> tasks=new
 		// LinkedList<Callable<Integer>>();
+		File index = new File(Tools.getLucenceDirectory(ctx));
+		Analyzer analyzer = new IKAnalyzer();// 采用的分词器
+		LimitTokenCountAnalyzer limitanalyzer = new LimitTokenCountAnalyzer(
+				analyzer, 1000);
+		IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35,
+				limitanalyzer);
+		conf.setOpenMode(OpenMode.APPEND);
+		IndexWriter writer;
+		try {
+			writer = new IndexWriter(FSDirectory.open(index), conf);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
 		for (BoardEntity theBoard : boards) {
 			ArchiverBoardImpl worker;
-			worker = new ArchiverBoardImpl(ctx, theBoard, boardBaseDir);
+			worker = new ArchiverBoardImpl(ctx, theBoard, boardBaseDir,writer);
 			exector.execute(worker);
 		}
 		exector.shutdown();
@@ -67,6 +94,13 @@ public class ArchiverService extends TimerTask {
 		 */
 		// 结束
 		running.set(false);
+		try {
+			writer.close();
+		} catch (CorruptIndexException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public synchronized void updateBoardDB(String filename) {

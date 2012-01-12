@@ -10,6 +10,9 @@ import java.util.concurrent.Callable;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.index.IndexWriter;
 import org.kbs.archiver.persistence.ThreadMapper;
 import org.kbs.library.AttachmentData;
 import org.kbs.library.Converter;
@@ -24,12 +27,23 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 	private ApplicationContext ctx;
 	private BoardEntity board;
 	private String boardbasedir;
+	private IndexWriter writer;
+	private Document document;
+	private Field articleidField;
+	private Field bodyField;
+	private Field subjectField;
 
 	public ArchiverBoardImpl(ApplicationContext ctx, BoardEntity board,
-			String boardbasedir) {
+			String boardbasedir, IndexWriter writer) {
 		this.ctx = ctx;
 		this.board = board;
 		this.boardbasedir = boardbasedir;
+		this.writer = writer;
+		document = new Document();
+		articleidField = new Field("articleid", "", Field.Store.YES,
+				Field.Index.NO);
+		bodyField = new Field("body", "", Field.Store.NO, Field.Index.ANALYZED);
+		subjectField=new Field("subject","",Field.Store.NO, Field.Index.ANALYZED);
 	}
 
 	public Integer call() throws Exception {
@@ -96,7 +110,18 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			logger.debug("deal:" + article.toString());
 			// System.out.println("中文");
 			// System.exit(0);
-
+			// lucene索引
+			articleidField
+					.setValue(new Long(article.getArticleid()).toString());
+			bodyField.setValue(body.getFirst());
+			subjectField.setValue(article.getSubject());
+			document.add(articleidField);
+			document.add(bodyField);
+			document.add(subjectField);
+			writer.addDocument(document);
+			document.removeField("articleid");
+			document.removeField("body");
+			document.removeField("subject");
 			// 处理thread,需要填写threadid,并看看是否要生成新的thread
 			ThreadEntity thread;
 			if (fh.getGroupid() > board.getLastarticleid()) {
@@ -180,12 +205,13 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 				batchsqlsession.insert(
 						"org.kbs.archiver.persistence.ArticleMapper.insert",
 						article);
-				//TODO:fix insert body
-				HashMap<String,Object> map=new HashMap<String,Object>();
+				// TODO:fix insert body
+				HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("articleid", new Long(article.getArticleid()));
 				map.put("body", body.getFirst());
-				batchsqlsession.insert(
-						"org.kbs.archiver.persistence.ArticleBodyMapper.addMap",map);
+				batchsqlsession
+						.insert("org.kbs.archiver.persistence.ArticleBodyMapper.addMap",
+								map);
 			} catch (Exception e) {
 				logger.error("insert into article " + article.toString(), e);
 			}
