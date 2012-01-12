@@ -123,7 +123,8 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 
 			// 处理正文
 			// article.setBody(body.getFirst());
-			logger.debug("deal:" + article.toString());
+			//System.out.println("deal:" + article.toString());
+			//logger.debug("deal:" + article.toString());
 			logger.info("add "+board.getName()+"/"+fh.getFilename());
 			
 			// lucene索引
@@ -285,8 +286,13 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		// Date now=new Date(System.currentTimeMillis());
 
 		// TODO:处理更多异常情况，比如articleid重置，版面合并id重置等
+		int count=0;
 		for (FileHeaderInfo fh : dirlist) {
 //			if (fh.getArticleid() > board.getLastarticleid()) { // new data
+			count++;
+			if (fh.getFilename().isEmpty()){
+				System.out.println("invalid fileheader-board:"+board.getName()+" index:"+count);
+			} else
 			if (!filenameset.contains(fh.getFilename())) {
 				articlelist.add(fh);
 			}
