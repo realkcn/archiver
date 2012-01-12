@@ -74,32 +74,48 @@ public class ArchiverService extends TimerTask {
 		IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35,
 				limitanalyzer);
 		conf.setOpenMode(OpenMode.APPEND);
-		IndexWriter writer;
+		IndexWriter writer = null;
 		try {
-			writer = new IndexWriter(FSDirectory.open(index), conf);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+			try {
+				writer = new IndexWriter(FSDirectory.open(index), conf);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
 
-		for (BoardEntity theBoard : boards) {
-			ArchiverBoardImpl worker;
-			worker = new ArchiverBoardImpl(ctx, theBoard, boardBaseDir,writer);
-			exector.execute(worker);
-		}
-		exector.shutdown();
-		/*
-		 * try { exector.invokeAll(tasks); } catch (InterruptedException e) {
-		 * e.printStackTrace(); }
-		 */
-		// 结束
-		running.set(false);
-		try {
-			writer.close();
-		} catch (CorruptIndexException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			for (BoardEntity theBoard : boards) {
+				ArchiverBoardImpl worker;
+				worker = new ArchiverBoardImpl(ctx, theBoard, boardBaseDir,
+						writer);
+				exector.execute(worker);
+			}
+			exector.shutdown();
+			try {
+				while (!exector.isTerminated())
+					exector.awaitTermination(1, TimeUnit.MINUTES);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			/*
+			 * try { exector.invokeAll(tasks); } catch (InterruptedException e)
+			 * { e.printStackTrace(); }
+			 */
+			// 结束
+			try {
+				System.out.println("索引文章数:"+writer.numDocs());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			running.set(false);
+		} finally {
+			if (writer != null)
+				try {
+					writer.close();
+				} catch (CorruptIndexException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		}
 	}
 
@@ -156,10 +172,10 @@ public class ArchiverService extends TimerTask {
 		articleMapper.delete(articleid);
 		articleBodyMapper.delete(articleid);
 		// 处理thread
-		if (board!=null)
+		if (board != null)
 			board.setThreads(0);
 		if (thread != null)
-			if (thread.getArticlenumber() > 1) {//是否处理第一篇是该文章的情况？
+			if (thread.getArticlenumber() > 1) {// 是否处理第一篇是该文章的情况？
 				thread.setArticlenumber(thread.getArticlenumber() - 1);
 				threadMapper.update(thread);
 			} else {
@@ -170,11 +186,11 @@ public class ArchiverService extends TimerTask {
 		// 处理board
 		if (board != null) {
 			board.setArticles(-1);
-//			System.out.println(board.toString());
-			boardMapper.updateLast(board); //其实这里和归档进程有竞争问题
+			// System.out.println(board.toString());
+			boardMapper.updateLast(board); // 其实这里和归档进程有竞争问题
 		}
 	}
-	
+
 	public synchronized void deleteThread(long threadid) {
 		BoardMapper boardMapper = (BoardMapper) ctx.getBean("boardMapper");
 		ThreadMapper threadMapper = (ThreadMapper) ctx.getBean("threadMapper");
@@ -185,10 +201,11 @@ public class ArchiverService extends TimerTask {
 		AttachmentMapper attachmentMapper = (AttachmentMapper) ctx
 				.getBean("attachmentMapper");
 
-		List<ArticleEntity> articlelist = articleMapper.getByThreadPerPage(threadid, 0, -1);
+		List<ArticleEntity> articlelist = articleMapper.getByThreadPerPage(
+				threadid, 0, -1);
 		ThreadEntity thread = threadMapper.get(threadid);
 		BoardEntity board = boardMapper.get(thread.getBoardid());
-		for (ArticleEntity article:articlelist) {
+		for (ArticleEntity article : articlelist) {
 			if (article.getAttachment() != 0) {
 				attachmentMapper.deleteByArticle(article.getArticleid());
 			}
@@ -204,15 +221,16 @@ public class ArchiverService extends TimerTask {
 		// 处理board
 		if (board != null) {
 			board.setArticles(-articlelist.size());
-			boardMapper.updateLast(board); //其实这里和归档进程有竞争问题
+			boardMapper.updateLast(board); // 其实这里和归档进程有竞争问题
 		}
 	}
 
 	public void deleteByAuthor(String author) {
 		ArticleMapper articleMapper = (ArticleMapper) ctx
 				.getBean("articleMapper");
-		List<ArticleEntity> articlelist = articleMapper.getByAuthorPerPage(author, 0, -1);
-		for (ArticleEntity article:articlelist) {
+		List<ArticleEntity> articlelist = articleMapper.getByAuthorPerPage(
+				author, 0, -1);
+		for (ArticleEntity article : articlelist) {
 			deleteArticle(article.getArticleid());
 		}
 	}
