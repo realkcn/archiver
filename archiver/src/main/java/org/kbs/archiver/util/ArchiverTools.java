@@ -28,6 +28,7 @@ public class ArchiverTools {
 		options.addOption("a","article",false,"update article on board");
 		options.addOption("f", "file", true, ".BOARDS file or .DIR file");
 		options.addOption("t", "test", false, "test only");
+		options.addOption("", "nolastupdate", false, "don't use last update for board");
 		CommandLineParser parser = new PosixParser();
 		System.out.println("==========start util==========");
 		try {
@@ -54,11 +55,14 @@ public class ArchiverTools {
 	private static void updateArticle(CommandLine line) throws Exception {
 		String filename=line.getOptionValue('f', "/home/archiver/bbs");
 		boolean testonly=line.hasOption('t');
+		boolean useLastUpdate=!line.hasOption("nolastupdate");
 		System.out.println("Set test only mode:"+testonly);
+		System.out.println("Set use last update:"+useLastUpdate);
 		if (line.getArgs().length==0) {
 			//todo all board
 			ArchiverService service=new ArchiverService(appContext);
 			service.setTestonly(testonly);
+			service.setUseLastUpdate(useLastUpdate);
  			service.setBoardBaseDir(filename);
 			service.run();
 		} else {
@@ -76,6 +80,7 @@ public class ArchiverTools {
 			if (board!=null) {
 				ArchiverBoardImpl service=new ArchiverBoardImpl(appContext,null,filename,writer);
 				service.setTestonly(testonly);
+				service.setUseLastUpdate(useLastUpdate);
 				service.work(board);
 			} else {
 				System.out.println("Board "+boardname+" not found.");

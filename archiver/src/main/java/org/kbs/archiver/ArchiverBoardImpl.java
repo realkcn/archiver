@@ -36,8 +36,9 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 	private Field bodyField;
 	private Field subjectField;
 	private HashSet<String> filenameset=new HashSet<String>();
-	private boolean testonly = true;
+	private boolean testonly = false;
 	private BlockingQueue<BoardEntity> workqueue;
+	private boolean useLastUpdate=true;
 
 	public ArchiverBoardImpl(ApplicationContext ctx,
 			BlockingQueue<BoardEntity> workqueue, String boardbasedir,
@@ -83,11 +84,13 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 				.getBean("threadMapper");
 		ArticleMapper articleMapper = (ArticleMapper) ctx
 				.getBean("articleMapper");
+		if (!useLastUpdate) {
 		List<String> filenames = articleMapper.getFilenamesByBoard(board
 				.getBoardid());
 		filenameset.clear();
 		for (String f : filenames) {
 			filenameset.add(f);
+		}
 		}
 
 		String boardpath = boardbasedir + "/" + board.getName() + "/";
@@ -304,13 +307,20 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		// TODO:处理更多异常情况，比如articleid重置，版面合并id重置等
 		int count = 0;
 		for (FileHeaderInfo fh : dirlist) {
-			// if (fh.getArticleid() > board.getLastarticleid()) { // new data
 			count++;
 			if (fh.getFilename().isEmpty()) {
 				System.out.println("invalid fileheader-board:"
 						+ board.getName() + " index:" + count);
-			} else if (!filenameset.contains(fh.getFilename())) {
-				articlelist.add(fh);
+			} else {
+				if (!useLastUpdate) { 
+					if (!filenameset.contains(fh.getFilename())) {
+						articlelist.add(fh);
+					}
+				} else {
+					if (fh.getArticleid() > board.getLastarticleid()) { // new data
+						articlelist.add(fh);
+					}
+				}
 			}
 		}
 		return articlelist;
@@ -333,6 +343,14 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 
 	public void setTestonly(boolean testonly) {
 		this.testonly = testonly;
+	}
+
+	public boolean isUseLastUpdate() {
+		return useLastUpdate;
+	}
+
+	public void setUseLastUpdate(boolean useLastUpdate) {
+		this.useLastUpdate = useLastUpdate;
 	}
 
 }

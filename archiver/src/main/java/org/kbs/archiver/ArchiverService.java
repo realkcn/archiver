@@ -40,7 +40,8 @@ public class ArchiverService extends TimerTask {
 
 	private ApplicationContext ctx;
 	private String boardBaseDir = null;
-	private boolean testonly;
+	private boolean testonly=false;
+	private boolean useLastUpdate;
 
 	public boolean isTestonly() {
 		return testonly;
@@ -48,6 +49,14 @@ public class ArchiverService extends TimerTask {
 
 	public void setTestonly(boolean testonly) {
 		this.testonly = testonly;
+	}
+
+	public boolean isUseLastUpdate() {
+		return useLastUpdate;
+	}
+
+	public void setUseLastUpdate(boolean useLastUpdate) {
+		this.useLastUpdate = useLastUpdate;
 	}
 
 	public ArchiverService(ApplicationContext ctx) {
@@ -87,6 +96,7 @@ public class ArchiverService extends TimerTask {
 				ArchiverBoardImpl worker = new ArchiverBoardImpl(ctx,
 						workqueue, boardBaseDir, writer);
 				worker.setTestonly(testonly);
+				worker.setUseLastUpdate(useLastUpdate);
 				workerthread[i] = new Thread(worker);
 				workerthread[i].start();
 			}
