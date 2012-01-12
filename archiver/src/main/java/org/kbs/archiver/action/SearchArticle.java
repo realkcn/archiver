@@ -138,6 +138,7 @@ public class SearchArticle extends ActionSupport {
 					articlelist.add(article);
 				}
 			}
+			searcher.close();
 			return SUCCESS;
 		} catch (Exception e) {
 			e.printStackTrace();

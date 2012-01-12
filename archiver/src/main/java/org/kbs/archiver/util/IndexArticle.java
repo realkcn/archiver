@@ -15,6 +15,7 @@ import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.LimitTokenCountAnalyzer;
 import org.kbs.archiver.lucene.Tools;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.wltea.analyzer.lucene.IKAnalyzer;
@@ -52,8 +53,9 @@ public class IndexArticle {
 			Properties config = (Properties) appContext.getBean("configproperties");
 			File index = new File(Tools.getLucenceDirectory(appContext));
 			Analyzer analyzer = new IKAnalyzer();// 采用的分词器
+			LimitTokenCountAnalyzer limitanalyzer=new LimitTokenCountAnalyzer(analyzer,1000);
 			IndexWriterConfig conf = new IndexWriterConfig(Version.LUCENE_35,
-					analyzer);
+					limitanalyzer);
 			conf.setMaxBufferedDocs(10240);
 			conf.setOpenMode(OpenMode.CREATE);
 			int nThreads = 0;
@@ -63,21 +65,27 @@ public class IndexArticle {
 			if (nThreads <= 0)
 				nThreads = 4;
 			conf.setMaxThreadStates(nThreads);
+//			conf.setMaxBufferedDocs(500);
+			
+			
 			IndexWriter writer = new IndexWriter(FSDirectory.open(index), conf);
+			//writer.setMaxFieldLength(200);
 			long startTime = new Date().getTime();
 
 			Connection connection = ds.getConnection();
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement
-					.executeQuery("select article.articleid,article.subject from article,board where board.boardid=article.boardid and board.ishidden=false and article.isvisible=true");
+					.executeQuery("select article.articleid,articlebody.body,article.subject from article,articlebody,board where article.articleid=articlebody.articleid and board.boardid=article.boardid and board.ishidden=false and article.isvisible=true");
 			int count=0;
 			while (rs.next()) {
 				Document doc = new Document();
 				count++;
 				doc.add(new Field("subject", rs.getString("subject"),
-						Field.Store.YES, Field.Index.ANALYZED));
+						Field.Store.NO, Field.Index.ANALYZED));
+				doc.add(new Field("body", rs.getString("body"),
+						Field.Store.NO, Field.Index.ANALYZED));
 				doc.add(new Field("articleid", rs.getString("articleid"),
-						Field.Store.YES, Field.Index.NOT_ANALYZED));
+						Field.Store.YES, Field.Index.NO));
 				writer.addDocument(doc);
 				if ((count%200000)==0)
 					System.out.println("索引文章 "+count+" 篇");
