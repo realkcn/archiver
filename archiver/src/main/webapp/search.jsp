@@ -23,7 +23,7 @@
   <br />
   <s:actionerror/>
   <s:if test="articlelist!=null">
-   <pg:pager total="${totalsize}" urlprefix="thread-${tid}-" urlsuffix=".html" jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
+   <pg:pager total="${totalsize}" urlprefix="search.jsp?subject=<s:property value="subject" />&pageno=" urlsuffix="" jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
  <jsp:include page="include/pagerindex.jsp" />
  <table border="1">
