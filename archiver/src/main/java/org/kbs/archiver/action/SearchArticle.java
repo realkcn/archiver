@@ -126,7 +126,7 @@ public class SearchArticle extends ActionSupport {
 			articlelist = new ArrayList<ArticleEntity>(pager.getPagesize());
 			//System.out.println("get from "+pager.getStart()+" to "+pager.getEnd());
 			for (int i = pager.getStart(); (i < pager.getEnd())
-					&& (i < totalsize); i++) {
+					&& (i < hits.scoreDocs.length ); i++) {
 				ScoreDoc sdoc = hits.scoreDocs[i];
 				Document doc = searcher.doc(sdoc.doc);
 				long articleid = Long.parseLong(doc.get("articleid"));
