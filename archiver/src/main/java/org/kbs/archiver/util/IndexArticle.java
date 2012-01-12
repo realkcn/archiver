@@ -40,6 +40,7 @@ class IndexThread implements Runnable {
 	private Document document;
 	private Field articleidField;
 	private Field bodyField;
+	private Field subjectField;
 	private IndexWriter writer;
 
 	public IndexThread(IndexWriter writer,BlockingQueue<ArticleEntity> queue) {
@@ -48,6 +49,7 @@ class IndexThread implements Runnable {
 		document=new Document();
 		articleidField=new Field("articleid","",Field.Store.YES, Field.Index.NO);
 		bodyField=new Field("body","",Field.Store.NO, Field.Index.ANALYZED);
+		subjectField=new Field("subject","",Field.Store.NO, Field.Index.ANALYZED);
 	}
 
 	public void add(ArticleEntity article) {
@@ -66,11 +68,15 @@ class IndexThread implements Runnable {
 				if (article.getArticleid()==-1)
 					break;
 				articleidField.setValue(new Long(article.getArticleid()).toString());
+				bodyField.setValue(article.getBody());
+				subjectField.setValue(article.getSubject());
 				document.add(articleidField);
 				document.add(bodyField);
+				document.add(subjectField);
 				writer.addDocument(document);
 				document.removeField("articleid");
 				document.removeField("body");
+				document.removeField("subject");
 			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -138,6 +144,7 @@ public class IndexArticle {
 			ArrayBlockingQueue<ArticleEntity> workqueue=new ArrayBlockingQueue<ArticleEntity>(1000);
 			for (int i=0;i<nThreads;i++) {
 				workerthread[i]=new Thread(new IndexThread(writer,workqueue));
+				workerthread[i].start();
 			}
 			while (rs.next()) {
 				Document doc = new Document();
@@ -145,6 +152,7 @@ public class IndexArticle {
 				ArticleEntity article;
 				article=new ArticleEntity();
 				article.setArticleid(rs.getLong("articleid"));
+				article.setSubject(rs.getString("subject"));
 				String body = articleBodyMapper.get(rs.getLong("articleid"));
 				if (body != null)
 					article.setBody(body);
@@ -154,7 +162,7 @@ public class IndexArticle {
 				}
 				workqueue.put(article);
 				if ((count % 200000) == 0)
-					System.out.println("索引文章 " + count + " 篇");
+					System.out.println("索引文章 " + count + " 篇 "+(new Date().getTime()-startTime)+" 毫秒");
 			}
 			//设置线程结束标志
 			ArticleEntity article=new ArticleEntity();
