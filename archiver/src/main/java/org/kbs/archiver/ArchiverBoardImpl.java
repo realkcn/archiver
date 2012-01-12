@@ -111,17 +111,19 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			// System.out.println("中文");
 			// System.exit(0);
 			// lucene索引
-			articleidField
-					.setValue(new Long(article.getArticleid()).toString());
-			bodyField.setValue(body.getFirst());
-			subjectField.setValue(article.getSubject());
-			document.add(articleidField);
-			document.add(bodyField);
-			document.add(subjectField);
-			writer.addDocument(document);
-			document.removeField("articleid");
-			document.removeField("body");
-			document.removeField("subject");
+			if (!board.isIshidden()) {
+				articleidField
+						.setValue(new Long(article.getArticleid()).toString());
+				bodyField.setValue(body.getFirst());
+				subjectField.setValue(article.getSubject());
+				document.add(articleidField);
+				document.add(bodyField);
+				document.add(subjectField);
+				writer.addDocument(document);
+				document.removeField("articleid");
+				document.removeField("body");
+				document.removeField("subject");
+			}
 			// 处理thread,需要填写threadid,并看看是否要生成新的thread
 			ThreadEntity thread;
 			if (fh.getGroupid() > board.getLastarticleid()) {
