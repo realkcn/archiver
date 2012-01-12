@@ -365,6 +365,7 @@
 					<server>ar.newsmth.net</server>
 					<path>/archiver</path>
 					<update>true</update>
+					<uriEncoding>UTF-8</uriEncoding>
 				</configuration>
 			</plugin>
 			<plugin>

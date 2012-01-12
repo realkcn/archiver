@@ -41,6 +41,11 @@
 				<param name="contentDisposition">filename="${attachment.name}"</param>
 			</result>
 		</action>
+		<action name="searchArticle" class="org.kbs.archiver.action.SearchArticle"
+			method="Search">
+			<result name="success">/search.jsp</result>
+			<result name="error">/search.jsp</result>
+		</action>
 	</package>
 	<package name="admin" extends="struts-default" namespace="/admin">
 		<action name="deleteArticle" class="org.kbs.archiver.action.admin.Delete"

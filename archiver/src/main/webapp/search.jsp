@@ -19,9 +19,13 @@
   
   <body>
   <jsp:include page="header.jsp" />
-  <form action="searchArticle" method="get">标题关键词<input type="text" name="subject"/><input type="submit" value="搜索"/></form>
+  <form action="searchArticle" method="get">标题关键词<input type="text" name="subject" value="<s:property value="subject" />" /><input type="submit" value="搜索"/></form>
   <br />
+  <s:actionerror/>
   <s:if test="articlelist!=null">
+   <pg:pager total="${totalsize}" urlprefix="thread-${tid}-" urlsuffix=".html" jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
+  一共 ${totalsize} 篇 <br />
+ <jsp:include page="include/pagerindex.jsp" />
  <table border="1">
    <s:iterator value="articlelist">
     <tr>
@@ -41,6 +45,7 @@
     </tr>
     </s:iterator>
   </table>
+ <jsp:include page="include/pagerindex.jsp" />
   </s:if>
   </body> 
 </html> 
