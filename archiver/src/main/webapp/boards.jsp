@@ -5,7 +5,7 @@
 <html> 
   <head> 
     
-    <title>水木社区版面列表</title> 
+    <title>水木社区归档站 - 版面列表</title> 
     
  <meta http-equiv="pragma" content="no-cache"> 
  <meta http-equiv="cache-control" content="no-cache"> 
