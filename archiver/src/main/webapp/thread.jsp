@@ -6,8 +6,7 @@
 <html> 
   <head> 
     
-    <title>水木社区版面主题列表</title> 
-    
+    <title>水木-${board.cname.substring(11)}-<s:property value="thread.subject" /></title> 
  <meta http-equiv="pragma" content="no-cache"> 
  <meta http-equiv="cache-control" content="no-cache"> 
  <meta http-equiv="expires" content="0">    
@@ -38,7 +37,7 @@
 -->
 		<td><a href="abyu-${author}.html">${author}</a></td>
 		<td>
-		<table board="1">
+		<table border="1">
 		<tr>
 		<td><s:property value="subject" /></td>      
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
