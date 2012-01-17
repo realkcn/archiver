@@ -44,28 +44,28 @@
 		<note>
 			rewrite /abyu-KCN.html to /listarticlebyauthor?author=KCN  
         </note>
-		<from>/abyu-([0-9a-zA-Z]+).html$</from>
+		<from>^/abyu-([0-9a-zA-Z]+).html$</from>
 		<to last="true">%{context-path}/listarticlebyauthor?author=$1</to>
 	</rule>
 	<rule>
 		<note>
 			rewrite /abyu-KCN.html to /listarticlebyauthor?author=KCN  
         </note>
-		<from>/abyu-([0-9a-zA-Z]+)-([0-9]+).html$</from>
+		<from>^/abyu-([0-9a-zA-Z]+)-([0-9]+).html$</from>
 		<to last="true">%{context-path}/listarticlebyauthor?author=$1&amp;pageno=$2</to>
 	</rule>
 	<rule>
 		<note>
 			rewrite /att-xxxxx/gfd.gif to /getattachment?encodingURL=xxxxxx
         </note>
-		<from>/att-([0-9a-zA-Z]+)/.*$</from>
+		<from>^/att-([0-9a-zA-Z]+)/.*$</from>
 		<to last="true">%{context-path}/getattachment?encodingURL=$1</to>
 	</rule>
 	<rule>
 		<note>
 			rewrite /article-xxxxx.html to /getArticle?encodingURL=xxxxx
         </note>
-		<from>/article-([0-9a-zA-Z]+)\.html$</from>
+		<from>^/article-([0-9a-zA-Z]+)\.html$</from>
 		<to last="true">%{context-path}/getarticle?encodingURL=$1</to>
 	</rule>
 </urlrewrite>
