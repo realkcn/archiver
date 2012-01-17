@@ -35,14 +35,11 @@
     <tr>
 <!--		<td><s:property value="#threadindex.count+(pageno-1)*pagesize" /></td> 
 -->
-		<td><a href="abyu-${author}.html">${author}</a></td>
-		<td>
-		<table border="1">
-		<tr>
+		<td rowSpan="2" ><a href="abyu-${author}.html">${author}</a></td>
 		<td><s:property value="subject" /></td>      
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
-		</tr>
-		<tr><td colSpan="2"><s:set name="body" value="body" scope="request" /><%
+	</tr>
+	<tr><td colSpan="2"><s:set name="body" value="body" scope="request" /><%
 			out.print(org.kbs.archiver.util.AnsiToHtml.ansiToHtml((String)request.getAttribute("body")));
 		%><br /><s:if test="attachments!=null">
 		   <s:iterator value="attachments"><s:set name="filename" value="name" scope="request" /><% {
@@ -52,11 +49,7 @@
 		   </s:iterator>
 		</s:if>
 		</td>
-		</tr>
-		</table>
-		</td>      
-    </tr>
-    
+	</tr>
    </s:iterator>
     </table>
 <jsp:include page="include/pagerindex.jsp" />
