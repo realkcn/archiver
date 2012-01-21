@@ -14,11 +14,12 @@
  <meta http-equiv="description" content="水木社区主题列表"> 
   
  
+<jsp:include page="include/htmlheader.jsp" />
   </head> 
     <pg:pager total="${totalsize}" urlprefix="board-${boardid}-" urlsuffix=".html" currentpage="${pageno}" pagesize="${pagesize}" />
 
   <body> 
-   <jsp:include page="header.jsp" />
+<jsp:include page="include/header.jsp" />
 <jsp:include page="include/pagerindex.jsp" />
 
    <table border="1"> <caption>版面主题列表</caption>
@@ -44,5 +45,6 @@
    </s:iterator>
     </table>
 <jsp:include page="include/pagerindex.jsp" />
+  <jsp:include page="include/footer.jsp" />
    </body> 
 </html> 

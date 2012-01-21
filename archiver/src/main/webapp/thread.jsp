@@ -14,10 +14,11 @@
  
  <link rel="stylesheet" type="text/css" href="css/ansi.css" />
   
+<jsp:include page="include/htmlheader.jsp" />
 </head> 
   
   <body>
-  <jsp:include page="header.jsp" />
+  <jsp:include page="include/header.jsp" />
   <pg:pager total="${totalsize}" urlprefix="thread-${tid}-" urlsuffix=".html" jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
 <jsp:include page="include/pagerindex.jsp" />
@@ -53,5 +54,6 @@
    </s:iterator>
     </table>
 <jsp:include page="include/pagerindex.jsp" />
+  <jsp:include page="include/footer.jsp" />
   </body> 
 </html> 

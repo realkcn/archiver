@@ -15,10 +15,11 @@
   
  <link rel="stylesheet" type="text/css" href="css/ansi.css" />
  
+<jsp:include page="include/htmlheader.jsp" />
   </head> 
   
   <body>
-  <jsp:include page="header.jsp" />
+  <jsp:include page="include/header.jsp" />
    <pg:pager total="${totalsize}" urlprefix="abyu-${author}-" urlsuffix=".html" currentpage="${pageno}" pagesize="${pagesize}" />
  
   ${author} 一共发表了 ${totalsize} 篇文章 <br />
@@ -53,5 +54,6 @@
    </s:iterator>
     </table>
 <jsp:include page="include/pagerindex.jsp" />
+  <jsp:include page="include/footer.jsp" />
   </body> 
 </html> 

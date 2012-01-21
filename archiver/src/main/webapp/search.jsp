@@ -15,10 +15,11 @@
   
  <link rel="stylesheet" type="text/css" href="css/ansi.css" />
  
+<jsp:include page="include/htmlheader.jsp" />
   </head> 
   
   <body>
-  <jsp:include page="header.jsp" />
+  <jsp:include page="include/header.jsp" />
   <form action="searchArticle" method="get">标题关键词<input type="text" name="subject" value="<s:property value="subject" />" /><br />
   全文检索<input type="text" name="body" value="<s:property value="body" />" /><input type="submit" value="搜索"/></form>
   <br />
@@ -48,5 +49,6 @@
   </table>
  <jsp:include page="include/pagerindex.jsp" />
   </s:if>
+  <jsp:include page="include/footer.jsp" />
   </body> 
 </html> 

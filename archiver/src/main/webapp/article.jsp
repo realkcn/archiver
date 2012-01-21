@@ -15,10 +15,11 @@
   
  <link rel="stylesheet" type="text/css" href="css/ansi.css" />
  
+<jsp:include page="include/htmlheader.jsp" />
   </head> 
   
   <body>
-  <jsp:include page="header.jsp" />
+  <jsp:include page="include/header.jsp" />
  <table border="1">
  <!-- 
    <tr>
@@ -46,5 +47,6 @@
     </tr>
     </s:iterator>
   </table>
+  <jsp:include page="include/footer.jsp" />
   </body> 
 </html> 

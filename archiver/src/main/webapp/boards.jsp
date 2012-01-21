@@ -13,6 +13,7 @@
  <meta http-equiv="description" content="水木社区版面列表"> 
   
  
+ <jsp:include page="include/htmlheader.jsp" />
   </head> 
   
   <body> 
@@ -33,5 +34,6 @@
     </tr>
    </s:iterator>
     </table>
+  <jsp:include page="include/footer.jsp" />
   </body> 
 </html> 

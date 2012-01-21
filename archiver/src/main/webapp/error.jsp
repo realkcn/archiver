@@ -11,10 +11,12 @@
  <meta http-equiv="cache-control" content="no-cache"> 
  <meta http-equiv="expires" content="0">    
  <meta http-equiv="description" content="错误页面"> 
+<jsp:include page="include/htmlheader.jsp" />
    </head> 
   
   <body>
-  <jsp:include page="header.jsp" />
+  <jsp:include page="include/header.jsp" />
 <s:actionerror/>
+   <jsp:include page="include/footer.jsp" />
    </body> 
 </html> 
