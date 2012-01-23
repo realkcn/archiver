@@ -20,23 +20,24 @@
   
   <body>
   <jsp:include page="include/header.jsp" />
-  <form action="searchArticle" method="get">标题关键词<input type="text" name="subject" value="<s:property value="subject" />" /><br />
-  全文检索<input type="text" name="body" value="<s:property value="body" />" /><input type="submit" value="搜索"/></form>
+  <form action="searchArticle" method="get">
+  <input type="text" name="body" value="<s:property value="body" />" /><input type="submit" value="搜索"/></form>
   <br />
   <s:actionerror/>
   <s:if test="articlelist!=null">
-   <pg:pager total="${totalsize}" urlprefix="searchArticle?subject=${subject}&body=${body}&pageno=" urlsuffix="" jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
+   <pg:pager total="${totalsize}" urlprefix="searchArticle?body=${body}&pageno=" urlsuffix="" jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
  <jsp:include page="include/pagerindex.jsp" />
  <table border="1">
    <s:iterator value="articlelist">
     <tr>
+		<td><a href="board-${boardid}.html">${boardname}</a></td>      
 		<td>${author}</td>      
 		<td>${subject}</td>      
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
 	</tr>
 	<tr>
-		<td colSpan="3"><s:set name="body" value="body" scope="request" /><%
+		<td colSpan="4"><s:set name="body" value="body" scope="request" /><%
 			out.print(org.kbs.archiver.util.AnsiToHtml.ansiToHtml((String)request.getAttribute("body")));
 		%><br /><br /><s:if test="attachments!=null">
 		   <s:iterator value="attachments"><s:set name="filename" value="name" scope="request" /><% {

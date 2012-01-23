@@ -37,7 +37,7 @@
 		delete from article where boardid=#{boardid}
 	</delete>
 	<select id="get" parameterType="long" resultType="org.kbs.archiver.ArticleEntity">
-		select * from article where articleid=#{articleid}
+		select article.*,board.cname boardname from article where articleid=#{articleid} and board.boardid-article.boardid
 	</select>
 	<!-- articleid,author,posttime,attachment,subject,isvisible,encodingurl -->
 	<select id="getByThreadPerPage" resultType="org.kbs.archiver.ArticleEntity">
@@ -49,7 +49,7 @@
 		</if>
 	</select>
 	<select id="getByAuthorPerPage" resultType="org.kbs.archiver.ArticleEntity">
-		SELECT article.*,articlebody.body FROM article,board,articlebody where
+		SELECT article.*,articlebody.body,board.cname boardname FROM article,board,articlebody where
 		article.author=#{author} and article.boardid=board.boardid and
 		board.ishidden=false and article.isvisible=true
 		and article.articleid=articlebody.articleid

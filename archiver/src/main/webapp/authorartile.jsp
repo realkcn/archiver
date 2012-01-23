@@ -37,11 +37,12 @@
     <tr>
 <!--		<td><s:property value="#threadindex.count+(pageno-1)*pagesize" /></td> 
 -->
+		<td><a href="board-${boardid}.html">${boardname}</a></td>      
 		<td>${subject}</td>      
 		<td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
 	</tr>
 	<tr>
-		<td colSpan="2"><s:set name="body" value="body" scope="request" /><%
+		<td colSpan="3"><s:set name="body" value="body" scope="request" /><%
 			out.print(org.kbs.archiver.util.AnsiToHtml.ansiToHtml((String)request.getAttribute("body")));
 		%><br /><br /><s:if test="attachments!=null">
 		   <s:iterator value="attachments"><s:set name="filename" value="name" scope="request" /><% {

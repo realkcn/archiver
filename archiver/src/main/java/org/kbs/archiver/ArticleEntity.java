@@ -19,6 +19,8 @@ public class ArticleEntity {
 	private String filename;
 	private long replyid;
 	private int datasize;
+	private String boardname;
+	
 	public int getDatasize() {
 		return datasize;
 	}
@@ -136,6 +138,12 @@ public class ArticleEntity {
 	}
 	public void setBody(String body) {
 		this.body = body;
+	}
+	public String getBoardname() {
+		return boardname;
+	}
+	public void setBoardname(String boardname) {
+		this.boardname = boardname;
 	}
 
 }
