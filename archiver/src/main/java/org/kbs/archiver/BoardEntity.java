@@ -10,8 +10,9 @@ public class BoardEntity {
 	private int articles;
 	private boolean ishidden;
 	private long lastarticleid;
-	private long lastdeleteid;
 	private String cname;
+	private String groupid;
+	private String section;
 	
 	@Override
 	public String toString() {
@@ -30,7 +31,6 @@ public class BoardEntity {
 //		articles=0;
 		ishidden=!bh.isNormalBoard();
 //		lastarticleid=0;
-//		lastdeleteid=0;
 		cname=bh.getTitle();
 	}
 	public void setBoardid(long boardid) {
@@ -47,12 +47,6 @@ public class BoardEntity {
 	}
 	public void setLastarticleid(long lastarticleid) {
 		this.lastarticleid = lastarticleid;
-	}
-	public long getLastdeleteid() {
-		return lastdeleteid;
-	}
-	public void setLastdeleteid(long lastdeleteid) {
-		this.lastdeleteid = lastdeleteid;
 	}
 	public long getBoardid() {
 		return boardid;
@@ -144,4 +138,16 @@ public class BoardEntity {
 		}
 	}
 	*/
+	public String getSection() {
+		return section;
+	}
+	public void setSection(String section) {
+		this.section = section;
+	}
+	public String getGroupid() {
+		return groupid;
+	}
+	public void setGroupid(String groupid) {
+		this.groupid = groupid;
+	}
 }
