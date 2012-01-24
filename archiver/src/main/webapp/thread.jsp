@@ -6,7 +6,7 @@
 <html> 
   <head> 
     
-    <title>水木-${board.cname.substring(11)}-<s:property value="thread.subject" /></title> 
+    <title>水木-${board.cname}-<s:property value="thread.subject" /></title> 
  <meta http-equiv="pragma" content="no-cache"> 
  <meta http-equiv="cache-control" content="no-cache"> 
  <meta http-equiv="expires" content="0">    

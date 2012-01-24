@@ -6,7 +6,7 @@
 <html> 
   <head> 
     
-    <title>水木社区归档站 - ${board.name}/${board.cname.substring(11)}</title> 
+    <title>水木社区归档站 - ${board.name}/${board.cname}</title> 
     
  <meta http-equiv="pragma" content="no-cache"> 
  <meta http-equiv="cache-control" content="no-cache"> 
