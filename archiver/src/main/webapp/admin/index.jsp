@@ -27,7 +27,8 @@ function searchoriginid()
 }
 </script>
 <body>
-<jsp:include page="../header.jsp" />
+<s:set var="docbase" value="'../'" scope="request" />
+<jsp:include page="../include/header.jsp" />
 <s:if test="#request.showurl==null">
 <s:set name="frameurl" value="''"/>
 </s:if>

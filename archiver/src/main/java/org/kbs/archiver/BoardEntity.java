@@ -32,6 +32,8 @@ public class BoardEntity {
 		ishidden=!bh.isNormalBoard();
 //		lastarticleid=0;
 		cname=bh.getTitle();
+		groupid=bh.getGroupid();
+		section=bh.getSection();
 	}
 	public void setBoardid(long boardid) {
 		this.boardid = boardid;
