@@ -31,7 +31,7 @@ public class TestSolrUpdater {
 	@Test
 	public void test() {
 		long articleid=Long.MAX_VALUE;
-		String magic = "abcdefghi09876__!";
+		String magic = "abcdefghi09876";
 		assertEquals(solrUpdater.init(InitTest.getAppContext()), true);
 		System.out.println("add article");
 		ArticleEntity article = new ArticleEntity();
