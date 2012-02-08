@@ -96,7 +96,7 @@ public class SearchArticleSolr extends ActionSupport {
 
 	    ModifiableSolrParams params = new ModifiableSolrParams();   
 	    params.set("fl","articleid");   
-	    params.set("q", URLEncoder.encode(querystring,"UTF-8"));   
+	    params.set("q", querystring);   
 	    params.set("start", inputPageno*20);   
 	    params.set("rows", 20);   
 	    QueryResponse response = solr.query(params);
