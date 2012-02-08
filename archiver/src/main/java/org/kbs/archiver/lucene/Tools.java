@@ -1,4 +1,5 @@
 package org.kbs.archiver.lucene;
+//已经不用这个类了
 
 import java.io.File;
 import java.util.Properties;

@@ -88,10 +88,10 @@ public class SearchArticleSolr extends ActionSupport {
 	    
 	    String querystring=new String();
 	    if (subject!=null) {
-	    	querystring="subject:"+URLEncoder.encode(subject,"UTF-8")+"+";
+	    		querystring="subject:\""+subject+"\" ";
 	    }
 	    if (body!=null) {
-	    	querystring+=body;
+	    		querystring+="\""+body+"\"";
 	    }
 
 	    ModifiableSolrParams params = new ModifiableSolrParams();   
