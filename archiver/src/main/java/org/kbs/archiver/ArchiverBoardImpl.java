@@ -6,16 +6,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 
-import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.index.IndexWriter;
+import org.kbs.archiver.lucene.SolrUpdater;
 import org.kbs.archiver.persistence.*;
 import org.kbs.library.AttachmentData;
 import org.kbs.library.Converter;
@@ -30,29 +26,18 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 	private ApplicationContext ctx;
 	// private BoardEntity board;
 	private String boardbasedir;
-	private IndexWriter writer;
-	private Document document;
-	private Field articleidField;
-	private Field bodyField;
-	private Field subjectField;
+	private SolrUpdater solrUpdater;
 	private HashSet<String> filenameset=new HashSet<String>();
 	private boolean testonly = false;
 	private BlockingQueue<BoardEntity> workqueue;
 	private boolean useLastUpdate=true;
 
 	public ArchiverBoardImpl(ApplicationContext ctx,
-			BlockingQueue<BoardEntity> workqueue, String boardbasedir,
-			IndexWriter writer) {
+			BlockingQueue<BoardEntity> workqueue, String boardbasedir,SolrUpdater solrUpdater) {
 		this.ctx = ctx;
 		this.workqueue = workqueue;
 		this.boardbasedir = boardbasedir;
-		this.writer = writer;
-		document = new Document();
-		articleidField = new Field("articleid", "", Field.Store.YES,
-				Field.Index.NO);
-		bodyField = new Field("body", "", Field.Store.NO, Field.Index.ANALYZED);
-		subjectField = new Field("subject", "", Field.Store.NO,
-				Field.Index.ANALYZED);
+		this.solrUpdater=solrUpdater;
 	}
 
 	public void work(BoardEntity board) throws Exception {
@@ -138,19 +123,9 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			// logger.debug("deal:" + article.toString());
 			logger.info("add " + board.getName() + "/" + fh.getFilename());
 
-			// lucene索引
+			// solr索引
 			if (!testonly && !board.isIshidden()) {
-				articleidField.setValue(new Long(article.getArticleid())
-						.toString());
-				bodyField.setValue(body.getFirst());
-				subjectField.setValue(article.getSubject());
-				document.add(articleidField);
-				document.add(bodyField);
-				document.add(subjectField);
-				writer.addDocument(document);
-				document.removeField("articleid");
-				document.removeField("body");
-				document.removeField("subject");
+				solrUpdater.addArticle(article, body.getFirst());
 			}
 			// 处理thread,需要填写threadid,并看看是否要生成新的thread
 			ThreadEntity thread;
@@ -238,7 +213,6 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 					batchsqlsession
 							.insert("org.kbs.archiver.persistence.ArticleMapper.insert",
 									article);
-				// TODO:fix insert body
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				map.put("articleid", new Long(article.getArticleid()));
 				map.put("body", body.getFirst());

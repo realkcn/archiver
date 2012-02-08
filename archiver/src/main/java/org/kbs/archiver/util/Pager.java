@@ -22,6 +22,22 @@ public class Pager {
 		}
 	}
 
+	public Pager(int pageno, int pagesize, long totalsize) {
+		if (pagesize == 0)
+			pagesize = 20;
+		if (pageno == 0)
+			pageno = 1;
+		this.pageno=pageno;
+		this.pagesize=pagesize;
+		this.totalsize=(int)totalsize;
+		totalpage = this.totalsize/ pagesize	+ ((this.totalsize % pagesize > 0) ? 1 : 0);
+		if ((pageno - 1) * pagesize > this.totalsize) {
+			pageno = this.totalsize / pagesize + 1;
+		} else if ((pageno - 1) * pagesize == totalsize) {
+			pageno = this.totalsize / pagesize;
+		}
+	}
+
 	public int getStart() {
 		return (pageno-1)*pagesize;
 	}

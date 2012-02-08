@@ -1,8 +1,5 @@
 package org.kbs.archiver;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.TimerTask;
@@ -13,16 +10,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.LimitTokenCountAnalyzer;
-import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.store.LockObtainFailedException;
-import org.apache.lucene.util.Version;
-import org.kbs.archiver.lucene.Tools;
+import org.kbs.archiver.lucene.SolrUpdater;
 import org.kbs.archiver.persistence.ArticleBodyMapper;
 import org.kbs.archiver.persistence.ArticleMapper;
 import org.kbs.archiver.persistence.AttachmentMapper;
@@ -85,16 +73,16 @@ public class ArchiverService extends TimerTask {
 			boardBaseDir = config.getProperty("boarddir");
 		// LinkedList<Callable<Integer>> tasks=new
 		// LinkedList<Callable<Integer>>();
-		IndexWriter writer = Tools.OpenWriter(ctx);
+		SolrUpdater solrUpdater=new SolrUpdater();
 		try {
-			if (writer == null)
-				throw new SimpleException("Can't open index writer");
+			if (!solrUpdater.init())
+				throw new SimpleException("Can't open solr");
 			Thread[] workerthread = new Thread[nThreads];
 			ArrayBlockingQueue<BoardEntity> workqueue = new ArrayBlockingQueue<BoardEntity>(
 					20);
 			for (int i = 0; i < nThreads; i++) {
 				ArchiverBoardImpl worker = new ArchiverBoardImpl(ctx,
-						workqueue, boardBaseDir, writer);
+						workqueue, boardBaseDir, solrUpdater);
 				worker.setTestonly(testonly);
 				worker.setUseLastUpdate(useLastUpdate);
 				workerthread[i] = new Thread(worker);
@@ -117,23 +105,12 @@ public class ArchiverService extends TimerTask {
 				e.printStackTrace();
 			}
 			// 结束
-			try {
-				System.out.println("索引文章总数:" + writer.numDocs());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			solrUpdater.commit();
 			running.set(false);
 		} catch (SimpleException e) {
 			e.printStackTrace();
 		} finally {
-			if (writer != null)
-				try {
-					writer.close();
-				} catch (CorruptIndexException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+
 		}
 	}
 
@@ -208,6 +185,12 @@ public class ArchiverService extends TimerTask {
 			board.setArticles(-1);
 			// System.out.println(board.toString());
 			boardMapper.updateLast(board); // 其实这里和归档进程有竞争问题
+		}
+		//处理索引
+		SolrUpdater solrUpdater=new SolrUpdater();
+		if (!solrUpdater.init()) {
+			solrUpdater.delete(articleid);
+			solrUpdater.commit();
 		}
 	}
 
