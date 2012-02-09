@@ -73,16 +73,13 @@ public class ArchiverService extends TimerTask {
 			boardBaseDir = config.getProperty("boarddir");
 		// LinkedList<Callable<Integer>> tasks=new
 		// LinkedList<Callable<Integer>>();
-		SolrUpdater solrUpdater=new SolrUpdater();
 		try {
-			if (!solrUpdater.init(ctx))
-				throw new SimpleException("Can't open solr");
 			Thread[] workerthread = new Thread[nThreads];
 			ArrayBlockingQueue<BoardEntity> workqueue = new ArrayBlockingQueue<BoardEntity>(
 					20);
 			for (int i = 0; i < nThreads; i++) {
 				ArchiverBoardImpl worker = new ArchiverBoardImpl(ctx,
-						workqueue, boardBaseDir, solrUpdater);
+						workqueue, boardBaseDir);
 				worker.setTestonly(testonly);
 				worker.setUseLastUpdate(useLastUpdate);
 				workerthread[i] = new Thread(worker);
@@ -102,13 +99,12 @@ public class ArchiverService extends TimerTask {
 					workerthread[i].join();
 				}
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				LOG.error("run",e);
 			}
 			// 结束
-			solrUpdater.commit();
 			running.set(false);
 		} catch (SimpleException e) {
-			e.printStackTrace();
+			LOG.error("run",e);
 		} finally {
 
 		}

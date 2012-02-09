@@ -18,6 +18,7 @@ import org.kbs.library.AttachmentData;
 import org.kbs.library.Converter;
 import org.kbs.library.FileHeaderInfo;
 import org.kbs.library.FileHeaderSet;
+import org.kbs.library.SimpleException;
 import org.kbs.library.TwoObject;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.context.ApplicationContext;
@@ -35,11 +36,13 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 	private boolean useLastUpdate=true;
 
 	public ArchiverBoardImpl(ApplicationContext ctx,
-			BlockingQueue<BoardEntity> workqueue, String boardbasedir,SolrUpdater solrUpdater) {
+			BlockingQueue<BoardEntity> workqueue, String boardbasedir) throws SimpleException {
 		this.ctx = ctx;
 		this.workqueue = workqueue;
 		this.boardbasedir = boardbasedir;
-		this.solrUpdater=solrUpdater;
+		solrUpdater=new SolrUpdater();
+		if (!solrUpdater.init(ctx))
+			throw new SimpleException("Can't open solr");
 	}
 
 	public void work(BoardEntity board) throws Exception {
@@ -59,7 +62,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		}
 		ArrayList<FileHeaderInfo> articlelist;
 		FileHeaderSet fhset = new FileHeaderSet();
-		LOG.info("{} Archiver {} start up:",new Date(System.currentTimeMillis()),board.getName());
+//		LOG.info("{} Archiver {} start up:",new Date(System.currentTimeMillis()),board.getName());
 		long totalattchmentsize = 0;
 
 		// SqlSessionTemplate sqlsession = (SqlSessionTemplate) ctx
@@ -253,12 +256,12 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 								board);
 				batchsqlsession.flushStatements();
 			}
+			solrUpdater.commit();
+			LOG.info(" Archiver "
+					+ board.getName() + " end:add " + articlelist.size()
+					+ " articles " + threads.size() + " threads,update "
+					+ oldthreads.size() + "threads");
 		}
-
-		LOG.info(new Date(System.currentTimeMillis()) + " Archiver "
-				+ board.getName() + " end:add " + articlelist.size()
-				+ " articles " + threads.size() + " threads,update "
-				+ oldthreads.size() + "threads");
 	}
 	public Integer call() throws Exception {
 		while (!Thread.interrupted()) {
