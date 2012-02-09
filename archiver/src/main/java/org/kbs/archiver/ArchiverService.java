@@ -5,11 +5,7 @@ import java.util.Properties;
 import java.util.TimerTask;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.Logger;
 import org.kbs.archiver.lucene.SolrUpdater;
 import org.kbs.archiver.persistence.ArticleBodyMapper;
 import org.kbs.archiver.persistence.ArticleMapper;
@@ -21,9 +17,13 @@ import org.kbs.library.SimpleException;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.wltea.analyzer.lucene.IKAnalyzer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class ArchiverService extends TimerTask {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ArchiverService.class);
 	java.util.concurrent.atomic.AtomicBoolean running = new java.util.concurrent.atomic.AtomicBoolean();
 
 	private ApplicationContext ctx;
@@ -117,8 +117,7 @@ public class ArchiverService extends TimerTask {
 	public synchronized void updateBoardDB(String filename) {
 		List<BoardHeaderInfo> bhset = BoardHeaderInfo.readDotBoard(filename);
 		if (bhset == null) {
-			Logger.getLogger(org.kbs.archiver.ArchiverService.class).error(
-					"Can't found " + filename);
+			LOG.error("Can't found {}",filename);
 			return;
 		}
 		CachedSequence boardSeq = (CachedSequence) ctx.getBean("boardSeq");
@@ -133,7 +132,7 @@ public class ArchiverService extends TimerTask {
 					board.setBoardid(boardSeq.next());
 					if (!testonly)
 						boardMapper.insert(board);
-					Logger.getLogger(ArchiverService.class).info(
+					LOG.info(
 							"add board:" + board.getBoardid() + " name:"
 									+ board.getName() + " cname:"
 									+ board.getCname());
@@ -141,7 +140,7 @@ public class ArchiverService extends TimerTask {
 					board.set(bh);
 					if (!testonly)
 						boardMapper.update(board);
-					Logger.getLogger(ArchiverService.class).info(
+					LOG.info(
 							"update board:" + board.getBoardid() + " name:"
 									+ board.getName() + " cname:"
 									+ board.getCname());

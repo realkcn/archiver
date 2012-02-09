@@ -9,8 +9,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.apache.log4j.Logger;
 import org.kbs.archiver.lucene.SolrUpdater;
 import org.kbs.archiver.persistence.*;
 import org.kbs.library.AttachmentData;
@@ -23,6 +24,7 @@ import org.springframework.context.ApplicationContext;
 
 public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ArchiverBoardImpl.class);
 	private ApplicationContext ctx;
 	// private BoardEntity board;
 	private String boardbasedir;
@@ -57,9 +59,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		}
 		ArrayList<FileHeaderInfo> articlelist;
 		FileHeaderSet fhset = new FileHeaderSet();
-		Logger logger = Logger.getLogger(ArchiverBoardImpl.class);
-		logger.info(new Date(System.currentTimeMillis()) + " Archiver "
-				+ board.getName() + " start up:");
+		LOG.info("{} Archiver {} start up:",new Date(System.currentTimeMillis()),board.getName());
 		long totalattchmentsize = 0;
 
 		// SqlSessionTemplate sqlsession = (SqlSessionTemplate) ctx
@@ -81,7 +81,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		String boardpath = boardbasedir + "/" + board.getName() + "/";
 		ArrayList<FileHeaderInfo> dirlist;
 		if (!(new java.io.File(boardpath + ".DIR").exists())) {
-			logger.error(boardpath + ".DIR no exists");
+			LOG.warn("{} .DIR no exists",boardpath);
 			return;
 		}
 		dirlist = fhset.readBBSDir(boardpath + ".DIR");
@@ -94,8 +94,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		// 生成需要处理的list
 		// batchsqlsession.execute(new SqlMapClientCallback() {
 		articlelist = gennewlist(board,dirlist);
-		logger.info("load " + board.getName() + ":" + boardpath + ".DIR:"
-				+ articlelist.size() + "/" + dirlist.size());
+		LOG.debug("load {}:{}/.DIR:{}/{}",new Object[] {board.getName(),boardpath,articlelist.size(),dirlist.size()});
 		HashMap<Long, ThreadEntity> threads = new HashMap<Long, ThreadEntity>();
 		HashMap<Long, ThreadEntity> oldthreads = new HashMap<Long, ThreadEntity>();
 
@@ -121,7 +120,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			// article.setBody(body.getFirst());
 			// System.out.println("deal:" + article.toString());
 			// logger.debug("deal:" + article.toString());
-			logger.info("add " + board.getName() + "/" + fh.getFilename());
+			LOG.debug("add {}/{}",board.getName(),fh.getFilename());
 
 			// solr索引
 			if (!testonly && !board.isIshidden()) {
@@ -140,7 +139,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 				}
 				threads.put(fh.getGroupid(), thread);
 			} else { // 处理已经存在的thread
-				logger.debug("old thread:" + fh.getGroupid());
+				LOG.debug("old thread:{}",fh.getGroupid());
 				thread = oldthreads.get(fh.getGroupid());
 				if (thread == null) {
 					// 从数据库中获得原来的thread信息
@@ -195,7 +194,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 									.insert("org.kbs.archiver.persistence.AttachmentMapper.insert",
 											attachment);
 					} catch (Exception e) {
-						logger.error(
+						LOG.error(
 								String.format(
 										"insert into attachment name:%s id:%d aid:%d order:%d data:%d url:%s",
 										attachment.getName(),
@@ -221,7 +220,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 							.insert("org.kbs.archiver.persistence.ArticleBodyMapper.addMap",
 									map);
 			} catch (Exception e) {
-				logger.error("insert into article " + article.toString(), e);
+				LOG.error("insert into article " + article.toString(), e);
 			}
 		}
 
@@ -256,7 +255,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			}
 		}
 
-		logger.info(new Date(System.currentTimeMillis()) + " Archiver "
+		LOG.info(new Date(System.currentTimeMillis()) + " Archiver "
 				+ board.getName() + " end:add " + articlelist.size()
 				+ " articles " + threads.size() + " threads,update "
 				+ oldthreads.size() + "threads");
@@ -302,12 +301,10 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			call();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("run",e);
 		}
 	}
 

@@ -7,7 +7,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
 import org.kbs.library.Converter;
 import org.kbs.library.SimpleException;
 
@@ -17,10 +16,12 @@ import com.sleepycat.db.DatabaseEntry;
 import com.sleepycat.db.DatabaseException;
 import com.sleepycat.db.DatabaseType;
 import com.sleepycat.db.OperationStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ArticleBodyBDB implements ArticleBodyMapper {
     private static Database bodyDb = null;
-    private Logger logger;
+    private static final Logger LOG = LoggerFactory.getLogger(ArticleBodyBDB.class);
     
     @Override
 	public void add(long articleid, String body) {
@@ -60,7 +61,6 @@ public class ArticleBodyBDB implements ArticleBodyMapper {
             bodyDb = new Database(props.getProperty("bdbdir")+"/articlebody.db",
                     "articlebody",
                     envConfig);
-            logger=Logger.getLogger(org.kbs.archiver.persistence.ArticleBodyBDB.class);
         } catch (FileNotFoundException fnfe) {
         	throw new SimpleException("bdb file not found:"+props.getProperty("bdbdir")+"/articlebody.db");
         } catch (DatabaseException e) {
@@ -75,7 +75,7 @@ public class ArticleBodyBDB implements ArticleBodyMapper {
         try {
 			bodyDb.put(null, key, data);
 		} catch (DatabaseException e) {
-			logger.error("put "+articleid+" error:",e);
+			LOG.error("put "+articleid+" error:",e);
 		}
     }
     
@@ -86,7 +86,7 @@ public class ArticleBodyBDB implements ArticleBodyMapper {
         try {
 			bodyDb.delete(null, key);
 		} catch (DatabaseException e) {
-			logger.error("delete "+articleid+" error:",e);
+			LOG.error("delete "+articleid+" error:",e);
 		}
 	}
 
@@ -100,9 +100,9 @@ public class ArticleBodyBDB implements ArticleBodyMapper {
 				value=new String(data.getData(),"UTF-8");
 			}
 		} catch (DatabaseException e) {
-			logger.error("get "+articleid+" error:",e);
+			LOG.error("get "+articleid+" error:",e);
 		} catch (UnsupportedEncodingException e) {
-			logger.error("get "+articleid+" error:",e);
+			LOG.error("get "+articleid+" error:",e);
 		}
         return value;
     }
@@ -110,7 +110,7 @@ public class ArticleBodyBDB implements ArticleBodyMapper {
 		try {
 			bodyDb.close();
 		} catch (DatabaseException e) {
-			e.printStackTrace();
+			LOG.error("shutdown:",e);
 		}
     }
 }

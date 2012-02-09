@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
@@ -14,9 +13,11 @@ import org.kbs.archiver.ArticleEntity;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-//TODO: log error
 public class SolrUpdater {
+    private static final Logger LOG = LoggerFactory.getLogger(SolrUpdater.class);
 	private SolrServer solr;
 	private SolrInputDocument document;
 	
@@ -40,7 +41,7 @@ public class SolrUpdater {
 			e.printStackTrace();
 		}
 		if (solr==null) {
-			Logger.getLogger(SolrUpdater.class).error("solr server initial failed:"+config.getProperty("solrurl"));
+			LOG.error("solr server initial failed: {}",config.getProperty("solrurl"));
 			return false;
 		}
 		document=new SolrInputDocument();
@@ -59,9 +60,9 @@ public class SolrUpdater {
 		try {
 			solr.add(document);
 		} catch (SolrServerException e) {
-			e.printStackTrace();
+			LOG.error("add article error:",e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error("add article error:",e);
 		}
 	}
 	public void commit() {
@@ -69,9 +70,9 @@ public class SolrUpdater {
 			try {
 				solr.commit();
 			} catch (SolrServerException e) {
-				e.printStackTrace();
+				LOG.error("commit error:",e);
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOG.error("commit error:",e);
 			}
 	}
 
@@ -80,9 +81,9 @@ public class SolrUpdater {
 			try {
 				solr.deleteById(new Long(articleid).toString());
 			} catch (SolrServerException e) {
-				e.printStackTrace();
+				LOG.error("delete error:",e);
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOG.error("delete error:",e);
 			}
 	}
 }

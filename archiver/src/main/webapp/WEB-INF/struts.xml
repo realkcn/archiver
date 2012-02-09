@@ -8,6 +8,7 @@
 	<constant name="struts.objectFactory" value="spring" />
 	<constant name="struts.configuration.xml.reload" value="true" />
 	<constant name="struts.ognl.allowStaticMethodAccess" value="false" />
+	<constant name="struts.action.extension" value="do" /> 
 	<package name="default" extends="struts-default" namespace="/">
 		<global-results>
 			<result name="error">/error.jsp</result>

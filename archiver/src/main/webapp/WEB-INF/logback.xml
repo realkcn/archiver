@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- debug="true" 启动时输出配置加载信息 scan="true" 默认每分钟自动扫描 scanPeriod="30 seconds" 
+	设置每30秒自动扫描,若没有指定具体单位则以milliseconds为标准(单位:milliseconds, seconds, minutes or 
+	hours) -->
+<configuration scan="true" scanPeriod="5 minutes">
+	<contextName>Logging</contextName>
+	<!-- property name="tip" value=":" / -->
+	<property name="logback.project.name" value="archiver" />
+	<property name="logback.logs.module.name" value="default" />
+	<timestamp key="byDay" datePattern="yyyyMMdd" />
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<param name="Threshold" value="WARN" />
+		<encoder charset="UTF-8">
+			<pattern>%n[%level] - %date - %logger#%line%n %msg%n</pattern>
+		</encoder>
+		<target>System.out</target>
+	</appender>
+	<appender name="file"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>${archiver.workdir}/log/archiver-%d{yyyy-MM-dd}-${i}.log
+			</fileNamePattern>
+			<maxHistory>60</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date %level [%thread] %logger{36} [%file : %line] %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	<logger name="org.springframework" level="WARN" />
+	<logger name="org.apache.struts2" level="WARN" />
+	<logger name="com.opensymphony" level="WARN" />
+	<logger name="org.mybatis" level="WARN" />
+	<logger name="org.apache.ibatis" level="WARN" />
+
+	<!-- jdbc pool -->
+	<logger name="org.apache.commons.dbcp" level="WARN" />
+	<logger name="java.sql" level="WARN" />
+
+	<!-- debug -->
+	<logger name="org.apache.jasper.compiler" level="WARN" />
+
+	<logger name="org.kbs" level="INFO" />
+	
+	<root level="${archiver.loglevel}">
+		<appender-ref ref="console" />
+		<appender-ref ref="file" />
+	</root>
+</configuration>  

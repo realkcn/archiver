@@ -3,7 +3,6 @@ package org.kbs.archiver.action;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.kbs.archiver.ArticleEntity;
 import org.kbs.archiver.BoardEntity;
 import org.kbs.archiver.ThreadEntity;
@@ -14,12 +13,13 @@ import org.kbs.archiver.persistence.BoardMapper;
 import org.kbs.archiver.persistence.ThreadMapper;
 import org.kbs.archiver.util.Pager;
 import org.kbs.library.AttachmentData;
-
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ListArticle extends ActionSupport {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ListArticle.class);
 	/**
 	 * 
 	 */
@@ -144,7 +144,7 @@ public class ListArticle extends ActionSupport {
 		}
 		board=boardMapper.get(thread.getBoardid());
 		if (board==null) {
-			Logger.getLogger(ListArticle.class).warn("found thread without board:"+threadid+" on boardid:"+thread.getBoardid());
+			LOG.warn("found thread without board:"+threadid+" on boardid:"+thread.getBoardid());
 			this.addActionError("找不到该主题。");
 			return ERROR;
 		}

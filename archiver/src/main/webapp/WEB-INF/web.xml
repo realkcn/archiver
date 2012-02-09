@@ -29,11 +29,20 @@
 
 	<filter-mapping>
 		<filter-name>struts2</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>*.do</url-pattern>
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>INCLUDE</dispatcher>
 	</filter-mapping>
+	<servlet>
+		<servlet-name>ViewStatusMessages</servlet-name>
+		<servlet-class>ch.qos.logback.classic.ViewStatusMessagesServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ViewStatusMessages</servlet-name>
+		<url-pattern>/admin/LogStatus</url-pattern>
+	</servlet-mapping>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -62,14 +71,4 @@
 		<exception-type>java.lang.Exception</exception-type>
 		<location>/50x.html</location>
 	</error-page>
- 	<jsp-config>
- 	<taglib>
-		<taglib-uri>
-			http://jsptags.com/tags/navigation/pager
-		</taglib-uri>
-		<taglib-location>
-			/WEB-INF/pager.tld
-		</taglib-location>
-	</taglib>
- 	</jsp-config>
- </web-app>
+</web-app>

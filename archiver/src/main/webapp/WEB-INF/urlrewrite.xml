@@ -7,65 +7,65 @@
 
 	<rule>
 		<note>
-			rewrite /boards.html to /listboard 
+			rewrite /boards.html to /listboard.do 
         </note>
 		<from>^/boards.html$</from>
-		<to last="true">%{context-path}/listboard</to>
+		<to last="true">%{context-path}/listboard.do</to>
 	</rule>
 	<rule>
 		<note>
-			rewrite /board-101.html to /listthread?id=101  
+			rewrite /board-101.html to /listthread.do?id=101  
         </note>
 		<from>^/board-([0-9]+).html$</from>
-		<to last="true">%{context-path}/listthread?boardid=$1</to>
+		<to last="true">%{context-path}/listthread.do?boardid=$1</to>
 	</rule>
 	<rule>
 		<note>
-			rewrite /board-101-1.html to /listthread?id=101&amp;pageno=1  
+			rewrite /board-101-1.html to /listthread.do?id=101&amp;pageno=1  
         </note>
 		<from>^/board-([0-9]+)-([0-9]+).html$</from>
-		<to last="true">%{context-path}/listthread?boardid=$1&amp;pageno=$2</to>
+		<to last="true">%{context-path}/listthread.do?boardid=$1&amp;pageno=$2</to>
 	</rule>
 	<rule>
 		<note>
-			rewrite /thread-101.html to /thread?tid=101  
+			rewrite /thread-101.html to /thread.do?tid=101  
         </note>
 		<from>/thread-([0-9a-zA-Z]+).html$</from>
-		<to last="true">%{context-path}/listarticle?tid=$1</to>
+		<to last="true">%{context-path}/listarticle.do?tid=$1</to>
 	</rule>
 	<rule>
 		<note>
-			rewrite /thread-101-1.html to /listarticle?id=101&amp;pageno=1  
+			rewrite /thread-101-1.html to /listarticle.do?id=101&amp;pageno=1  
         </note>
 		<from>^/thread-([0-9a-zA-Z]+)-([0-9]+).html$</from>
-		<to last="true">%{context-path}/listarticle?tid=$1&amp;pageno=$2</to>
+		<to last="true">%{context-path}/listarticle.do?tid=$1&amp;pageno=$2</to>
 	</rule>
 	<rule>
 		<note>
-			rewrite /abyu-KCN.html to /listarticlebyauthor?author=KCN  
+			rewrite /abyu-KCN.html to /listarticlebyauthor.do?author=KCN  
         </note>
 		<from>^/abyu-([0-9a-zA-Z]+).html$</from>
-		<to last="true">%{context-path}/listarticlebyauthor?author=$1</to>
+		<to last="true">%{context-path}/listarticlebyauthor.do?author=$1</to>
 	</rule>
 	<rule>
 		<note>
-			rewrite /abyu-KCN.html to /listarticlebyauthor?author=KCN  
+			rewrite /abyu-KCN.html to /listarticlebyauthor.do?author=KCN  
         </note>
 		<from>^/abyu-([0-9a-zA-Z]+)-([0-9]+).html$</from>
-		<to last="true">%{context-path}/listarticlebyauthor?author=$1&amp;pageno=$2</to>
+		<to last="true">%{context-path}/listarticlebyauthor.do?author=$1&amp;pageno=$2</to>
 	</rule>
 	<rule>
 		<note>
-			rewrite /att-xxxxx/gfd.gif to /getattachment?encodingURL=xxxxxx
+			rewrite /att-xxxxx/gfd.gif to /getattachment.do?encodingURL=xxxxxx
         </note>
 		<from>^/att-([0-9a-zA-Z]+)/.*$</from>
-		<to last="true">%{context-path}/getattachment?encodingURL=$1</to>
+		<to last="true">%{context-path}/getattachment.do?encodingURL=$1</to>
 	</rule>
 	<rule>
 		<note>
-			rewrite /article-xxxxx.html to /getArticle?encodingURL=xxxxx
+			rewrite /article-xxxxx.html to /getArticle.do?encodingURL=xxxxx
         </note>
 		<from>^/article-([0-9a-zA-Z]+)\.html$</from>
-		<to last="true">%{context-path}/getarticle?encodingURL=$1</to>
+		<to last="true">%{context-path}/getarticle.do?encodingURL=$1</to>
 	</rule>
 </urlrewrite>

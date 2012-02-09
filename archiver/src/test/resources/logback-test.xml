@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!--  
+    debug="true"    启动时输出配置加载信息  
+    scan="true"     默认每分钟自动扫描  
+    scanPeriod="30 seconds"     设置每30秒自动扫描,若没有指定具体单位则以milliseconds为标准(单位:milliseconds, seconds, minutes or hours)  
+-->  
+<configuration scan="true" scanPeriod="2 seconds">  
+    <contextName>Logging</contextName>  
+    <!-- property name="tip" value=":" /-->  
+    <property name="logback.project.name" value="ROOT" />  
+    <property name="logback.logs.module.name" value="default" />  
+    <timestamp key="byDay" datePattern="yyyyMMdd"/>  
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">  
+        <encoder charset="UTF-8">  
+            <pattern>%n[%level] - %date - %logger#%line%n %msg%n</pattern>  
+        </encoder>  
+        <target>System.out</target>  
+    </appender>  
+      
+    <logger name="org.springframework" level="INFO"/>  
+    <logger name="org.apache.struts2" level="INFO"/>  
+    <logger name="com.opensymphony" level="INFO"/>  
+    <logger name="org.mybatis" level="INFO" />
+    <logger name="org.apache.ibatis" level="INFO" />
+    
+    <!--  urlrewrite -->
+    <logger name=org.tuckey.web.filters.urlrewrite" level="INFO" />
+    
+    <!--  jdbc pool  -->
+    <logger name="org.apache.commons.dbcp" level="INFO" />
+    <logger name="java.sql" level="INFO" />
+    
+      
+    <root level="DEBUG">  
+        <appender-ref ref="console" />  
+    </root>  
+</configuration>  
+  

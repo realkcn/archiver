@@ -3,7 +3,6 @@ package org.kbs.archiver;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
 import org.kbs.library.*;
 
 import com.sleepycat.db.Database;
@@ -12,11 +11,14 @@ import com.sleepycat.db.DatabaseEntry;
 import com.sleepycat.db.DatabaseException;
 import com.sleepycat.db.DatabaseType;
 import com.sleepycat.db.OperationStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import java.io.FileNotFoundException;
 
 public class SequenceDB {
+    private static final Logger LOG = LoggerFactory.getLogger(SequenceDB.class);
     private static Database sequenceDb = null;
     
     public void init() throws SimpleException {
@@ -51,8 +53,7 @@ public class SequenceDB {
         try {
 			sequenceDb.put(null, key, data);
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			Logger.getLogger(org.kbs.archiver.SequenceDB.class).error(e);
+			LOG.error("put error:",e);
 		}
     }
     
@@ -67,8 +68,7 @@ public class SequenceDB {
 			}
 			value=Integer.valueOf(new String(data.getData())).intValue();
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			Logger.getLogger(org.kbs.archiver.SequenceDB.class).error(e);
+			LOG.error("get error:",e);
 		}
         return value;
     }
@@ -76,8 +76,7 @@ public class SequenceDB {
 		try {
 			sequenceDb.close();
 		} catch (DatabaseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("shutdown error:",e);
 		}
     }
 }
