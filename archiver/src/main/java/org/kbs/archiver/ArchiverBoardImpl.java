@@ -255,8 +255,8 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 						.update("org.kbs.archiver.persistence.BoardMapper.updateLast",
 								board);
 				batchsqlsession.flushStatements();
+				solrUpdater.commit();
 			}
-			solrUpdater.commit();
 			LOG.info(" Archiver "
 					+ board.getName() + " end:add " + articlelist.size()
 					+ " articles " + threads.size() + " threads,update "

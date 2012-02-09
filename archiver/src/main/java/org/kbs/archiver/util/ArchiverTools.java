@@ -71,29 +71,19 @@ public class ArchiverTools {
 			service.setBoardBaseDir(filename);
 			service.run();
 		} else {
-			SolrUpdater solrUpdater = new SolrUpdater();
-
-			if (!testonly) {
-				if (!solrUpdater.init(appContext)) {
-					System.err.println("can't open solr server");
-					return;
-				}
-			}
-			
 			String boardname = line.getArgs()[0];
 			BoardMapper boardMapper = (BoardMapper) appContext
 					.getBean("boardMapper");
 			BoardEntity board = boardMapper.getByName(boardname);
 			if (board != null) {
 				ArchiverBoardImpl service = new ArchiverBoardImpl(appContext,
-						null, filename, solrUpdater);
+						null, filename);
 				service.setTestonly(testonly);
 				service.setUseLastUpdate(useLastUpdate);
 				service.work(board);
 			} else {
 				System.out.println("Board " + boardname + " not found.");
 			}
-			solrUpdater.commit();
 		}
 	}
 
