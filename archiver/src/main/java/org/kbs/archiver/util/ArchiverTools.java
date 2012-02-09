@@ -74,7 +74,7 @@ public class ArchiverTools {
 			SolrUpdater solrUpdater = new SolrUpdater();
 
 			if (!testonly) {
-				if (!solrUpdater.init()) {
+				if (!solrUpdater.init(appContext)) {
 					System.err.println("can't open solr server");
 					return;
 				}

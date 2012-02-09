@@ -75,7 +75,7 @@ public class ArchiverService extends TimerTask {
 		// LinkedList<Callable<Integer>>();
 		SolrUpdater solrUpdater=new SolrUpdater();
 		try {
-			if (!solrUpdater.init())
+			if (!solrUpdater.init(ctx))
 				throw new SimpleException("Can't open solr");
 			Thread[] workerthread = new Thread[nThreads];
 			ArrayBlockingQueue<BoardEntity> workqueue = new ArrayBlockingQueue<BoardEntity>(
