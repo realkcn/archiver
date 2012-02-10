@@ -137,7 +137,7 @@ public class ArchiverService extends TimerTask {
 					LOG.info(
 							"add board:" + board.getBoardid() + " name:"
 									+ board.getName() + " cname:"
-									+ board.getCname());
+									+ board.getCname()+ " hidden:"+board.isIshidden());
 				} else {
 					board.set(bh);
 					if (!testonly)
