@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -30,7 +31,6 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 	// private BoardEntity board;
 	private String boardbasedir;
 	private SolrUpdater solrUpdater;
-	private HashSet<String> filenameset=new HashSet<String>();
 	private boolean testonly = false;
 	private BlockingQueue<BoardEntity> workqueue;
 	private boolean useLastUpdate=true;
@@ -46,6 +46,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 	}
 
 	public void work(BoardEntity board) throws Exception {
+		Hashtable<String,ArticleEntity> filenameTable=new Hashtable<String,ArticleEntity>();
 		SqlSessionTemplate batchsqlsession = (SqlSessionTemplate) ctx
 				.getBean("batchSqlSession");
 		CachedSequence threadseq = (CachedSequence) ctx
@@ -60,7 +61,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			articleseq.setReadonly(false);
 			attachmentseq.setReadonly(false);
 		}
-		ArrayList<FileHeaderInfo> articlelist;
+		ArrayList<FileHeaderInfo> articlelist=null;
 		FileHeaderSet fhset = new FileHeaderSet();
 //		LOG.info("{} Archiver {} start up:",new Date(System.currentTimeMillis()),board.getName());
 		long totalattchmentsize = 0;
@@ -73,11 +74,11 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		ArticleMapper articleMapper = (ArticleMapper) ctx
 				.getBean("articleMapper");
 		if (!useLastUpdate) {
-		List<String> filenames = articleMapper.getFilenamesByBoard(board
+		List<ArticleEntity> archiveredarticle = articleMapper.getByBoard(board
 				.getBoardid());
-		filenameset.clear();
-		for (String f : filenames) {
-			filenameset.add(f);
+		filenameTable.clear();
+		for (ArticleEntity f : archiveredarticle) {
+			filenameTable.put(f.getFilename(),f);
 		}
 		}
 
@@ -96,7 +97,12 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		 */
 		// 生成需要处理的list
 		// batchsqlsession.execute(new SqlMapClientCallback() {
-		articlelist = gennewlist(board,dirlist);
+		try {
+			articlelist = gennewlist(board,dirlist,filenameTable);
+		} catch (SimpleException ex) {
+			LOG.error(ex.getMessage(),ex);
+			return;
+		}
 		LOG.debug("load {}:{}/.DIR:{}/{}",new Object[] {board.getName(),boardpath,articlelist.size(),dirlist.size()});
 		HashMap<Long, ThreadEntity> threads = new HashMap<Long, ThreadEntity>();
 		HashMap<Long, ThreadEntity> oldthreads = new HashMap<Long, ThreadEntity>();
@@ -268,13 +274,13 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			BoardEntity board=workqueue.take();
 			if (board.getBoardid()==-1)
 				break;
-			work(board);
+				work(board);
 		}
 		return 0;
 	}
 
 	private ArrayList<FileHeaderInfo> gennewlist(BoardEntity board,
-			ArrayList<FileHeaderInfo> dirlist)
+			ArrayList<FileHeaderInfo> dirlist,Hashtable<String,ArticleEntity> filenameTable) throws SimpleException
 	// ArrayList<FileHeaderInfo> deletedlist
 	{
 		ArrayList<FileHeaderInfo> articlelist = new ArrayList<FileHeaderInfo>();
@@ -289,8 +295,13 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 						+ board.getName() + " index:" + count);
 			} else {
 				if (!useLastUpdate) { 
-					if (!filenameset.contains(fh.getFilename())) {
+					ArticleEntity article=filenameTable.get(fh.getFilename());
+					if (article==null) {
 						articlelist.add(fh);
+					} else {
+						if (article.getOriginid()!=fh.getArticleid()) {
+							throw new SimpleException("Article origin id is changed,is board .DIR regenerated?"+"board:"+board.getName()+" old:"+article.getOriginid()+" new:"+fh.getArticleid());
+						}
 					}
 				} else {
 					if (fh.getArticleid() > board.getLastarticleid()) { // new data
