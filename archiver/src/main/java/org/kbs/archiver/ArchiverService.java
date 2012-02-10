@@ -110,24 +110,30 @@ public class ArchiverService extends TimerTask {
 		}
 	}
 
+	/**
+	 *  从.BOARDS更新board表
+	 * @param filename .BOARDS文件目录. examples: /home/bbs/.BOARDS
+	 */
 	public synchronized void updateBoardDB(String filename) {
 		List<BoardHeaderInfo> bhset = BoardHeaderInfo.readDotBoard(filename);
 		if (bhset == null) {
 			LOG.error("Can't found {}",filename);
 			return;
 		}
+		BoardMapper boardMapper = (BoardMapper) ctx
+				.getBean("boardMapper");
+		List<BoardEntity> boards = boardMapper.selectAll();
 		CachedSequence boardSeq = (CachedSequence) ctx.getBean("boardSeq");
 		boardSeq.setReadonly(testonly);
 		for (BoardHeaderInfo bh : bhset) {
 			if (!bh.isGroup()) {// 非目录版面才处理
-				BoardMapper boardMapper = (BoardMapper) ctx
-						.getBean("boardMapper");
 				BoardEntity board = boardMapper.getByName(bh.getFilename());
 				if (board == null) {
 					board = new BoardEntity(bh);
-					board.setBoardid(boardSeq.next());
-					if (!testonly)
+					if (!testonly) {
+						board.setBoardid(boardSeq.next());
 						boardMapper.insert(board);
+					}
 					LOG.info(
 							"add board:" + board.getBoardid() + " name:"
 									+ board.getName() + " cname:"
@@ -139,8 +145,29 @@ public class ArchiverService extends TimerTask {
 					LOG.info(
 							"update board:" + board.getBoardid() + " name:"
 									+ board.getName() + " cname:"
-									+ board.getCname());
+									+ board.getCname() + " hidden:"+board.isIshidden());
 				}
+			}
+		}
+		//检查已经归档的版面是否还存在
+		for (BoardEntity board:boards) {
+			boolean found=false;
+			//隐藏版面不检查
+			if (board.isIshidden()==true)
+				continue;
+			for (BoardHeaderInfo bh : bhset) {
+				if (bh.getFilename().equals(board.getName())) {
+					found=true;
+					break;
+				}
+			}
+			if (!found) {
+				//已经归档的版面找不到了，设置为隐藏
+				if (!testonly) {
+					board.setIshidden(true);
+					boardMapper.update(board);
+				}
+				LOG.info("board {} deleted,set hidden",board.getName());
 			}
 		}
 	}
