@@ -22,6 +22,10 @@ public class BoardEntity {
 		
 	}
 	public BoardEntity(BoardHeaderInfo bh) {
+		boardid=0;
+		threads=0;
+		articles=0;
+		lastarticleid=0;
 		set(bh);
 	}
 	public void set(BoardHeaderInfo bh) {
