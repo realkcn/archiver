@@ -100,7 +100,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		try {
 			articlelist = gennewlist(board,dirlist,filenameTable);
 		} catch (SimpleException ex) {
-			LOG.error(ex.getMessage(),ex);
+			LOG.error(ex.getInfo(),ex);
 			return;
 		}
 		LOG.debug("load {}:{}/.DIR:{}/{}",new Object[] {board.getName(),boardpath,articlelist.size(),dirlist.size()});
