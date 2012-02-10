@@ -26,11 +26,11 @@
     </update>
     
     <update id="updateByName" parameterType="org.kbs.archiver.BoardEntity">
-        update board set boardid=#{boardid},threads=#{threads},articles=#{articles},ishidden=#{ishidden},groupid=#{groupid},section=#{section} where name=#{name}
+        update board set boardid=#{boardid},threads=#{threads},articles=#{articles},ishidden=#{ishidden},groupid=#{groupid},section=#{section},ignored=#{ignored},regenerate=#{regenerate}  where name=#{name}
     </update>
     
     <update id="updateLast" parameterType="org.kbs.archiver.BoardEntity">
-        update board set lastarticleid=#{lastarticleid},threads=threads+#{threads},articles=articles+#{articles},regenerate==#{regenerate} where name=#{name}
+        update board set lastarticleid=#{lastarticleid},threads=threads+#{threads},articles=articles+#{articles},regenerate=#{regenerate} where name=#{name}
     </update>
     <delete id="delete" parameterType="long">
         delete from board where boardid=#{boardid}

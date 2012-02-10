@@ -9,7 +9,9 @@
 	<property name="logback.logs.module.name" value="default" />
 	<timestamp key="byDay" datePattern="yyyyMMdd" />
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-		<param name="Threshold" value="WARN" />
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>WARN</level>
+		</filter>
 		<encoder charset="UTF-8">
 			<pattern>[%level] - %date - %logger#%line%n %msg%n</pattern>
 		</encoder>
@@ -42,7 +44,7 @@
 	<logger name="org.apache.jasper.compiler" level="WARN" />
 
 	<logger name="org.kbs" level="INFO" />
-	
+
 	<root level="${archiver.loglevel}">
 		<appender-ref ref="console" />
 		<appender-ref ref="file" />
