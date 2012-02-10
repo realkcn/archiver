@@ -11,7 +11,7 @@
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<param name="Threshold" value="WARN" />
 		<encoder charset="UTF-8">
-			<pattern>%n[%level] - %date - %logger#%line%n %msg%n</pattern>
+			<pattern>[%level] - %date - %logger#%line%n %msg%n</pattern>
 		</encoder>
 		<target>System.out</target>
 	</appender>
