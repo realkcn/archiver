@@ -1,5 +1,6 @@
 package org.kbs.archiver;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -327,4 +328,39 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		this.useLastUpdate = useLastUpdate;
 	}
 
+	/**
+	 * 修正版面的origin id变化问题
+	 * @param ctx
+	 * @param boardname
+	 * @param boardbasedir
+	 * @throws SimpleException 
+	 */
+	public void correctOriginid(ApplicationContext ctx,String boardname,String boardbasedir) throws SimpleException {
+		SqlSessionTemplate batchsqlsession = (SqlSessionTemplate) ctx
+				.getBean("batchSqlSession");
+		FileHeaderSet fhset = new FileHeaderSet();
+
+		SqlSessionTemplate sqlsession = (SqlSessionTemplate) ctx
+		 .getBean("sqlSession");
+
+		ThreadMapper threadMapper = (ThreadMapper) ctx
+				.getBean("threadMapper");
+		ArticleMapper articleMapper = (ArticleMapper) ctx
+				.getBean("articleMapper");
+		BoardMapper boardMapper = (BoardMapper) ctx
+				.getBean("boardMapper");
+		
+		BoardEntity board=boardMapper.getByName(boardname);
+		if (board==null) {
+			throw new SimpleException("no such board:"+boardname);
+		}
+		String boardpath = boardbasedir + "/" + board.getName() + "/";
+		ArrayList<FileHeaderInfo> dirlist;
+		if (!(new java.io.File(boardpath + ".DIR").exists())) {
+			LOG.warn("{} .DIR no exists",boardpath);
+			return;
+		}
+		dirlist = fhset.readBBSDir(boardpath + ".DIR");
+		//TODO
+	}
 }

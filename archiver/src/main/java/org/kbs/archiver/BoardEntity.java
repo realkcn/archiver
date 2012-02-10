@@ -13,10 +13,12 @@ public class BoardEntity {
 	private String cname;
 	private String groupid;
 	private String section;
+	private boolean ignored;
+	private boolean regenerate;
 	
 	@Override
 	public String toString() {
-		return "boardid:"+boardid+" name:"+name+" threads:"+threads+" articles:"+articles+" ishidden:"+ishidden+" lastarticleid:"+lastarticleid+" cname:"+cname;
+		return "boardid:"+boardid+" name:"+name+" threads:"+threads+" articles:"+articles+" ishidden:"+ishidden+" lastarticleid:"+lastarticleid+" cname:"+cname+" ignore:"+ignored;
 	}
 	public BoardEntity() {
 		
@@ -155,5 +157,17 @@ public class BoardEntity {
 	}
 	public void setGroupid(String groupid) {
 		this.groupid = groupid;
+	}
+	public boolean isIgnored() {
+		return ignored;
+	}
+	public void setIgnored(boolean ignored) {
+		this.ignored = ignored;
+	}
+	public boolean isRegenerate() {
+		return regenerate;
+	}
+	public void setRegenerate(boolean regenerate) {
+		this.regenerate = regenerate;
 	}
 }
