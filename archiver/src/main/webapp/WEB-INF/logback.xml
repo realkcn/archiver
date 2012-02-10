@@ -22,11 +22,6 @@
 			<fileNamePattern>${archiver.workdir}/log/archiver-%d{yyyy-MM-dd}.log
 			</fileNamePattern>
 			<maxHistory>60</maxHistory>
-			<timeBasedFileNamingAndTriggeringPolicy
-				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<!-- or whenever the file size reaches 100MB -->
-				<maxFileSize>100MB</maxFileSize>
-			</timeBasedFileNamingAndTriggeringPolicy>
 		</rollingPolicy>
 		<encoder>
 			<pattern>%date %level [%thread] %logger{36} [%file : %line] %msg%n
