@@ -22,7 +22,7 @@
 </head>
 <body>
 	<jsp:include page="include/header.jsp" />
-	<form action="searchArticle" method="get">
+	<form method="get">
 		<input type="text" name="body" value="<s:property value="body" />" /><input
 			type="submit" value="搜索" />
 	</form>
