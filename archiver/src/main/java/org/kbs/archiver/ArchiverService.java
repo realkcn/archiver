@@ -166,6 +166,7 @@ public class ArchiverService extends TimerTask {
 				//已经归档的版面找不到了，设置为隐藏
 				if (!testonly) {
 					board.setIshidden(true);
+					board.setIgnored(true);
 					boardMapper.update(board);
 				}
 				LOG.info("board {} deleted,set hidden",board.getName());
