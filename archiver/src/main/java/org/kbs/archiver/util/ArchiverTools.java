@@ -90,7 +90,10 @@ public class ArchiverTools {
 	private static void createBoard(CommandLine line) {
 		String filename = line.getOptionValue('f', ".BOARDS");
 		ArchiverService service = new ArchiverService(appContext);
+		boolean testonly = line.hasOption('t');
+		System.out.println("Set test only mode:" + testonly);
 		if (new java.io.File(filename).exists()) {
+			service.setTestonly(testonly);
 			service.updateBoardDB(filename);
 		} else {
 			System.err.println(filename + " not found.");
