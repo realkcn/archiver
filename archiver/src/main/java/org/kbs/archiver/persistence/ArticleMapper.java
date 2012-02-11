@@ -11,6 +11,7 @@ public interface ArticleMapper {
 		public void deleteByBoard(long boardid);
 		public void insert(ArticleEntity article);
 		public int update(ArticleEntity article);
+		public void resetOriginidByBoard(long boardid);		
 		public List<ArticleEntity> getArticlesOnThread(long threadid);
 		public List<ArticleEntity> getByThreadPerPage(@Param("threadid")long threadid,@Param("offset") int offset, @Param("limit") int limit);
 		public List<ArticleEntity> getByAuthorPerPage(@Param("author")String author,@Param("offset") int offset, @Param("limit") int limit);

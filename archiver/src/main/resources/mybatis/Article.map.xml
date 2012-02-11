@@ -6,7 +6,8 @@
 	</select>
 
 	<select id="selectAll" resultType="org.kbs.archiver.ArticleEntity">
-		select * from article order by articleid asc
+		select * from article order by
+		articleid asc
 	</select>
 
 	<insert id="insert" parameterType="org.kbs.archiver.ArticleEntity">
@@ -15,7 +16,8 @@
 		originid,encodingurl) values
 		(#{threadid},#{boardid},#{articleid},#{subject},#{posttime},#{author},#{attachment},#{filename},
 		#{isvisible},#{replyid},#{originid},#{encodingurl})
-		ON DUPLICATE KEY UPDATE
+		ON DUPLICATE KEY
+		UPDATE
 		threadid=#{threadid},boardid=#{boardid},subject=#{subject},posttime=#{posttime},
 		author=#{author},attachment=#{attachment},filename=#{filename},isvisible=#{isvisible},replyid=#{replyid},
 		originid=#{originid},encodingurl=#{encodingurl}
@@ -26,18 +28,29 @@
 		threadid=#{threadid},boardid=#{boardid},subject=#{subject},posttime=#{posttime},
 		author=#{author},attachment=#{attachment},filename=#{filename},isvisible=#{isvisible},replyid=#{replyid},
 		originid=#{originid},encodingurl=#{encodingurl}
-		where articleid=#{articleid}
+		where
+		articleid=#{articleid}
 	</update>
-
+	<update id="updateOriginid">
+		update article set originid=#{originid} where boardid=#{boardid} and filename=#{filename}
+	</update>
+	<update id="resetOriginidByBoard" parameterType="long">
+		update article
+		set originid=-1 where boardid=#{boardid}
+	</update>
 	<delete id="delete" parameterType="long">
-		delete from article where articleid=#{articleid}
+		delete from article where
+		articleid=#{articleid}
 	</delete>
 
 	<delete id="deleteByBoard" parameterType="long">
-		delete from article where boardid=#{boardid}
+		delete from article
+		where boardid=#{boardid}
 	</delete>
 	<select id="get" parameterType="long" resultType="org.kbs.archiver.ArticleEntity">
-		select article.*,board.cname boardname from article,board where articleid=#{articleid} and board.boardid=article.boardid
+		select
+		article.*,board.cname boardname from article,board where
+		articleid=#{articleid} and board.boardid=article.boardid
 	</select>
 	<!-- articleid,author,posttime,attachment,subject,isvisible,encodingurl -->
 	<select id="getByThreadPerPage" resultType="org.kbs.archiver.ArticleEntity">
@@ -49,9 +62,12 @@
 		</if>
 	</select>
 	<select id="getByAuthorPerPage" resultType="org.kbs.archiver.ArticleEntity">
-		SELECT article.*,articlebody.body,board.cname boardname FROM article,board,articlebody where
-		article.author=#{author} and article.boardid=board.boardid and
-		board.ishidden=false and article.isvisible=true
+		SELECT article.*,articlebody.body,board.cname boardname FROM
+		article,board,articlebody where
+		article.author=#{author} and
+		article.boardid=board.boardid and
+		board.ishidden=false and
+		article.isvisible=true
 		and article.articleid=articlebody.articleid
 		<if test="limit!=-1">
 			ORDER BY posttime desc limit
@@ -59,13 +75,15 @@
 		</if>
 	</select>
 	<select id="countByAuthor" resultType="int">
-		SELECT count(*) FROM article,board where article.author=#{author} and
+		SELECT count(*) FROM
+		article,board where article.author=#{author} and
 		article.boardid=board.boardid and board.ishidden=false and
 		article.isvisible=true
 	</select>
 	<select id="getByOriginId" parameterType="long"
 		resultType="org.kbs.archiver.ArticleEntity">
-		select * from article where boardid=#{boardid} and originid=#{originid}
+		select * from article where boardid=#{boardid} and
+		originid=#{originid}
 		limit 1
 	</select>
 	<select id="getByEncodingUrl" parameterType="String"

@@ -1,6 +1,5 @@
 package org.kbs.archiver;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -55,12 +54,21 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 				.getBean("articleSeq");
 		CachedSequence attachmentseq = (CachedSequence) ctx
 				.getBean("attachmentSeq");
-
+		ThreadMapper threadMapper = (ThreadMapper) ctx
+				.getBean("threadMapper");
+		ArticleMapper articleMapper = (ArticleMapper) ctx
+				.getBean("articleMapper");
 		if (!testonly) {
 			threadseq.setReadonly(false);
 			articleseq.setReadonly(false);
 			attachmentseq.setReadonly(false);
+			//需要重新生成originid
+			if (board.isRegenerate()) {
+				threadMapper.resetOriginidByBoard(board.getBoardid());
+				articleMapper.resetOriginidByBoard(board.getBoardid());
+			}
 		}
+		
 		ArrayList<FileHeaderInfo> articlelist;
 		FileHeaderSet fhset = new FileHeaderSet();
 //		LOG.info("{} Archiver {} start up:",new Date(System.currentTimeMillis()),board.getName());
@@ -69,10 +77,6 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		// SqlSessionTemplate sqlsession = (SqlSessionTemplate) ctx
 		// .getBean("sqlSession");
 
-		ThreadMapper threadMapper = (ThreadMapper) ctx
-				.getBean("threadMapper");
-		ArticleMapper articleMapper = (ArticleMapper) ctx
-				.getBean("articleMapper");
 		if (!useLastUpdate) {
 		List<String> filenames = articleMapper.getFilenamesByBoard(board
 				.getBoardid());
@@ -246,11 +250,18 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 						value.getValue());
 		}
 
-		if (articlelist.size() > 0) { // 更新board表的lastid,threads
-			board.setLastarticleid(articlelist.get(articlelist.size() - 1)
+		if ((articlelist.size() > 0)||board.isRegenerate()) { // 更新board表的lastid,threads
+			if (articlelist.size() > 0) {
+				board.setLastarticleid(articlelist.get(articlelist.size() - 1)
 					.getArticleid());
-			board.setThreads(threads.size());
-			board.setArticles(articlelist.size());
+				board.setThreads(threads.size());
+				board.setArticles(articlelist.size());
+			} else {
+				//不更新threads和articles计数
+				board.setThreads(0);
+				board.setArticles(0);
+			}
+			board.setRegenerate(false);
 			if (!testonly) {
 				batchsqlsession
 						.update("org.kbs.archiver.persistence.BoardMapper.updateLast",
@@ -281,7 +292,6 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		ArrayList<FileHeaderInfo> articlelist = new ArrayList<FileHeaderInfo>();
 		// Date now=new Date(System.currentTimeMillis());
 
-		// TODO:处理更多异常情况，比如articleid重置，版面合并id重置等
 		int count = 0;
 		for (FileHeaderInfo fh : dirlist) {
 			count++;
@@ -328,39 +338,4 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		this.useLastUpdate = useLastUpdate;
 	}
 
-	/**
-	 * 修正版面的origin id变化问题
-	 * @param ctx
-	 * @param boardname
-	 * @param boardbasedir
-	 * @throws SimpleException 
-	 */
-	public void correctOriginid(ApplicationContext ctx,String boardname,String boardbasedir) throws SimpleException {
-		SqlSessionTemplate batchsqlsession = (SqlSessionTemplate) ctx
-				.getBean("batchSqlSession");
-		FileHeaderSet fhset = new FileHeaderSet();
-
-		SqlSessionTemplate sqlsession = (SqlSessionTemplate) ctx
-		 .getBean("sqlSession");
-
-		ThreadMapper threadMapper = (ThreadMapper) ctx
-				.getBean("threadMapper");
-		ArticleMapper articleMapper = (ArticleMapper) ctx
-				.getBean("articleMapper");
-		BoardMapper boardMapper = (BoardMapper) ctx
-				.getBean("boardMapper");
-		
-		BoardEntity board=boardMapper.getByName(boardname);
-		if (board==null) {
-			throw new SimpleException("no such board:"+boardname);
-		}
-		String boardpath = boardbasedir + "/" + board.getName() + "/";
-		ArrayList<FileHeaderInfo> dirlist;
-		if (!(new java.io.File(boardpath + ".DIR").exists())) {
-			LOG.warn("{} .DIR no exists",boardpath);
-			return;
-		}
-		dirlist = fhset.readBBSDir(boardpath + ".DIR");
-		//TODO
-	}
 }

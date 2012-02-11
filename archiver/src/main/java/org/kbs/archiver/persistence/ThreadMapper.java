@@ -13,6 +13,7 @@ public interface ThreadMapper {
 
 	public void insert(ThreadEntity thread);
 	public int update(ThreadEntity thread);
+	public void resetOriginidByBoard(long boardid);
 	public void deleteByBoard(long boardid);
 	public List<ThreadEntity> getThreadsOnBoard(long boardid);
 	List<ThreadEntity> getByBoardPerPage(@Param("boardid")long boardid,@Param("offset") int offset, @Param("limit") int limit);  //这里修改了，使用了mybatis 3.x提供的注解的方法
