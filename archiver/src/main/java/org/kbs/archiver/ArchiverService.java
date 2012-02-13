@@ -174,6 +174,18 @@ public class ArchiverService extends TimerTask {
 		}
 	}
 
+	public void ignoreBoard(String boardname,boolean ignored) {
+		BoardMapper boardMapper = (BoardMapper) ctx.getBean("boardMapper");
+		BoardEntity board = boardMapper.getByName(boardname);
+		if (board==null) {
+			LOG.error("board {} not found!",boardname);
+			return;
+		}
+		if (!testonly) {
+			board.setIgnored(ignored);
+			boardMapper.update(board);
+		}
+	}
 	public synchronized void deleteArticle(long articleid) {
 		BoardMapper boardMapper = (BoardMapper) ctx.getBean("boardMapper");
 		ThreadMapper threadMapper = (ThreadMapper) ctx.getBean("threadMapper");
