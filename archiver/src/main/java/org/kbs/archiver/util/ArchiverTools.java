@@ -1,13 +1,10 @@
 package org.kbs.archiver.util;
 
 import java.util.List;
+
 import org.kbs.archiver.*;
-import org.kbs.archiver.lucene.SolrUpdater;
-import org.kbs.archiver.lucene.Tools;
 import org.kbs.archiver.persistence.BoardMapper;
-import org.kbs.library.*;
 import org.apache.commons.cli.*;
-import org.apache.lucene.index.IndexWriter;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class ArchiverTools {
@@ -28,26 +25,36 @@ public class ArchiverTools {
 		// TODO Auto-generated method stub
 		Options options = new Options();
 		options.addOption("h", "help", false, "show help.");
+		/*
 		options.addOption("b", "board", false, "create board table.");
 		options.addOption("a", "article", false, "update article on board");
+		*/
 		options.addOption("f", "file", true, ".BOARDS file or .DIR file");
 		options.addOption("t", "test", false, "test only");
-		options.addOption("", "nolastupdate", false,
-				"don't use last update for board");
-		CommandLineParser parser = new PosixParser();
+		options.addOption(null, "nolastupdate", false,
+				"don't use last update for board.Deprecated");
+		CommandLineParser parser = new BasicParser();
 		System.out.println("==========start util==========");
 		try {
-			CommandLine line = parser.parse(options, args, true);
-			if (line.hasOption('h')) {
+			CommandLine line = parser.parse(options, args);
+			if (line.hasOption('h')||(line.getArgs().length==0)) {
 				HelpFormatter formatter = new HelpFormatter();
 				formatter.printHelp("ArchiverTools", options);
 			} else {
 				init();
+				String cat = line.getArgs()[0];
+				if (cat.equals("board")) {
+					boardService(line);
+				} else if (cat.equals("article")) {
+					articleSercie(line);
+				}
+				/*
 				if (line.hasOption('b'))
 					createBoard(line);
 				else if (line.hasOption('a')) {
 					updateArticle(line);
 				}
+				*/
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -56,7 +63,13 @@ public class ArchiverTools {
 		}
 		System.out.println("==========end util==========");
 	}
-
+	
+	private static void boardService(CommandLine line) throws Exception {
+		if (line.getArgs().length==1) {
+			System.out.print(b)
+		}
+		String command = line.getArgs()[1];
+	}
 	private static void updateArticle(CommandLine line) throws Exception {
 		String filename = line.getOptionValue('f', "/home/archiver/bbs");
 		boolean testonly = line.hasOption('t');
