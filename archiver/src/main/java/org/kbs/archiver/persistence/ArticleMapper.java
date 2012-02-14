@@ -18,5 +18,5 @@ public interface ArticleMapper {
 		public int countByAuthor(@Param("author")String author);
 		public void delete(long articleid);
 		public List<String> getFilenamesByBoard(long boardid);
-		public void updateOriginid(@Param("boardid")long boardid, @Param("filename")String filename);
+		public void updateOriginid(@Param("originid")long originid,@Param("boardid")long boardid, @Param("filename")String filename);
 }

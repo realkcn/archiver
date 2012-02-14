@@ -350,7 +350,8 @@ public class ArchiverService extends TimerTask {
 			for (FileHeaderInfo fh:dirlist) {
 				//设定每一个article的originid
 				if (!testonly)
-					articleMapper.updateOriginid(board.getBoardid(),fh.filename);
+					articleMapper.updateOriginid(fh.articleid,board.getBoardid(),fh.filename);
+				LOG.debug("set {} originid={}",fh.filename,fh.articleid);
 			}
 			if (!testonly)
 				threadMapper.resetOriginidByBoard(board.getBoardid());
