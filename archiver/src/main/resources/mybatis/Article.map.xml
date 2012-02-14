@@ -36,7 +36,7 @@
 	</update>
 	<update id="resetOriginidByBoard" parameterType="long">
 		update article
-		set originid=-1 where boardid=#{boardid}
+		set originid=0 where boardid=#{boardid}
 	</update>
 	<delete id="delete" parameterType="long">
 		delete from article where
