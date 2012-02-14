@@ -14,7 +14,6 @@ public class BoardEntity {
 	private String groupid;
 	private String section;
 	private boolean ignored;
-	private boolean regenerate;
 	
 	@Override
 	public String toString() {
@@ -163,11 +162,5 @@ public class BoardEntity {
 	}
 	public void setIgnored(boolean ignored) {
 		this.ignored = ignored;
-	}
-	public boolean isRegenerate() {
-		return regenerate;
-	}
-	public void setRegenerate(boolean regenerate) {
-		this.regenerate = regenerate;
 	}
 }

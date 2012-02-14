@@ -17,20 +17,20 @@
     </select>
     
     <insert id="insert" parameterType="org.kbs.archiver.BoardEntity">
-        insert into board(boardid,threads,articles,ishidden,name,cname,groupid,section,ignored,regenerate) values(#{boardid},#{threads},#{articles},#{ishidden},#{name},#{cname},#{groupid},#{section},#{ignored},#{regenerate})
-         ON DUPLICATE KEY UPDATE name=#{name},cname=#{cname},threads=#{threads},articles=#{articles},ishidden=#{ishidden},groupid=#{groupid},section=#{section},ignored=#{ignored},regenerate=#{regenerate}
+        insert into board(boardid,threads,articles,ishidden,name,cname,groupid,section,ignored) values(#{boardid},#{threads},#{articles},#{ishidden},#{name},#{cname},#{groupid},#{section},#{ignored})
+         ON DUPLICATE KEY UPDATE name=#{name},cname=#{cname},threads=#{threads},articles=#{articles},ishidden=#{ishidden},groupid=#{groupid},section=#{section},ignored=#{ignored}
     </insert>
     
     <update id="update" parameterType="org.kbs.archiver.BoardEntity">
-        update board set name=#{name},cname=#{cname},threads=#{threads},articles=#{articles},ishidden=#{ishidden},groupid=#{groupid},section=#{section},ignored=#{ignored},regenerate=#{regenerate} where boardid=#{boardid}
+        update board set name=#{name},cname=#{cname},threads=#{threads},articles=#{articles},ishidden=#{ishidden},groupid=#{groupid},section=#{section},ignored=#{ignored} where boardid=#{boardid}
     </update>
     
     <update id="updateByName" parameterType="org.kbs.archiver.BoardEntity">
-        update board set boardid=#{boardid},threads=#{threads},articles=#{articles},ishidden=#{ishidden},groupid=#{groupid},section=#{section},ignored=#{ignored},regenerate=#{regenerate}  where name=#{name}
+        update board set boardid=#{boardid},threads=#{threads},articles=#{articles},ishidden=#{ishidden},groupid=#{groupid},section=#{section},ignored=#{ignored} where name=#{name}
     </update>
     
     <update id="updateLast" parameterType="org.kbs.archiver.BoardEntity">
-        update board set lastarticleid=#{lastarticleid},threads=threads+#{threads},articles=articles+#{articles},regenerate=#{regenerate} where name=#{name}
+        update board set lastarticleid=#{lastarticleid},threads=threads+#{threads},articles=articles+#{articles} where name=#{name}
     </update>
     <delete id="delete" parameterType="long">
         delete from board where boardid=#{boardid}

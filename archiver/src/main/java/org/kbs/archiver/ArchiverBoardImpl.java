@@ -62,11 +62,6 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			threadseq.setReadonly(false);
 			articleseq.setReadonly(false);
 			attachmentseq.setReadonly(false);
-			//需要重新生成originid
-			if (board.isRegenerate()) {
-				threadMapper.resetOriginidByBoard(board.getBoardid());
-				articleMapper.resetOriginidByBoard(board.getBoardid());
-			}
 		}
 		
 		ArrayList<FileHeaderInfo> articlelist;
@@ -250,7 +245,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 						value.getValue());
 		}
 
-		if ((articlelist.size() > 0)||board.isRegenerate()) { // 更新board表的lastid,threads
+		if ((articlelist.size() > 0)) { // 更新board表的lastid,threads
 			if (articlelist.size() > 0) {
 				board.setLastarticleid(articlelist.get(articlelist.size() - 1)
 					.getArticleid());
@@ -261,7 +256,6 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 				board.setThreads(0);
 				board.setArticles(0);
 			}
-			board.setRegenerate(false);
 			if (!testonly) {
 				batchsqlsession
 						.update("org.kbs.archiver.persistence.BoardMapper.updateLast",

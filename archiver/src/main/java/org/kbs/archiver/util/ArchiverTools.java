@@ -44,13 +44,18 @@ public class ArchiverTools {
 			CommandLine line = parser.parse(options, args);
 			if (line.hasOption('h') || (line.getArgs().length == 0)) {
 				HelpFormatter formatter = new HelpFormatter();
-				formatter.printHelp("ArchiverTools", options);
+				formatter.printHelp("ArchiverTools\n"
+						+"        ignore boardname [true|false]\n"
+						+"        update [boardname]\n"
+						+"        fixoriginid [boardname] [force]\n", options);
 			} else {
 				String cat = line.getArgs()[0];
 				if (cat.equals("ignore")) {
 					ignoreService(line);
 				} else if (cat.equals("update")) {
 					updateService(line);
+				} else if (cat.equals("fixoriginid")) {
+					fixOriginidService(line);
 				}
 				/*
 				 * if (line.hasOption('b')) createBoard(line); else if
@@ -64,7 +69,30 @@ public class ArchiverTools {
 		}
 		LOG.info("==========end util==========");
 	}
-
+	private static void fixOriginidService(CommandLine line) throws Exception {
+		boolean testonly = line.hasOption('t');
+		String filename = line.getOptionValue('d', "/home/archiver/bbs");
+		if (line.getArgs().length==1) {
+			System.err.println("no board name");
+			return;
+		}
+		String boardname = line.getArgs()[1];
+		ArchiverService service = new ArchiverService(appContext);
+		service.setTestonly(testonly);
+		service.setBoardBaseDir(filename);
+		boolean force=false;
+		if (line.getArgs().length>2) {
+			if (line.getArgs()[2].equals("force"))
+				force=false;
+			else {
+				if (line.getArgs()[2].equals("reset")) {
+					
+				}
+			}
+		}
+		service.fixOriginid(boardname,force);
+	}
+	
 	private static void ignoreService(CommandLine line) throws Exception {
 		boolean testonly = line.hasOption('t');
 		if (line.getArgs().length==1) {
