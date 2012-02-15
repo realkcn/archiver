@@ -355,7 +355,6 @@ public class ArchiverService extends TimerTask {
 			}
 			if (!testonly)
 				threadMapper.resetOriginidByBoard(board.getBoardid());
-
 		} finally {
 //			DBTools.closeQuietly(conn);
 		}

@@ -26,14 +26,11 @@
 		author=#{author},lastreply=#{lastreply},lastposttime=#{lastposttime},originid=#{originid},encodingurl=#{encodingurl}
 		where threadid=#{threadid}
 	</update>
-	<update id="updateOriginid">
+	<update id="resetOriginidByBoard">
 		update thread,(select article.originid,article.threadid from article,
 		    (select threadid,articleid from article where boardid=#{boardid} order by posttime asc) tids 
 		         where article.articleid=tids.articleid group by tids.threadid) a 
 		    set thread.originid=a.originid where thread.threadid=a.threadid;
-	</update>
-	<update id="resetOriginidByBoard" parameterType="long">
-		update thread set originid=-1 where boardid=#{boardid}
 	</update>
 
 	<delete id="delete" parameterType="long">
