@@ -43,6 +43,10 @@
 			<param-value>http://sso.newsmth.net/cas/</param-value>
 		</init-param>
 		<init-param>
+			<param-name>useSession</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<init-param>
 			<param-name>serverName</param-name>
 			<param-value>http://localhost:8080</param-value>
 		</init-param>
