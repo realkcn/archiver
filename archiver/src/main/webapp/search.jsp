@@ -30,7 +30,7 @@
 	<s:actionerror />
 	<s:if test="articlelist!=null">
 		<pg:pager total="${totalsize}"
-			urlprefix="searchArticle?body=${body}&pageno=" urlsuffix=""
+			urlprefix="searchArticle.do?body=${body}&pageno=" urlsuffix=""
 			jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
   <s:if test="totalsize>0">
