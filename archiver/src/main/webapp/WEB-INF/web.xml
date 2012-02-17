@@ -32,7 +32,7 @@
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>http://localhost:8080</param-value>
+			<param-value>http://ar.newsmth.net</param-value>
 		</init-param>
 	</filter>
 	<filter>
@@ -48,7 +48,7 @@
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>http://localhost:8080</param-value>
+			<param-value>http://ar.newsmth.net</param-value>
 		</init-param>
 		<init-param>
 			<param-name>redirectAfterValidation</param-name>
@@ -125,4 +125,7 @@
 		<exception-type>java.lang.Exception</exception-type>
 		<location>/50x.html</location>
 	</error-page>
+	<session-config>
+		<session-timeout>20</session-timeout>
+	</session-config>
 </web-app>
