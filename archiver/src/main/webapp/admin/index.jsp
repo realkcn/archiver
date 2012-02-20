@@ -39,15 +39,15 @@ function searchoriginid()
 </s:else>
 <s:actionerror/>
 <s:actionmessage/>
-<form action="deleteArticle" method="GET">
+<form action="deleteArticle.do" method="GET">
 文章ID<input type="text" id="articleid" name="articleid" value="${articleid}"/><input  type="button" onclick="loadarticle()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
 </form>
 <hr />
-<form action="deleteThread" method="GET">
+<form action="deleteThread.do" method="GET">
 主题ID<input type="text" id="threadid" name="threadid" value="${threadid}"/><input  type="button" onclick="loadthread()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
 </form>
 <hr />
-<form action="deleteByAuthor" method="GET">
+<form action="deleteByAuthor.do" method="GET">
 作者ID<input type="text" id="author" name="author"/><input  type="button" onclick="loadauthor()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
 </form>
 <hr />
