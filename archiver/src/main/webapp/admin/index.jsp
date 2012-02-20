@@ -23,7 +23,7 @@ function loadauthor()
 }
 function searchoriginid()
 {
-	document.searchoriginidform.action="SearchByOriginId";
+	document.searchoriginidform.action="SearchByOriginId.do";
 }
 </script>
 <body>
@@ -51,7 +51,7 @@ function searchoriginid()
 作者ID<input type="text" id="author" name="author"/><input  type="button" onclick="loadauthor()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
 </form>
 <hr />
-<form name="searchoriginidform" action="deleteArticleByOriginId" method="GET">
+<form name="searchoriginidform" action="deleteArticleByOriginId.do" method="GET">
 通过BBS原文ID删除
 文章版面<input type="text" id="boardname" name="boardname" value="${boardname}" />文章ID<input type="text" id="originid" name="originid"  value="${originid}" /><input  type="submit" onclick="javascript:searchoriginid()" value="搜索" /><input type="button" value="删除" onclick="javascript:if(confirm('确定删除？')){submit()}"/>
 </form>
