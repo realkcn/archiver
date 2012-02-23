@@ -316,6 +316,11 @@
 			<artifactId>logback-classic</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jasig.cas.client</groupId>
+			<artifactId>cas-client-core</artifactId>
+			<version>3.2.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>archiver</finalName>
@@ -413,6 +418,21 @@
 				<configuration>
 					<classpathScope>compile</classpathScope>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.5</version>
+				<configuration>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 
