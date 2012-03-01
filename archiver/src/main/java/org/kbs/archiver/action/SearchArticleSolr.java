@@ -1,8 +1,9 @@
 package org.kbs.archiver.action;
 
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import org.kbs.archiver.ArticleEntity;
 import org.kbs.archiver.persistence.ArticleBodyMapper;
@@ -25,7 +26,35 @@ import org.apache.struts2.ServletActionContext;
 public class SearchArticleSolr extends ActionSupport {
 	private String subject = null;
 	private String body=null;
-	public String getSubject() {
+    private String author=null;
+    private String start=null;
+    private String end=null;
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
+
+    public String getSubject() {
 		return subject;
 	}
 
@@ -87,13 +116,47 @@ public class SearchArticleSolr extends ActionSupport {
 	    // http://localhost:8983/solr/spellCheckCompRH?q=epod&spellcheck=on&spellcheck.build=true
 	    
 	    String querystring=new String();
-	    if (subject!=null) {
+	    if ((subject!=null)&&(!subject.equals(""))) {
 	    		querystring="subject:\""+subject+"\" ";
 	    }
-	    if (body!=null) {
-	    		querystring+="\""+body+"\"";
+        if ((author!=null)&&!author.equals("")) {
+            querystring+="author:\""+author+"\" ";
+        }
+	    if ((body!=null)&&!body.equals("")) {
+	    		querystring+="body:\""+body+"\" ";
 	    }
-
+        Date startdate=null,enddate=null;
+        SimpleDateFormat parser=new SimpleDateFormat("yyyyMMdd");
+        if ((start!=null)&&!start.equals("")) {
+            try {
+                startdate=parser.parse(start);
+            } catch (ParseException e) {
+                addActionError("时间格式错误");
+                return ERROR;
+            }
+        }
+        if ((end!=null)&&!end.equals("")) {
+            try {
+                enddate=parser.parse(end);
+            } catch (ParseException e) {
+                addActionError("时间格式错误");
+                return ERROR;
+            }
+        }
+        if (startdate!=null||enddate!=null) {
+            SimpleDateFormat formater=new SimpleDateFormat("yyyy-MM-dd");
+            if (startdate!=null) {
+                querystring+="posttime:["+formater.format(startdate)+"T00:00:00Z TO ";
+            } else {
+                querystring+="posttime:[* TO ";
+            }
+            if (enddate!=null) {
+                querystring+=formater.format(enddate)+"T23:59:59Z]";
+            } else {
+                querystring+="NOW]";
+            }
+        }
+        System.out.println(querystring);
 	    ModifiableSolrParams params = new ModifiableSolrParams();   
 	    params.set("fl","articleid");   
 	    params.set("q", querystring);   

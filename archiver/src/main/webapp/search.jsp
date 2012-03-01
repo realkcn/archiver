@@ -22,10 +22,29 @@
 </head>
 <body>
 	<jsp:include page="include/header.jsp" />
-	<form method="get">
-		<input type="text" name="body" value="<s:property value="body" />" /><input
-			type="submit" value="搜索" />
-	</form>
+    <form action="searchArticle.do" method="GET">
+        <table style="table-layout:fixed">
+            <tr>
+                <td width="30%">标题</td>
+                <td width="70%"><input type="text" name="subject" /></td>
+            </tr>
+            <tr>
+                <td>作者 ID</td>
+                <td><input type="text" name="author" /></td>
+            </tr>
+            <tr>
+                <td>内容包含：</td>
+                <td><input type="text" name="body" /></td>
+            </tr>
+            <tr>
+                <td>发表时间(YYYYMMDD)：</td>
+                <td><input type="text" name="start" />至<input type="text" name="end" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="搜索" /></td>
+            </tr>
+        </table>
+    </form>
 	<br />
 	<s:actionerror />
 	<s:if test="articlelist!=null">
