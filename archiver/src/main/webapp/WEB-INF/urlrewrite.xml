@@ -56,9 +56,9 @@
 	</rule>
 	<rule>
 		<note>
-			rewrite /att-xxxxx/gfd.gif to /getattachment.do?encodingURL=xxxxxx
+			rewrite /att/xxxxx/gfd.gif to /getattachment.do?encodingURL=xxxxxx
         </note>
-		<from>^/att-([0-9a-zA-Z]+)/.*$</from>
+		<from>^/att/([0-9a-zA-Z]+)/.*$</from>
 		<to last="true">%{context-path}/getattachment.do?encodingURL=$1</to>
 	</rule>
 	<rule>

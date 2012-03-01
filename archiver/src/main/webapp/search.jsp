@@ -80,11 +80,11 @@
 																		.getAttribute("filename"))
 																		.toLowerCase());
 														if (contentType.startsWith("image")) {
-								%><img src="att-${encodingurl}/<s:property value="name" />" />
+								%><img src="att/${encodingurl}/<s:property value="name" />" />
 								<%
 									} else {
 								%>附件:<a
-									href="att-${encodingurl}/<s:property value="name" />"
+									href="att/${encodingurl}/<s:property value="name" />"
 									target="_blank"><s:property value="name" /></a>(大小:${datasize}字节)<br />
 								<%
 									}

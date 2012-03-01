@@ -18,6 +18,7 @@
   
   <body> 
    <table border="1" > <caption>版面列表</caption>
+       <tr><td colspan="3"></td><td colspan="2"><a href="search.jsp">搜索</a></td></tr>
     <tr>
        <td>序号</td>
        <td>英文名</td>
