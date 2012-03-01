@@ -26,19 +26,19 @@
         <table style="table-layout:fixed">
             <tr>
                 <td width="30%">标题</td>
-                <td width="70%"><input type="text" name="subject" /></td>
+                <td width="70%"><input type="text" name="subject" value="${value}" /></td>
             </tr>
             <tr>
                 <td>作者 ID</td>
-                <td><input type="text" name="author" /></td>
+                <td><input type="text" name="author" value="${author}"/></td>
             </tr>
             <tr>
                 <td>内容包含：</td>
-                <td><input type="text" name="body" /></td>
+                <td><input type="text" name="body" value="${body}"/></td>
             </tr>
             <tr>
                 <td>发表时间(YYYYMMDD)：</td>
-                <td><input type="text" name="start" />至<input type="text" name="end" /></td>
+                <td><input type="text" name="start" value="${start}"/>至<input type="text" name="end" value="${end}"/></td>
             </tr>
             <tr>
                 <td colspan="2"><input type="submit" value="搜索" /></td>
@@ -49,7 +49,7 @@
 	<s:actionerror />
 	<s:if test="articlelist!=null">
 		<pg:pager total="${totalsize}"
-			urlprefix="searchArticle.do?body=${body}&pageno=" urlsuffix=""
+			urlprefix="searchArticle.do?body=${body}&author=${author}&start=${start}&end=${end}&subject=${subject}&pageno=" urlsuffix=""
 			jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
   <s:if test="totalsize>0">
