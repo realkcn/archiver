@@ -115,7 +115,7 @@ public class SearchArticleSolr extends ActionSupport {
 
 	    // http://localhost:8983/solr/spellCheckCompRH?q=epod&spellcheck=on&spellcheck.build=true
 	    
-	    String querystring=new String();
+	    String querystring= "";
 	    if ((subject!=null)&&(!subject.equals(""))) {
 	    		querystring="subject:\""+subject+"\" ";
 	    }
@@ -156,8 +156,7 @@ public class SearchArticleSolr extends ActionSupport {
                 querystring+="NOW]";
             }
         }
-        System.out.println(querystring);
-	    ModifiableSolrParams params = new ModifiableSolrParams();   
+	    ModifiableSolrParams params = new ModifiableSolrParams();
 	    params.set("fl","articleid");   
 	    params.set("q", querystring);   
 	    params.set("start", inputPageno*20);   
