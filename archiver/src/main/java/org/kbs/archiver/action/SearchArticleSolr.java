@@ -104,6 +104,12 @@ public class SearchArticleSolr extends ActionSupport {
 		return pager.getPageno();
 	}
 	
+    public String escapeString(String origin) {
+
+        String ret=origin.replaceAll("\\\\","\\\\");
+        return ret.replaceAll("\"","\\\"");
+    }
+
 	public String Search() throws Exception {
 		if (((subject==null)||subject.isEmpty()) &&((body==null)||body.isEmpty()))
 			return SUCCESS;
@@ -117,13 +123,13 @@ public class SearchArticleSolr extends ActionSupport {
 	    
 	    String querystring= "";
 	    if ((subject!=null)&&(!subject.equals(""))) {
-	    		querystring="subject:\""+subject+"\" ";
+	    		querystring="subject:\""+escapeString(subject)+"\" ";
 	    }
         if ((author!=null)&&!author.equals("")) {
-            querystring+="author:\""+author+"\" ";
+            querystring+="author:\""+escapeString(author)+"\" ";
         }
 	    if ((body!=null)&&!body.equals("")) {
-	    		querystring+="body:\""+body+"\" ";
+	    		querystring+="body:\""+escapeString(body)+"\" ";
 	    }
         Date startdate=null,enddate=null;
         SimpleDateFormat parser=new SimpleDateFormat("yyyyMMdd");
