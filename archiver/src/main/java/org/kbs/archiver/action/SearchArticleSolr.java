@@ -166,7 +166,7 @@ public class SearchArticleSolr extends ActionSupport {
 	    ModifiableSolrParams params = new ModifiableSolrParams();
 	    params.set("fl","articleid");   
 	    params.set("q", querystring);
-        if (inputPageno<0)
+        if (inputPageno<=0)
             inputPageno=1;
 	    params.set("start", (inputPageno-1)*20);
 	    params.set("rows", 20);   
