@@ -106,13 +106,14 @@ public class SearchArticleSolr extends ActionSupport {
 	
     public String escapeString(String origin) {
 
-        String ret=origin.replaceAll("\\\\","\\\\");
-        return ret.replaceAll("\"","\\\"");
+        String ret=origin.replace("\\", "\\\\");
+        return ret.replace("\"", "\\\"");
     }
 
 	public String Search() throws Exception {
-		if (((subject==null)||subject.isEmpty()) &&((body==null)||body.isEmpty()))
-			return SUCCESS;
+		if (((subject==null)||subject.isEmpty()) &&((body==null)||body.isEmpty()) && ((author==null)||author.isEmpty())) {
+            return SUCCESS;
+        }
 		WebApplicationContext webApplicationContext = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(ServletActionContext
 						.getServletContext());
