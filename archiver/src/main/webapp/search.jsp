@@ -26,19 +26,19 @@
         <table style="table-layout:fixed">
             <tr>
                 <td width="30%">标题</td>
-                <td width="70%"><input type="text" name="subject" value="${value}" /></td>
+                <td width="70%"><input type="text" name="subject" value="<s:property value="subject" />" /></td>
             </tr>
             <tr>
                 <td>作者 ID</td>
-                <td><input type="text" name="author" value="${author}"/></td>
+                <td><input type="text" name="author" value="<s:property value="author" />"/></td>
             </tr>
             <tr>
                 <td>内容包含：</td>
-                <td><input type="text" name="body" value="${body}"/></td>
+                <td><input type="text" name="body" value="<s:property value="body" />"/></td>
             </tr>
             <tr>
                 <td>发表时间(YYYYMMDD)：</td>
-                <td><input type="text" name="start" value="${start}"/>至<input type="text" name="end" value="${end}"/></td>
+                <td><input type="text" name="start" value="<s:property value="start" />"/>至<input type="text" name="end" value="<s:property value="end" />"/></td>
             </tr>
             <tr>
                 <td colspan="2"><input type="submit" value="搜索" /></td>
