@@ -24,7 +24,7 @@ public class PagerTag extends TagSupport {
 	}
 
 	public final void setUrlprefix(String urlprefix) {
-		this.urlprefix = urlprefix;
+		this.urlprefix = urlprefix.replace("\"","%22");
 	}
 
 	public final String getUrlsuffix() {
@@ -32,7 +32,7 @@ public class PagerTag extends TagSupport {
 	}
 
 	public final void setUrlsuffix(String urlsuffix) {
-		this.urlsuffix = urlsuffix;
+		this.urlsuffix = urlsuffix.replace("\"","%22");
 	}
 
 	public final int getMaxIndexPages() {
