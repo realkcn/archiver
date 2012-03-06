@@ -3,14 +3,14 @@
          pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <s:iterator value="articlelist">
-    <tr>
-        <td><a href="board-${boardid}.html">${boardname}</a></td>
-        <td>${author}</td>
+    <tr><s:if test="boardname!=null">
+        <td><a href="board-${boardid}.html">${boardname}</a></td></s:if>
+        <td><a href="abyu-${author}.html">${author}</a></td>
         <td>${subject}</td>
         <td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
     </tr>
-    <tr>
-        <td colSpan="4"><s:set name="body" value="body"
+    <tr><s:if test="boardname!=null">
+        <td colSpan="4"></s:if><s:else><td colspan="3"></s:else><s:set name="body" value="body"
                                scope="request" />
             <%
                 out.print(org.kbs.archiver.util.AnsiToHtml
