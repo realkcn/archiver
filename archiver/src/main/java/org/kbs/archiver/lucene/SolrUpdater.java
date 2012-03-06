@@ -53,6 +53,7 @@ public class SolrUpdater {
 		}
 		document.clear();
 		document.addField("articleid", new Long(article.getArticleid()));
+		document.addField("boardid", new Long(article.getBoardid()));
 		document.addField("posttime", article.getPosttime());
 		document.addField("author", article.getAuthor());
 		document.addField("subject", article.getSubject());
