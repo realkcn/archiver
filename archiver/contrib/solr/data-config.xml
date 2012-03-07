@@ -1,0 +1,17 @@
+<dataConfig>
+<dataSource name="ds1" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/archiver?useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8&amp;useCursorFetch=true&amp;defaultFetchSize=10000" user="user" password="password" readOnly="true" />
+<dataSource name="ds2" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/archiver?useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8" user="user" password="password" readOnly="true" />
+    <document name="article">
+        <entity dataSource="ds1" threads="1" pk="articleid" name="article" query="select article.articleid,article.boardid,article.author,article.posttime,article.subject from article,board where article.boardid=board.boardid and board.ishidden=false and article.isvisible=true">
+            <field column="articleid" name="articleid" />
+            <field column="boardid" name="boardid" />
+            <field column="author" name="author" />
+            <field column="posttime" name="posttime" />
+            <field column="subject" name="subject" />
+
+            <entity name="body" dataSource="ds2" query="select body from articlebody where articleid='${article.articleid}'">
+                <field name="body" column="body" />
+            </entity>
+        </entity>
+    </document>
+</dataConfig>
