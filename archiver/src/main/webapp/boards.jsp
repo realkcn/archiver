@@ -10,14 +10,14 @@
  <meta http-equiv="pragma" content="no-cache"> 
  <meta http-equiv="cache-control" content="no-cache"> 
  <meta http-equiv="expires" content="0">    
- <meta http-equiv="description" content="水木社区版面列表"> 
-  
- 
+ <meta http-equiv="description" content="水木社区版面列表">
+
  <jsp:include page="include/htmlheader.jsp" />
   </head> 
   
-  <body> 
-   <table border="1" > <caption>版面列表</caption>
+  <body>
+  <div class="container">
+   <table class="table table-bordered"> <caption>版面列表</caption>
        <tr><td colspan="3"></td><td colspan="2"><a href="search.jsp">搜索</a></td></tr>
     <tr>
        <td>序号</td>
@@ -35,6 +35,7 @@
     </tr>
    </s:iterator>
     </table>
+  </div>
   <jsp:include page="include/footer.jsp" />
   </body> 
 </html> 

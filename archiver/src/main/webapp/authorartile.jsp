@@ -19,15 +19,15 @@
   </head> 
   
   <body>
+  <div class="container">
   <jsp:include page="include/header.jsp" />
    <pg:pager total="${totalsize}" urlprefix="abyu-${author}-" urlsuffix=".html" currentpage="${pageno}" pagesize="${pagesize}" />
  
   ${author} 一共发表了 ${totalsize} 篇文章 <br />
 <jsp:include page="include/pagerindex.jsp" />
- <table border="1"> <caption>作者文章列表</caption>
      <jsp:include page="include/showarticlelist.jsp" />
-    </table>
 <jsp:include page="include/pagerindex.jsp" />
   <jsp:include page="include/footer.jsp" />
+  </div>
   </body> 
 </html> 

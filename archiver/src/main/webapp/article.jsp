@@ -19,18 +19,10 @@
   </head> 
   
   <body>
+  <div class="container">
   <jsp:include page="include/header.jsp" />
- <table border="1">
- <!-- 
-   <tr>
-   <td>序号</td>
-   <td>作者</td>
-   <td>主题</td>
-   <td>发表时间</td>
-   </tr>
- -->
-     <jsp:include page="include/showarticlelist.jsp" />
-  </table>
+  <jsp:include page="include/showarticlelist.jsp" />
   <jsp:include page="include/footer.jsp" />
+  </div>
   </body> 
 </html> 

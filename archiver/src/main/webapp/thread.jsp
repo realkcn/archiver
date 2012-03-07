@@ -18,6 +18,7 @@
 </head> 
   
   <body>
+  <div class="container">
   <jsp:include page="include/header.jsp" />
   <pg:pager total="${totalsize}" urlprefix="thread-${tid}-" urlsuffix=".html" jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
@@ -31,10 +32,9 @@
    </tr>
  -->   
    
-   <table border="1"> <caption>主题文章列表</caption>
 <jsp:include page="include/showarticlelist.jsp" />
-    </table>
 <jsp:include page="include/pagerindex.jsp" />
   <jsp:include page="include/footer.jsp" />
+  </div>
   </body> 
 </html> 

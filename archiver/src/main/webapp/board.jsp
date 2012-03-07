@@ -18,11 +18,11 @@
   </head> 
     <pg:pager total="${totalsize}" urlprefix="board-${boardid}-" urlsuffix=".html" currentpage="${pageno}" pagesize="${pagesize}" />
 
-  <body> 
+  <body>
+  <div class="container">
 <jsp:include page="include/header.jsp" />
 <jsp:include page="include/pagerindex.jsp" />
-
-   <table border="1"> <caption>版面主题列表</caption>
+   <table class="table table-bordered"> <caption>版面主题列表</caption>
    <tr>
    <td>序号</td>
    <td>作者</td>
@@ -45,6 +45,7 @@
    </s:iterator>
     </table>
 <jsp:include page="include/pagerindex.jsp" />
+</div>
   <jsp:include page="include/footer.jsp" />
    </body> 
 </html> 

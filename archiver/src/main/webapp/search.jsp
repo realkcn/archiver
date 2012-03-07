@@ -21,6 +21,7 @@
 <s:set name="nosearchframe" scope="request" value="true" />
 </head>
 <body>
+<div class="container">
 	<jsp:include page="include/header.jsp" />
     <form action="searchArticle.do" method="GET">
         <table style="table-layout:fixed">
@@ -58,13 +59,12 @@
   一共 ${totalsize} 篇 <br />
   <s:if test="totalsize>0">
 		<jsp:include page="include/pagerindex.jsp" />
-		<table border="1">
             <s:set name="noadsense" scope="request" value="true" />
             <jsp:include page="include/showarticlelist.jsp" />
-		</table>
 		<jsp:include page="include/pagerindex.jsp" />
 		</s:if>
 	</s:if>
 	<jsp:include page="include/footer.jsp" />
+</div>
 </body>
 </html>
