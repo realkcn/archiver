@@ -33,6 +33,10 @@
                 <td><input type="text" name="author" value="<s:property value="author" />"/></td>
             </tr>
             <tr>
+                <td>版面名称</td>
+                <td><input type="text" name="boardname" value="<s:property value="boardname" />"/></td>
+            </tr>
+            <tr>
                 <td>内容包含：</td>
                 <td><input type="text" name="body" value="<s:property value="body" />"/></td>
             </tr>
@@ -49,7 +53,7 @@
 	<s:actionerror />
 	<s:if test="articlelist!=null">
 		<pg:pager total="${totalsize}"
-			urlprefix="searchArticle.do?body=${body}&author=${author}&start=${start}&end=${end}&subject=${subject}&pageno=" urlsuffix=""
+			urlprefix="searchArticle.do?boardname=${boardname}&body=${body}&author=${author}&start=${start}&end=${end}&subject=${subject}&pageno=" urlsuffix=""
 			jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
   <s:if test="totalsize>0">

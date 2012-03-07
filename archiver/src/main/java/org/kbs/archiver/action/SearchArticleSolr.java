@@ -6,8 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.kbs.archiver.ArticleEntity;
+import org.kbs.archiver.BoardEntity;
 import org.kbs.archiver.persistence.ArticleBodyMapper;
 import org.kbs.archiver.persistence.ArticleMapper;
+import org.kbs.archiver.persistence.BoardMapper;
 import org.kbs.archiver.util.Pager;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -29,6 +31,15 @@ public class SearchArticleSolr extends ActionSupport {
     private String author=null;
     private String start=null;
     private String end=null;
+    private String boardname=null;
+
+    public String getBoardname() {
+        return boardname;
+    }
+
+    public void setBoardname(String boardname) {
+        this.boardname = boardname;
+    }
 
     public String getAuthor() {
         return author;
@@ -111,7 +122,8 @@ public class SearchArticleSolr extends ActionSupport {
     }
 
 	public String Search() throws Exception {
-		if (((subject==null)||subject.isEmpty()) &&((body==null)||body.isEmpty()) && ((author==null)||author.isEmpty())) {
+		if (((subject==null)||subject.isEmpty()) &&((body==null)||body.isEmpty()) && ((author==null)||author.isEmpty())
+                && ((boardname==null)||boardname.isEmpty())) {
             return SUCCESS;
         }
 		WebApplicationContext webApplicationContext = WebApplicationContextUtils
@@ -119,7 +131,6 @@ public class SearchArticleSolr extends ActionSupport {
 						.getServletContext());
 		Properties config = (Properties) webApplicationContext.getBean("configproperties");
 	    SolrServer solr = new CommonsHttpSolrServer(config.getProperty("solrurl"));
-
 	    // http://localhost:8983/solr/spellCheckCompRH?q=epod&spellcheck=on&spellcheck.build=true
 	    
 	    String querystring= "";
@@ -132,6 +143,15 @@ public class SearchArticleSolr extends ActionSupport {
 	    if ((body!=null)&&!body.equals("")) {
 	    		querystring+="body:\""+escapeString(body)+"\" ";
 	    }
+        if ((boardname!=null)&&!boardname.equals("")) {
+            BoardMapper boardMapper=(BoardMapper)webApplicationContext.getBean("boardMapper");
+            BoardEntity board=boardMapper.getByName(boardname);
+            if (board==null) {
+                addActionError("没有这个版");
+                return ERROR;
+            }
+            querystring+="boardid:"+board.getBoardid()+" ";
+        }
         Date startdate=null,enddate=null;
         SimpleDateFormat parser=new SimpleDateFormat("yyyyMMdd");
         if ((start!=null)&&!start.equals("")) {
