@@ -23,7 +23,7 @@
 <jsp:include page="include/header.jsp" />
 <div class="container">
 <jsp:include page="include/pagerindex.jsp" />
-   <table class="table table-bordered"> <caption>版面主题列表</caption>
+   <table class="table table-bordered">
    <tr>
    <td>序号</td>
    <td>作者</td>
