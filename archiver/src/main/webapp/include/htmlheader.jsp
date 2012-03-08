@@ -11,4 +11,4 @@
   })();
 
 </script>
-<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="${request.docbase}bootstrap/css/bootstrap.css" rel="stylesheet">

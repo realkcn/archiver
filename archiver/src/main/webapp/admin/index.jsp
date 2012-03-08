@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<s:set var="docbase" value="'../'" scope="request" />
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -26,8 +27,9 @@ function searchoriginid()
 	document.searchoriginidform.action="SearchByOriginId.do";
 }
 </script>
+<link href="${request.docbase}bootstrap/css/bootstrap.css" rel="stylesheet">
 <body>
-<s:set var="docbase" value="'../'" scope="request" />
+<s:set var="pagedetail" value="'控制台'" scope="request" />
 <jsp:include page="../include/header.jsp" />
 <s:if test="#request.showurl==null">
 <s:set name="frameurl" value="''"/>
