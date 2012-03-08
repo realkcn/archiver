@@ -19,7 +19,7 @@
   </head> 
   
   <body>
-  <s:set var="pagedetail" value="'${author}文章列表'" scope="request" />
+  <s:set var="pagedetail" value="文章列表" scope="request" />
   <jsp:include page="include/header.jsp" />
   <div class="container">
    <pg:pager total="${totalsize}" urlprefix="abyu-${author}-" urlsuffix=".html" currentpage="${pageno}" pagesize="${pagesize}" />

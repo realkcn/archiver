@@ -31,6 +31,7 @@ function searchoriginid()
 <body>
 <s:set var="pagedetail" value="'控制台'" scope="request" />
 <jsp:include page="../include/header.jsp" />
+<div class="container">
 <s:if test="#request.showurl==null">
 <s:set name="frameurl" value="''"/>
 </s:if>
@@ -59,5 +60,6 @@ function searchoriginid()
 </form>
 <br/>
 <iframe width="100%" height="80%"  scroll="true" name="show"  id="show" src="${frameurl}" ></iframe>
+</div>
 </body>
 </html>
