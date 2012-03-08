@@ -15,7 +15,7 @@
   
  
 <jsp:include page="include/htmlheader.jsp" />
-  </head> 
+  </head>
     <pg:pager total="${totalsize}" urlprefix="board-${boardid}-" urlsuffix=".html" currentpage="${pageno}" pagesize="${pagesize}" />
 
   <body>

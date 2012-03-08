@@ -11,4 +11,5 @@
   })();
 
 </script>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link href="${request.docbase}bootstrap/css/bootstrap.css" rel="stylesheet">
