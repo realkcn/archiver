@@ -2,7 +2,7 @@
          import="java.util.*,org.kbs.archiver.*,javax.activation.MimetypesFileTypeMap"
          pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
-<table class="table table-bordered">
+<table border="1">
 <s:iterator value="articlelist">
     <tr><s:if test="boardname!=null">
         <td><a href="board-${boardid}.html">${boardname}</a></td></s:if>

@@ -16,9 +16,10 @@
   </head> 
   
   <body>
+<s:set var="pagedetail" value="'版面列表'" scope="request" />
+  <jsp:include page="include/header.jsp" />
   <div class="container">
-   <table class="table table-bordered"> <caption>版面列表</caption>
-       <tr><td colspan="3"></td><td colspan="2"><a href="search.jsp">搜索</a></td></tr>
+   <table class="table table-bordered">
     <tr>
        <td>序号</td>
        <td>英文名</td>

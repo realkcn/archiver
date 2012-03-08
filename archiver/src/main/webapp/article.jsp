@@ -11,7 +11,7 @@
  <meta http-equiv="pragma" content="no-cache"> 
  <meta http-equiv="cache-control" content="no-cache"> 
  <meta http-equiv="expires" content="0">    
- <meta http-equiv="description" content="水木社区作者文章列表"> 
+ <meta http-equiv="description" content="水木社区文章列表">
   
  <link rel="stylesheet" type="text/css" href="css/ansi.css" />
  
@@ -19,8 +19,9 @@
   </head> 
   
   <body>
-  <div class="container">
+  <s:set name="pagedetail" value="文章列表" scope="request" />
   <jsp:include page="include/header.jsp" />
+  <div class="container">
   <jsp:include page="include/showarticlelist.jsp" />
   <jsp:include page="include/footer.jsp" />
   </div>

@@ -19,8 +19,9 @@
     <pg:pager total="${totalsize}" urlprefix="board-${boardid}-" urlsuffix=".html" currentpage="${pageno}" pagesize="${pagesize}" />
 
   <body>
-  <div class="container">
+<s:set var="pagedetail" value="'文章列表'" scope="request" />
 <jsp:include page="include/header.jsp" />
+<div class="container">
 <jsp:include page="include/pagerindex.jsp" />
    <table class="table table-bordered"> <caption>版面主题列表</caption>
    <tr>

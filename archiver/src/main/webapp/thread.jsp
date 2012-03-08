@@ -18,8 +18,9 @@
 </head> 
   
   <body>
-  <div class="container">
+  <s:set var="pagedetail" value="'主题文章列表'" scope="request" />
   <jsp:include page="include/header.jsp" />
+  <div class="container">
   <pg:pager total="${totalsize}" urlprefix="thread-${tid}-" urlsuffix=".html" jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
 <jsp:include page="include/pagerindex.jsp" />

@@ -13,45 +13,57 @@
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
-<meta http-equiv="description" content="水木社区作者文章列表">
+<meta http-equiv="description" content="水木社区文章搜索">
 
 <link rel="stylesheet" type="text/css" href="css/ansi.css" />
 
 <jsp:include page="include/htmlheader.jsp" />
-<s:set name="nosearchframe" scope="request" value="true" />
 </head>
 <body>
-<div class="container">
+<s:set var="pagedetail" value="'搜索'" scope="request" />
 	<jsp:include page="include/header.jsp" />
-    <form action="searchArticle.do" method="GET">
-        <table style="table-layout:fixed">
-            <tr>
-                <td width="30%">标题</td>
-                <td width="70%"><input type="text" name="subject" value="<s:property value="subject" />" /></td>
-            </tr>
-            <tr>
-                <td>作者 ID</td>
-                <td><input type="text" name="author" value="<s:property value="author" />"/></td>
-            </tr>
-            <tr>
-                <td>版面名称</td>
-                <td><input type="text" name="boardname" value="<s:property value="boardname" />"/></td>
-            </tr>
-            <tr>
-                <td>内容包含：</td>
-                <td><input type="text" name="body" value="<s:property value="body" />"/></td>
-            </tr>
-            <tr>
-                <td>发表时间(YYYYMMDD)：</td>
-                <td><input type="text" name="start" value="<s:property value="start" />"/>至<input type="text" name="end" value="<s:property value="end" />"/></td>
-            </tr>
-            <tr>
-                <td colspan="2"><input type="submit" value="搜索" /></td>
-            </tr>
-        </table>
+    <div class="container">
+    <form class="form-horizontal well" action="searchArticle.do" method="GET">
+        <fieldset>
+            <div class="control-group">
+            <label class="control-label" for="subject">标题</label>
+              <div class="controls">
+                <input type="text" class="input-xlarge" id="subject" name="subject" value="<s:property value="subject" />" />
+              </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="author">作者 ID</label>
+                <div class="controls">
+                <input type="text" class="input-xlarge" id="author" name="author" value="<s:property value="author" />"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="boardname">版面名称</label>
+                <div class="controls">
+                <input type="text" class="input-xlarge" id="boardname" name="boardname" value="<s:property value="boardname" />"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="body">内容包含：</label>
+                <div class="controls">
+                <input type="text" class="input-xlarge" id="body" name="body" value="<s:property value="body" />"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="start">发表时间：</label>
+                <div class="controls">
+                <input type="text" class="input-medium" id="start" name="start" value="<s:property value="start" />"/>至<input class="input-medium" type="text" id="end" name="end" value="<s:property value="end" />"/>
+                </div>
+                <p class="help-block">格式为YYYYMMDD，比如20120130</p>
+            </div>
+            <div class="form-actions">
+                <input type="submit" class="btn btn-primary" value="搜索" />
+                <input type="reset" class="btn btn-primary" value="重置" />
+            </div>
+        </fieldset>
     </form>
 	<br />
-	<s:actionerror />
+	<s:actionerror cssClass="label label-important" />
 	<s:if test="articlelist!=null">
 		<pg:pager total="${totalsize}"
 			urlprefix="searchArticle.do?boardname=${boardname}&body=${body}&author=${author}&start=${start}&end=${end}&subject=${subject}&pageno=" urlsuffix=""
