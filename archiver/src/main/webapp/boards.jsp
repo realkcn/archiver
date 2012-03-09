@@ -62,7 +62,7 @@
         ];
 
         $( "#boardsearch" ).autocomplete({
-            minLength: 0,
+            minLength: 1,
             source: boardArray,
             focus: function( event, ui ) {
                 $( "#project" ).val( ui.item.label );
