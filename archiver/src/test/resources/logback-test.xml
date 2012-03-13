@@ -24,7 +24,7 @@
     <logger name="org.apache.ibatis" level="INFO" />
     
     <!--  urlrewrite -->
-    <logger name=org.tuckey.web.filters.urlrewrite" level="INFO" />
+    <logger name="org.tuckey.web.filters.urlrewrite" level="INFO" />
     
     <!--  jdbc pool  -->
     <logger name="org.apache.commons.dbcp" level="INFO" />

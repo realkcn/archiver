@@ -27,32 +27,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
-	<repositories>
-		<repository>
-			<id>people.apache.snapshots</id>
-			<url>http://repository.apache.org/content/groups/snapshots-group/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>apache.snapshots</id>
-			<name>Apache Snapshots</name>
-			<url>http://repository.apache.org/content/groups/snapshots-group/</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 	<dependencies>
 		<dependency>
 			<groupId>commons-cli</groupId>
@@ -93,23 +67,6 @@
 					<groupId>org.springframework</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>com.sleepycat</groupId>
-			<artifactId>BerkeleyDB</artifactId>
-			<version>5.2.36</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-core</artifactId>
-			<version>3.5.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.wltea</groupId>
-			<artifactId>IKAnalyzer</artifactId>
-			<version>3.2.8</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -418,21 +375,6 @@
 				<configuration>
 					<classpathScope>compile</classpathScope>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>1.5</version>
-				<configuration>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 

@@ -51,9 +51,9 @@
             <div class="control-group">
                 <label class="control-label" for="start">发表时间：</label>
                 <div class="controls">
-                <input type="text" class="input-medium" id="start" name="start" value="<s:property value="start" />"/>至<input class="input-medium" type="text" id="end" name="end" value="<s:property value="end" />"/>
+                    <input type="text" class="input-medium" id="start" name="start" value="<s:property value="start" />"/>至<input class="input-medium" type="text" id="end" name="end" value="<s:property value="end" />"/>
+                    <p class="help-block">格式为YYYYMMDD，比如20120130</p>
                 </div>
-                <p class="help-block">格式为YYYYMMDD，比如20120130</p>
             </div>
             <div class="form-actions">
                 <input type="submit" class="btn btn-primary" value="搜索" />
