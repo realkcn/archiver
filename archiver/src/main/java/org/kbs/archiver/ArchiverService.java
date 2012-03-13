@@ -24,7 +24,6 @@ import org.kbs.library.FileHeaderSet;
 import org.kbs.library.SimpleException;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
-import org.wltea.analyzer.lucene.IKAnalyzer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

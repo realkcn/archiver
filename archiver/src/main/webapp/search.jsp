@@ -1,4 +1,4 @@
-<%@ page language="java"
+<%@ page language="java" session="false"
 	import="java.util.*,org.kbs.archiver.*,javax.activation.MimetypesFileTypeMap"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
