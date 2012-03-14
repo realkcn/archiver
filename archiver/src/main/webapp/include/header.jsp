@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%> 
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" session="false" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <div class="navbar">
     <div class="navbar-inner">

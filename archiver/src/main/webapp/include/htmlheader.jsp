@@ -1,3 +1,4 @@
+<%@ page language="java" pageEncoding="UTF-8" session="false" %>
 <script type="text/javascript">
 
   var _gaq = _gaq || [];
