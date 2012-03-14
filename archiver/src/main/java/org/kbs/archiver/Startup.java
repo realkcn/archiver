@@ -62,8 +62,6 @@ public class Startup extends HttpServlet {
     //Clean up resources
 	@Override
     public void destroy() {
-    	SequenceDB bdb=new SequenceDB();
-    	bdb.shutdown();
     	System.out.println("bbs shut down:");
 	}
 }
