@@ -141,6 +141,7 @@ public class ArchiverTools {
 				service.setUseLastUpdate(useLastUpdate);
 				service.work(board);
                 SolrUpdater solrUpdater=new SolrUpdater();
+                solrUpdater.init(appContext);
                 solrUpdater.deltaImport();
 			} else {
 				LOG.error("Board " + boardname + " not found.");
