@@ -19,6 +19,10 @@
 <jsp:include page="include/htmlheader.jsp" />
 </head>
 <body>
+<s:if test="boardname==null">
+<!-- 处理从主站版面跳转过来带boardname的情况 -->
+    <s:set var="boardname" value="#parameters.boardname[0]" />
+</s:if>
 <s:set var="pagedetail" value="'搜索'" scope="request" />
 	<jsp:include page="include/header.jsp" />
     <div class="container">
