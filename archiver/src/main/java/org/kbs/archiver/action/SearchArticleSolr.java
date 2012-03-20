@@ -217,7 +217,7 @@ public class SearchArticleSolr extends ActionSupport {
                 querystring+="NOW] ";
             }
         }
-        if (!StringUtils.isEmpty(aonly)) {
+        if (!StringUtils.isEmpty(aonly)&&aonly.equals("true")) {
             querystring+="attachment:[1 TO *] ";
         }
 	    ModifiableSolrParams params = new ModifiableSolrParams();
@@ -227,7 +227,7 @@ public class SearchArticleSolr extends ActionSupport {
             inputPageno=1;
 	    params.set("start", (inputPageno-1)*20);
 	    params.set("rows", 20);
-        if (!StringUtils.isEmpty(sbyt)) {
+        if (!StringUtils.isEmpty(sbyt)&&sbyt.equals("true")) {
             params.set("sort","posttime desc");
         }
 	    QueryResponse response = solr.query(params);
