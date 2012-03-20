@@ -228,7 +228,7 @@ public class SearchArticleSolr extends ActionSupport {
 	    params.set("start", (inputPageno-1)*20);
 	    params.set("rows", 20);
         if (!StringUtils.isEmpty(sbyt)) {
-            params.set("sort","posttime");
+            params.set("sort","posttime desc");
         }
 	    QueryResponse response = solr.query(params);
 	    SolrDocumentList docs = response.getResults();
