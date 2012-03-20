@@ -431,8 +431,9 @@
    <field name="boardid" type="long" indexed="true" stored="true" required="true" /> 
    <field name="subject" type="text_general" indexed="true" stored="false"/>
    <field name="body" type="text_general" indexed="true" stored="false"/>
-   <field name="author" type="text_general" indexed="true" stored="false"/>
+   <field name="author" type="lowercase" indexed="true" stored="false"/>
    <field name="posttime" type="date" indexed="true" stored="true"/>
+   <field name="attachment" type="int" indexed="true" stored="true"/>
  </fields>
 
  <uniqueKey>articleid</uniqueKey>

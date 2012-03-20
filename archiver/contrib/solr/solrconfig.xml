@@ -402,7 +402,7 @@
                and old cache.  
       -->
     <filterCache class="solr.FastLRUCache"
-                 size="512"
+                 size="5120"
                  initialSize="512"
                  autowarmCount="0"/>
 
@@ -423,7 +423,7 @@
          this cache will not be autowarmed.  
       -->
     <documentCache class="solr.LRUCache"
-                   size="512"
+                   size="5120"
                    initialSize="512"
                    autowarmCount="0"/>
     
@@ -1003,18 +1003,16 @@
        if this is just a master.
     -->
   <!--
+    -->
      <requestHandler name="/replication" class="solr.ReplicationHandler" >
        <lst name="master">
          <str name="replicateAfter">commit</str>
          <str name="replicateAfter">startup</str>
-         <str name="confFiles">schema.xml,stopwords.txt</str>
-       </lst>
-       <lst name="slave">
-         <str name="masterUrl">http://localhost:8983/solr/replication</str>
-         <str name="pollInterval">00:00:60</str>
+         <str name="confFiles">schema.xml,stopwords.txt,IKAnalyzer.cfg.xml</str>
+         <!--The default value of reservation is 10 secs.See the documentation below . Normally , you should not need to specify this -->  
+         <str name="commitReserveDuration">00:00:10</str>
        </lst>
      </requestHandler>
-    -->
 
   <!-- Search Components
 

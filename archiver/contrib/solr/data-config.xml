@@ -1,13 +1,18 @@
 <dataConfig>
-<dataSource name="ds1" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/archiver?useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8&amp;useCursorFetch=true&amp;defaultFetchSize=10000" user="user" password="password" readOnly="true" />
-<dataSource name="ds2" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/archiver?useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8" user="user" password="password" readOnly="true" />
+<dataSource name="ds1" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/archiver?useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8&amp;useCursorFetch=true&amp;defaultFetchSize=10000" user="arch" password="12345678" readOnly="true" />
+<dataSource name="ds2" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://localhost:3306/archiver?useUnicode=true&amp;characterEncoding=UTF-8&amp;characterSetResults=UTF-8" user="arch" password="12345678" readOnly="true" />
     <document name="article">
-        <entity dataSource="ds1" threads="1" pk="articleid" name="article" query="select article.articleid,article.boardid,article.author,article.posttime,article.subject from article,board where article.boardid=board.boardid and board.ishidden=false and article.isvisible=true">
+<entity dataSource="ds1" threads="1" pk="articleid" name="article" 
+	query="select article.attachment,article.articleid,article.boardid,article.author,article.posttime,article.subject from article,board where article.boardid=board.boardid and board.ishidden=false and article.isvisible=true"
+	deltaImportQuery="select attachment,articleid,boardid,author,posttime,subject from article where articleid='${dataimporter.delta.articleid}'"
+	deltaQuery="select article.articleid as articleid from article,board where article.boardid=board.boardid and board.ishidden=false and article.isvisible=true and article.posttime &gt; '${dataimporter.last_index_time}'"
+	>
             <field column="articleid" name="articleid" />
             <field column="boardid" name="boardid" />
             <field column="author" name="author" />
             <field column="posttime" name="posttime" />
             <field column="subject" name="subject" />
+            <field column="attachment" name="attachment" />
 
             <entity name="body" dataSource="ds2" query="select body from articlebody where articleid='${article.articleid}'">
                 <field name="body" column="body" />
