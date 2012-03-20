@@ -3,6 +3,7 @@ package org.kbs.archiver.util;
 import java.util.List;
 
 import org.kbs.archiver.*;
+import org.kbs.archiver.lucene.SolrUpdater;
 import org.kbs.archiver.persistence.BoardMapper;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
@@ -139,6 +140,8 @@ public class ArchiverTools {
 				service.setTestonly(testonly);
 				service.setUseLastUpdate(useLastUpdate);
 				service.work(board);
+                SolrUpdater solrUpdater=new SolrUpdater();
+                solrUpdater.deltaImport();
 			} else {
 				LOG.error("Board " + boardname + " not found.");
 			}

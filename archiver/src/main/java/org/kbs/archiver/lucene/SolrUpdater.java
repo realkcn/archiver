@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Properties;
 
+import org.apache.solr.client.solrj.SolrRequest;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.request.DirectXmlRequest;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.params.ModifiableSolrParams;
 import org.apache.struts2.ServletActionContext;
 import org.kbs.archiver.ArticleEntity;
 import org.springframework.context.ApplicationContext;
@@ -89,4 +92,19 @@ public class SolrUpdater {
 				LOG.error("delete error:",e);
 			}
 	}
+
+    private static String xml = "<root>\n</root>";
+
+    public void deltaImport() {
+        DirectXmlRequest req = new DirectXmlRequest("/dataimport", xml);
+        ModifiableSolrParams params = new ModifiableSolrParams();
+        params.set("command", "delta-import");
+        params.set("clean", "false");
+        req.setParams(params);
+        try {
+            solr.request(req);
+        } catch (Exception e) {
+            LOG.error("delta import error:",e);
+        }
+    }
 }

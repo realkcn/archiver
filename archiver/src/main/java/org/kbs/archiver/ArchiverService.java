@@ -110,6 +110,10 @@ public class ArchiverService extends TimerTask {
 				LOG.error("run", e);
 			}
 			// 结束
+            // 更新solr
+            SolrUpdater solrUpdater=new SolrUpdater();
+            solrUpdater.deltaImport();
+
 			running.set(false);
 		} catch (SimpleException e) {
 			LOG.error("run", e);

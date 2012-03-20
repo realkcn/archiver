@@ -12,7 +12,6 @@ import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.kbs.archiver.lucene.SolrUpdater;
 import org.kbs.archiver.persistence.*;
 import org.kbs.library.AttachmentData;
 import org.kbs.library.Converter;
@@ -29,7 +28,6 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 	private ApplicationContext ctx;
 	// private BoardEntity board;
 	private String boardbasedir;
-	private SolrUpdater solrUpdater;
 	private HashSet<String> filenameset=new HashSet<String>();
 	private boolean testonly = false;
 	private BlockingQueue<BoardEntity> workqueue;
@@ -40,9 +38,6 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		this.ctx = ctx;
 		this.workqueue = workqueue;
 		this.boardbasedir = boardbasedir;
-		solrUpdater=new SolrUpdater();
-		if (!solrUpdater.init(ctx))
-			throw new SimpleException("Can't open solr");
 	}
 
 	public void work(BoardEntity board) throws Exception {
@@ -125,10 +120,6 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 			// logger.debug("deal:" + article.toString());
 			LOG.debug("add {}/{}",board.getName(),fh.getFilename());
 
-			// solr索引
-			if (!testonly && !board.isIshidden()) {
-				solrUpdater.addArticle(article, body.getFirst());
-			}
 			// 处理thread,需要填写threadid,并看看是否要生成新的thread
 			ThreadEntity thread;
 			if (fh.getGroupid() > board.getLastarticleid()) {
@@ -261,7 +252,6 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 						.update("org.kbs.archiver.persistence.BoardMapper.updateLast",
 								board);
 				batchsqlsession.flushStatements();
-				solrUpdater.commit();
 			}
 			LOG.info(" Archiver "
 					+ board.getName() + " end:add " + articlelist.size()
