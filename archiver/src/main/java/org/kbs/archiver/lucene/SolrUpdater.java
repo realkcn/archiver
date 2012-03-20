@@ -100,6 +100,7 @@ public class SolrUpdater {
         ModifiableSolrParams params = new ModifiableSolrParams();
         params.set("command", "delta-import");
         params.set("clean", "false");
+        params.set("optimize","false");
         req.setParams(params);
         try {
             solr.request(req);
