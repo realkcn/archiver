@@ -58,6 +58,7 @@ public class SolrUpdater {
 		document.addField("author", article.getAuthor());
 		document.addField("subject", article.getSubject());
 		document.addField("body", body);
+        document.addField("attachment", article.getAttachment());
 		try {
 			solr.add(document);
 		} catch (SolrServerException e) {
@@ -81,6 +82,7 @@ public class SolrUpdater {
 		if (solr!=null)
 			try {
 				solr.deleteById(new Long(articleid).toString());
+                solr.commit();
 			} catch (SolrServerException e) {
 				LOG.error("delete error:",e);
 			} catch (IOException e) {

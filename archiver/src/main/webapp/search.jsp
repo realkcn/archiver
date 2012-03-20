@@ -55,6 +55,15 @@
                     <p class="help-block">格式为YYYYMMDD，比如20120130</p>
                 </div>
             </div>
+            <div class="control-group">
+                <label class="control-label" for="boardname">搜索选项：</label>
+                <label class="checkbox inline">
+                    <input type="checkbox" id="sbyt" name="sbyt" value="true" <s:if test="sbyt!=null">checked="true" </s:if>/>按发表时间排序
+                </label>
+                <label class="checkbox inline">
+                    <input type="checkbox" id="aonly" name="aonly" value="true" <s:if test="aonly!=null">checked="true"</s:if> />仅带附件文章
+                </label>
+            </div>
             <div class="form-actions">
                 <input type="submit" class="btn btn-primary" value="搜索" />
                 <input type="reset" class="btn btn-primary" value="重置" />

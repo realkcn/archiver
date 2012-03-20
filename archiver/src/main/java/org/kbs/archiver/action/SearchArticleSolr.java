@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.apache.commons.lang.StringUtils;
 import org.kbs.archiver.ArticleEntity;
 import org.kbs.archiver.BoardEntity;
 import org.kbs.archiver.persistence.ArticleBodyMapper;
@@ -32,6 +33,24 @@ public class SearchArticleSolr extends ActionSupport {
     private String start=null;
     private String end=null;
     private String boardname=null;
+    private String sbyt=null; //sort by time
+    private String aonly=null; //attachment only
+
+    public String getSbyt() {
+        return sbyt;
+    }
+
+    public void setSbyt(String sbyt) {
+        this.sbyt = sbyt;
+    }
+
+    public String getAonly() {
+        return aonly;
+    }
+
+    public void setAonly(String aonly) {
+        this.aonly = aonly;
+    }
 
     public String getBoardname() {
         return boardname;
@@ -178,10 +197,13 @@ public class SearchArticleSolr extends ActionSupport {
                 querystring+="posttime:[* TO ";
             }
             if (enddate!=null) {
-                querystring+=formater.format(enddate)+"T23:59:59Z]";
+                querystring+=formater.format(enddate)+"T23:59:59Z] ";
             } else {
-                querystring+="NOW]";
+                querystring+="NOW] ";
             }
+        }
+        if (!StringUtils.isEmpty(aonly)) {
+            querystring+="attachment:[1 TO *] ";
         }
 	    ModifiableSolrParams params = new ModifiableSolrParams();
 	    params.set("fl","articleid");   
@@ -189,7 +211,10 @@ public class SearchArticleSolr extends ActionSupport {
         if (inputPageno<=0)
             inputPageno=1;
 	    params.set("start", (inputPageno-1)*20);
-	    params.set("rows", 20);   
+	    params.set("rows", 20);
+        if (!StringUtils.isEmpty(sbyt)) {
+            params.set("sort","posttime+desc");
+        }
 	    QueryResponse response = solr.query(params);
 	    SolrDocumentList docs = response.getResults();
 	    pager = new Pager(inputPageno, 0, docs.getNumFound());
