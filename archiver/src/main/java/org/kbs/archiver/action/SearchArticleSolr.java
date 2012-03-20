@@ -10,6 +10,7 @@ import org.kbs.archiver.ArticleEntity;
 import org.kbs.archiver.BoardEntity;
 import org.kbs.archiver.persistence.ArticleBodyMapper;
 import org.kbs.archiver.persistence.ArticleMapper;
+import org.kbs.archiver.persistence.AttachmentMapper;
 import org.kbs.archiver.persistence.BoardMapper;
 import org.kbs.archiver.util.Pager;
 import org.springframework.web.context.WebApplicationContext;
@@ -102,6 +103,12 @@ public class SearchArticleSolr extends ActionSupport {
 
 	private ArticleMapper articleMapper = null;
 	private ArticleBodyMapper articleBodyMapper = null;
+    private AttachmentMapper attachmentMapper = null;
+
+    public void setAttachmentMapper(AttachmentMapper attachmentMapper) {
+        this.attachmentMapper = attachmentMapper;
+    }
+
 	public void setArticleBodyMapper(ArticleBodyMapper articleBodyMapper) {
 		this.articleBodyMapper = articleBodyMapper;
 	}
@@ -138,6 +145,14 @@ public class SearchArticleSolr extends ActionSupport {
 
         String ret=origin.replace("\\", "\\\\");
         return ret.replace("\"", "\\\"");
+    }
+
+    public void dealAttachment() {
+        for (ArticleEntity article:articlelist) {
+            if (article.getAttachment()>0) {
+                article.setAttachments(attachmentMapper.getByArticle(article.getArticleid()));
+            }
+        }
     }
 
 	public String Search() throws Exception {
@@ -213,7 +228,7 @@ public class SearchArticleSolr extends ActionSupport {
 	    params.set("start", (inputPageno-1)*20);
 	    params.set("rows", 20);
         if (!StringUtils.isEmpty(sbyt)) {
-            params.set("sort","posttime+desc");
+            params.set("sort","posttime");
         }
 	    QueryResponse response = solr.query(params);
 	    SolrDocumentList docs = response.getResults();
@@ -229,6 +244,7 @@ public class SearchArticleSolr extends ActionSupport {
 				articlelist.add(article);
 			}
 	    }
+        dealAttachment();
 	    return SUCCESS;
 	}
 }
