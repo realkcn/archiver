@@ -112,6 +112,7 @@ public class ArchiverService extends TimerTask {
 			// 结束
             // 更新solr
             SolrUpdater solrUpdater=new SolrUpdater();
+            solrUpdater.init(ctx);
             solrUpdater.deltaImport();
 
 			running.set(false);
