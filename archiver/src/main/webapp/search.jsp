@@ -74,7 +74,7 @@
 	<s:actionerror cssClass="label label-important" />
 	<s:if test="articlelist!=null">
 		<pg:pager total="${totalsize}"
-			urlprefix="searchArticle.do?boardname=${boardname}&body=${body}&author=${author}&start=${start}&end=${end}&subject=${subject}&pageno=&sbyt=${sbyt}&aonly=${aonly}" urlsuffix=""
+			urlprefix="searchArticle.do?boardname=${boardname}&body=${body}&author=${author}&start=${start}&end=${end}&subject=${subject}&sbyt=${sbyt}&aonly=${aonly}&pageno=" urlsuffix=""
 			jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
   <s:if test="totalsize>0">
