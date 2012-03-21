@@ -7,7 +7,7 @@
     <select id="getHotThreads" resultType="org.kbs.archiver.ThreadEntity" useCache="false">
         select * from newestthread
         <if test="groupid!=null">
-            where newestthread.boardid=#{groupid}
+            where newestthread.groupid=#{groupid}
         </if>
           order by articlenumber desc limit #{count};
     </select>
@@ -15,7 +15,7 @@
         select * from newestthread order by lastposttime desc limit #{count};
     </select>
     <insert id="insertNewestThread" timeout="600" flushCache="false">
-        insert into newestthread select thread.*,board.cname as boardname from thread,board
+        insert into newestthread select thread.*,board.cname as boardname,board.groupid as groupid from thread,board
           where thread.boardid=board.boardid and board.ishidden=false and thread.isvisible=true and TIMESTAMPDIFF(HOUR,lastposttime,sysdate()) &lt; #{offsethour}
           ON DUPLICATE KEY UPDATE newestthread.lastposttime=thread.lastposttime,newestthread.lastreply=thread.lastreply,newestthread.articlenumber=thread.articlenumber
     </insert>
