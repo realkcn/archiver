@@ -1,3 +1,4 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.TimeZone" %>
 <%@ page import="java.util.Date" %>
@@ -10,7 +11,6 @@
 <%@ page import="org.apache.struts2.ServletActionContext" %>
 <%@ page language="java" pageEncoding="UTF-8" session="false" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
-<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
 <%!
     String getFixedWidthString(String str,int width) {
         if (str.length()*2<width)
