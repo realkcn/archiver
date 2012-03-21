@@ -32,7 +32,7 @@
         out.print("<h3>" + name + "</h3>");
         out.print("<table class=\"table-bordered\" width=\"100%\">");
         if (!showsubjectonly)
-            out.print("<thead><td width=\"20%\"><h4>版面</h4></td><td><h4>主题</h4></td><td><h4>回复数</h4></td></thead>");
+            out.print("<thead><td width=\"20%\"><h4>版面</h4></td><td width=\"70%\"><h4>主题</h4></td><td width=\"10%\"><h4>回复数</h4></td></thead>");
         for (ThreadEntity thread : threadlist) {
             out.print("<tr>");
             if (!showsubjectonly)
