@@ -40,7 +40,7 @@
             String subject=getFixedWidthString(thread.getSubject(),50);
             out.print("<td><a href=\"thread-" + thread.getEncodingurl() + ".html\">" + subject + "</a></td>");
             if (!showsubjectonly)
-                out.print("<td>" + thread.getArticlenumber()+"</td>");
+                out.print("<td>" + (thread.getArticlenumber()-1)+"</td>");
             out.print("</tr>");
         }
         out.print("</table>");
