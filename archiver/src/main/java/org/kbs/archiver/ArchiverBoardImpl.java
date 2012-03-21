@@ -228,7 +228,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
                 value.getValue().setBoardname(board.getCname());
                 value.getValue().setGroupid(board.getGroupid());
                 batchsqlsession.insert(
-                        "org.kbs.archiver.persistence.FrontPageMapper.insert",
+                        "org.kbs.archiver.persistence.FrontPageMapper.addThread",
                         value.getValue());
             }
 		}
@@ -241,7 +241,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 						"org.kbs.archiver.persistence.ThreadMapper.update",
 						value.getValue());
                 batchsqlsession.update(
-                    "org.kbs.archiver.persistence.FrontPageMapper.update",
+                    "org.kbs.archiver.persistence.FrontPageMapper.updateThread",
                     value.getValue());
             }
 		}
