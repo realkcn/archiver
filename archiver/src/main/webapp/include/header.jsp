@@ -41,6 +41,10 @@
         <li class="active">
             <a href="#">${request.pagedetail}</a>
         </li>
+    <s:if test="board!=null">
+        <li style="float:right"><a href="http://www.newsmth.net/nForum/board/${board.name}" target="_blank">回主站[${board.cname}]版</a>
+        </li>
+    </s:if>
     </ul>
 </div>
 </s:if>

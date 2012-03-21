@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8" session="false" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -6,9 +7,12 @@
 
     <title>水木社区归档站 - 版面列表</title>
 
-    <meta http-equiv="pragma" content="no-cache">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="expires" content="0">
+    <meta http-equiv="cache-control" content="max-age=120;">
+    <meta http-equiv="expires" content="<%
+    SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); //use iso8601 time format.....maybe change to rfc2616?
+    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+    out.print(format.format(new Date(System.currentTimeMillis()+1000*120)));
+%>">
     <meta http-equiv="description" content="水木社区版面列表">
 
     <jsp:include page="include/htmlheader.jsp"/>

@@ -21,7 +21,7 @@
   <jsp:include page="include/header.jsp" />
   <div class="container">
   <pg:pager total="${totalsize}" urlprefix="thread-${tid}-" urlsuffix=".html" jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
-  一共 ${totalsize} 篇 <br />
+  一共 ${totalsize} 篇 <a href="http://www.newsmth.net/nForum/article/${board.name}/${thread.originid}" target="_blank">回主站参与讨论</a><br />
 <jsp:include page="include/pagerindex.jsp" />
 <!-- 
    <tr>
