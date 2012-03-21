@@ -221,19 +221,29 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
 		// 加入新的thread
 		Set<Map.Entry<Long, ThreadEntity>> threadset = threads.entrySet();
 		for (Map.Entry<Long, ThreadEntity> value : threadset) {
-			if (!testonly)
+			if (!testonly) {
 				batchsqlsession.insert(
 						"org.kbs.archiver.persistence.ThreadMapper.insert",
 						value.getValue());
+                value.getValue().setBoardname(board.getCname());
+                value.getValue().setGroupid(board.getGroupid());
+                batchsqlsession.insert(
+                        "org.kbs.archiver.persistence.FrontPageMapper.insert",
+                        value.getValue());
+            }
 		}
 
 		// 更新已经存在的thread
 		threadset = oldthreads.entrySet();
 		for (Map.Entry<Long, ThreadEntity> value : threadset) {
-			if (!testonly)
+			if (!testonly) {
 				batchsqlsession.update(
 						"org.kbs.archiver.persistence.ThreadMapper.update",
 						value.getValue());
+                batchsqlsession.update(
+                    "org.kbs.archiver.persistence.FrontPageMapper.update",
+                    value.getValue());
+            }
 		}
 
 		if ((articlelist.size() > 0)) { // 更新board表的lastid,threads

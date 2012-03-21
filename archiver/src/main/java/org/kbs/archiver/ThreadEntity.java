@@ -17,6 +17,17 @@ public class ThreadEntity {
 	private String encodingurl;
 	private long originid;
 
+    public String getGroupid() {
+        return groupid;
+    }
+
+    public void setGroupid(String groupid) {
+        this.groupid = groupid;
+    }
+
+    private String groupid;
+    private String boardname;
+
     public String getBoardname() {
         return boardname;
     }
@@ -25,8 +36,6 @@ public class ThreadEntity {
         this.boardname = boardname;
     }
 
-    private String boardname;
-	
 	public long getOriginid() {
 		return originid;
 	}

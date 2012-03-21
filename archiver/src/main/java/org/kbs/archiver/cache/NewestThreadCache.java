@@ -1,5 +1,6 @@
 package org.kbs.archiver.cache;
 
+import org.kbs.archiver.ThreadEntity;
 import org.kbs.archiver.persistence.FrontPageMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,15 +41,21 @@ public class NewestThreadCache extends TimerTask {
         LOG.info("init newest thread cache end");
     }
 
+    public void addthread(ThreadEntity thread,String groupid,String boardname) {
+        thread.setGroupid(groupid);
+        thread.setBoardname(boardname);
+        frontPageMapper.addThread(thread);
+    }
+
+    public void updatethread(ThreadEntity thread) {
+        frontPageMapper.updateThread(thread);
+    }
+
     @Override
     public void run() {
-        if (!inited)
-            startup();
-        else {
-            LOG.info("start newest thread cache");
-            frontPageMapper.insertNewestThread(24);
-            frontPageMapper.deleteOldThread(getOffsetdate()*24);
-            LOG.info("end newest thread cache");
-        }
+        LOG.info("start newest thread cache");
+//        frontPageMapper.insertNewestThread(24);
+        frontPageMapper.deleteOldThread(getOffsetdate()*24);
+        LOG.info("end newest thread cache");
     }
 }
