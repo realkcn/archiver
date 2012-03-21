@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- spring.xml for testing! root eliment -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+			http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    <bean id="FrontPageCache" class="org.kbs.archiver.cache.NewestThreadCache" init-method="startup">
+        <property name="frontPageMapper" ref="frontpageMapper"/>
+        <property name="offsetdate" value="3"/>
+    </bean>
+
+    <bean name="FrontPageCacheJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="FrontPageCache"/>
+        <property name="targetMethod" value="run"/>
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="FrontPageCacheJob"/>
+        <!-- start after 5 seconds -->
+        <property name="startDelay" value="5000"/>
+        <!-- repeat every 5 minutes -->
+        <property name="repeatInterval" value="300000"/>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>

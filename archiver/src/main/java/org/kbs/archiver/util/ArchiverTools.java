@@ -17,7 +17,7 @@ public class ArchiverTools {
 
 	public static void init() {
 		appContext = new ClassPathXmlApplicationContext(
-				"applicationContext.xml");
+				"spring.xml");
 		appContext.registerShutdownHook();
 
 	}
