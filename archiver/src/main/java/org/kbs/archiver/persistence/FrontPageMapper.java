@@ -18,4 +18,5 @@ public interface FrontPageMapper {
     public void insertNewestThread(@Param("offsethour")int offsethour);
     public void deleteOldThread(@Param("offsethour")int offsethour);
     public void deleteAll();
+    public void deleteByid(@Param("threadid")long threadid);
 }

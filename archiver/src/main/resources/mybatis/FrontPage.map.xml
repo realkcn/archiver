@@ -25,5 +25,8 @@
     <delete id="deleteAll" flushCache="false">
         delete from newestthread;
     </delete>
+    <delete id="deleteByid" flushCache="false">
+        delete from newestthread where threadid=#{threadid};
+    </delete>
 <!-- nocache    <cache /> -->
 </mapper>

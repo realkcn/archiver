@@ -12,11 +12,7 @@ import java.util.concurrent.Callable;
 import javax.sql.DataSource;
 
 import org.kbs.archiver.lucene.SolrUpdater;
-import org.kbs.archiver.persistence.ArticleBodyMapper;
-import org.kbs.archiver.persistence.ArticleMapper;
-import org.kbs.archiver.persistence.AttachmentMapper;
-import org.kbs.archiver.persistence.BoardMapper;
-import org.kbs.archiver.persistence.ThreadMapper;
+import org.kbs.archiver.persistence.*;
 import org.kbs.library.BoardHeaderInfo;
 import org.kbs.library.DBTools;
 import org.kbs.library.FileHeaderInfo;
@@ -209,6 +205,7 @@ public class ArchiverService extends TimerTask {
 	public synchronized void deleteArticle(long articleid) {
 		BoardMapper boardMapper = (BoardMapper) ctx.getBean("boardMapper");
 		ThreadMapper threadMapper = (ThreadMapper) ctx.getBean("threadMapper");
+        FrontPageMapper frontPageMapper = (FrontPageMapper) ctx.getBean("frontpageMapper");
 		ArticleMapper articleMapper = (ArticleMapper) ctx
 				.getBean("articleMapper");
 		ArticleBodyMapper articleBodyMapper = (ArticleBodyMapper) ctx
@@ -233,6 +230,7 @@ public class ArchiverService extends TimerTask {
 				threadMapper.update(thread);
 			} else {
 				threadMapper.delete(thread.getThreadid());
+                frontPageMapper.deleteByid(thread.getThreadid());
 				if (board != null)
 					board.setThreads(-1);
 			}
@@ -259,6 +257,7 @@ public class ArchiverService extends TimerTask {
 	public synchronized void deleteThread(long threadid) {
 		BoardMapper boardMapper = (BoardMapper) ctx.getBean("boardMapper");
 		ThreadMapper threadMapper = (ThreadMapper) ctx.getBean("threadMapper");
+        FrontPageMapper frontPageMapper = (FrontPageMapper) ctx.getBean("frontpageMapper");
 		ArticleMapper articleMapper = (ArticleMapper) ctx
 				.getBean("articleMapper");
 		ArticleBodyMapper articleBodyMapper = (ArticleBodyMapper) ctx
@@ -280,6 +279,7 @@ public class ArchiverService extends TimerTask {
 		// 处理thread
 		if (thread != null) {
 			threadMapper.delete(thread.getThreadid());
+            frontPageMapper.deleteByid(thread.getThreadid());
 			if (board != null)
 				board.setThreads(-1);
 		}
