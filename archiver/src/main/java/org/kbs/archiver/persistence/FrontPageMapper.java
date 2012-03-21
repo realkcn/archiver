@@ -15,4 +15,7 @@ public interface FrontPageMapper {
     public List<ThreadEntity> getHotThreads(@Param("groupid")String groupid,@Param("count")int count);
     public List<ThreadEntity> getNewestThreads(@Param("count")int count);
     public List<String> getGroups();
+    public void insertNewestThread(@Param("offsethour")int offsethour);
+    public void deleteOldThread(@Param("offsethour")int offsethour);
+    public void deleteAll();
 }

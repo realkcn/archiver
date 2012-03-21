@@ -1,111 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- spring.xml for testing! root eliment -->
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context" 
-	xsi:schemaLocation="
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
 			http://www.springframework.org/schema/beans
 			http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 			http://www.springframework.org/schema/context  
             http://www.springframework.org/schema/context/spring-context-3.1.xsd">
-	<bean id="configproperties"
-		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-		<property name="location" value="classpath:archiver.properties" />
-	</bean>
-	<bean id="propertyConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="properties" ref="configproperties" />
-	</bean>
-    <!-- 用注解方式注入bean -->  
-    <context:annotation-config/>  
-    <context:component-scan base-package="org.kbs.archiver.*"/> 
-	<!--创建jdbc数据源 
-	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="jdbc/kbsDB"></property>
-		<property name="lookupOnStartup" value="true"></property>
-		<property name="cache" value="true"></property>
-		<property name="proxyInterface" value="javax.sql.DataSource"></property>
-	</bean>-->
-		<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="${dbdriver}" />
-		<property name="url"><value><![CDATA[${dburl}]]></value></property>
-		<property name="username" value="${dbuser}" />
-		<property name="password" value="${dbpass}" />
-        <property name="maxActive"><value>40</value></property>  
-        <property name="initialSize"><value>4</value></property>  
-        <property name="maxWait"><value>60000</value></property>  
-        <property name="maxIdle"><value>20</value></property>  
-        <property name="minIdle"><value>3</value></property>  
-        <property name="removeAbandoned"><value>true</value></property>  
-        <property name="removeAbandonedTimeout"><value>180</value></property>  
-        <property name="connectionProperties"><value>clientEncoding=UTF-8</value></property>
-        <property name="timeBetweenEvictionRunsMillis"><value>3600000</value><!--1 hours--> </property>
-        <property name="testWhileIdle"> <value>true</value> </property>
-        <property name="validationQuery"> <value>select 1 from dual</value> </property>
-	</bean>
-	<!-- scope: singleton prototype,request,session,globalsession -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
-		scope="singleton">
-		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml" />
-		<!-- <property name="mapperLocations" value="classpath*:sample/config/mappers/**/*.xml" 
-			/> -->
-	</bean>
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="sqlSessionFactory" />
-	</bean>
-	<!-- sqlSession for batch executor -->
-	<bean id="batchSqlSession" class="org.mybatis.spring.SqlSessionTemplate"
-		scope="prototype">
-		<constructor-arg index="0" ref="sqlSessionFactory" />
-		<constructor-arg index="1" value="BATCH" />
-	</bean>
-
-	<bean
-		class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
-	<bean id="boardMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="org.kbs.archiver.persistence.BoardMapper" />
-		<property name="sqlSessionTemplate" ref="sqlSession" />
-	</bean>
-	<bean id="articleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="org.kbs.archiver.persistence.ArticleMapper" />
-		<property name="sqlSessionTemplate" ref="sqlSession" />
-	</bean>
-	<bean id="articleBodyMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="org.kbs.archiver.persistence.ArticleBodyMapper" />
-		<property name="sqlSessionTemplate" ref="sqlSession" />
-	</bean>
-	<bean id="threadMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="org.kbs.archiver.persistence.ThreadMapper" />
-		<property name="sqlSessionTemplate" ref="sqlSession" />
-	</bean>
-	<bean id="sequenceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="org.kbs.archiver.persistence.SequenceMapper" />
-		<property name="sqlSessionTemplate" ref="sqlSession" />
-	</bean>
-	<bean id="attachmentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="org.kbs.archiver.persistence.AttachmentMapper" />
-		<property name="sqlSessionTemplate" ref="sqlSession" />
-	</bean>
-    <bean id="frontpageMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-        <property name="mapperInterface" value="org.kbs.archiver.persistence.FrontPageMapper" />
-        <property name="sqlSessionTemplate" ref="sqlSession" />
+    <bean id="configproperties"
+          class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location" value="classpath:archiver.properties"/>
     </bean>
-	<bean id="boardSeq" class="org.kbs.archiver.CachedSequence" destroy-method="flush">
-		<constructor-arg index="0" value="board" type="java.lang.String" />
-		<constructor-arg index="1" ref="sequenceMapper" />
-	</bean>
-	<bean id="threadSeq" class="org.kbs.archiver.CachedSequence" destroy-method="flush">
-		<constructor-arg index="0" value="thread" type="java.lang.String" />
-		<constructor-arg index="1" ref="sequenceMapper" />
-	</bean>
-	<bean id="articleSeq" class="org.kbs.archiver.CachedSequence" destroy-method="flush">
-		<constructor-arg index="0" value="article" />
-		<constructor-arg index="1" ref="sequenceMapper" />
-	</bean>
-	<bean id="attachmentSeq" class="org.kbs.archiver.CachedSequence" destroy-method="flush">
-		<constructor-arg index="0" value="attachment" />
-		<constructor-arg index="1" ref="sequenceMapper" />
-	</bean>
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties" ref="configproperties"/>
+    </bean>
+    <!-- 用注解方式注入bean -->
+    <context:annotation-config/>
+    <context:component-scan base-package="org.kbs.archiver.*"/>
+    <!--创建jdbc数据源
+     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+         <property name="jndiName" value="jdbc/kbsDB"></property>
+         <property name="lookupOnStartup" value="true"></property>
+         <property name="cache" value="true"></property>
+         <property name="proxyInterface" value="javax.sql.DataSource"></property>
+     </bean>-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="${dbdriver}"/>
+        <property name="url">
+            <value><![CDATA[${dburl}]]></value>
+        </property>
+        <property name="username" value="${dbuser}"/>
+        <property name="password" value="${dbpass}"/>
+        <property name="maxActive">
+            <value>40</value>
+        </property>
+        <property name="initialSize">
+            <value>4</value>
+        </property>
+        <property name="maxWait">
+            <value>60000</value>
+        </property>
+        <property name="maxIdle">
+            <value>20</value>
+        </property>
+        <property name="minIdle">
+            <value>3</value>
+        </property>
+        <property name="removeAbandoned">
+            <value>true</value>
+        </property>
+        <property name="removeAbandonedTimeout">
+            <value>180</value>
+        </property>
+        <property name="connectionProperties">
+            <value>clientEncoding=UTF-8</value>
+        </property>
+        <property name="timeBetweenEvictionRunsMillis">
+            <value>3600000</value>
+            <!--1 hours-->
+        </property>
+        <property name="testWhileIdle">
+            <value>true</value>
+        </property>
+        <property name="validationQuery">
+            <value>select 1 from dual</value>
+        </property>
+    </bean>
+    <!-- scope: singleton prototype,request,session,globalsession -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+          scope="singleton">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml"/>
+        <!-- <property name="mapperLocations" value="classpath*:sample/config/mappers/**/*.xml"
+              /> -->
+    </bean>
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- sqlSession for batch executor -->
+    <bean id="batchSqlSession" class="org.mybatis.spring.SqlSessionTemplate"
+          scope="prototype">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+        <constructor-arg index="1" value="BATCH"/>
+    </bean>
+
+    <bean
+            class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    <bean id="boardMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="org.kbs.archiver.persistence.BoardMapper"/>
+        <property name="sqlSessionTemplate" ref="sqlSession"/>
+    </bean>
+    <bean id="articleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="org.kbs.archiver.persistence.ArticleMapper"/>
+        <property name="sqlSessionTemplate" ref="sqlSession"/>
+    </bean>
+    <bean id="articleBodyMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="org.kbs.archiver.persistence.ArticleBodyMapper"/>
+        <property name="sqlSessionTemplate" ref="sqlSession"/>
+    </bean>
+    <bean id="threadMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="org.kbs.archiver.persistence.ThreadMapper"/>
+        <property name="sqlSessionTemplate" ref="sqlSession"/>
+    </bean>
+    <bean id="sequenceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="org.kbs.archiver.persistence.SequenceMapper"/>
+        <property name="sqlSessionTemplate" ref="sqlSession"/>
+    </bean>
+    <bean id="attachmentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="org.kbs.archiver.persistence.AttachmentMapper"/>
+        <property name="sqlSessionTemplate" ref="sqlSession"/>
+    </bean>
+    <bean id="frontpageMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="org.kbs.archiver.persistence.FrontPageMapper"/>
+        <property name="sqlSessionTemplate" ref="sqlSession"/>
+    </bean>
+    <bean id="boardSeq" class="org.kbs.archiver.CachedSequence" destroy-method="flush">
+        <constructor-arg index="0" value="board" type="java.lang.String"/>
+        <constructor-arg index="1" ref="sequenceMapper"/>
+    </bean>
+    <bean id="threadSeq" class="org.kbs.archiver.CachedSequence" destroy-method="flush">
+        <constructor-arg index="0" value="thread" type="java.lang.String"/>
+        <constructor-arg index="1" ref="sequenceMapper"/>
+    </bean>
+    <bean id="articleSeq" class="org.kbs.archiver.CachedSequence" destroy-method="flush">
+        <constructor-arg index="0" value="article"/>
+        <constructor-arg index="1" ref="sequenceMapper"/>
+    </bean>
+    <bean id="attachmentSeq" class="org.kbs.archiver.CachedSequence" destroy-method="flush">
+        <constructor-arg index="0" value="attachment"/>
+        <constructor-arg index="1" ref="sequenceMapper"/>
+    </bean>
+
+    <bean id="FrontPageCache" class="org.kbs.archiver.cache.NewestThreadCache" init-method="startup">
+        <property name="frontPageMapper" ref="frontpageMapper"/>
+        <property name="offsetdate" value="3"/>
+    </bean>
+
+
+    <bean name="FrontPageCacheJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="FrontPageCache"/>
+        <property name="targetMethod" value="run"/>
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="FrontPageCacheJob" />
+        <!-- start after 5 seconds -->
+        <property name="startDelay" value="5000" />
+        <!-- repeat every 5 minutes -->
+        <property name="repeatInterval" value="300000" />
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronTrigger" />
+            </list>
+        </property>
+    </bean>
 </beans>
