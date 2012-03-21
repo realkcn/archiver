@@ -13,5 +13,6 @@
 		<mapper resource="mybatis/Article.map.xml" />
 		<mapper resource="mybatis/ArticleBody.map.xml" />
 		<mapper resource="mybatis/Attachment.map.xml" />
+        <mapper resource="mybatis/FrontPage.map.xml" />
 	</mappers>
 </configuration>  

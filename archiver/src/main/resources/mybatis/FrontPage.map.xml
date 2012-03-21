@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kbs.archiver.persistence.FrontPageMapper">
+    <select id="getGroups" resultType="String">
+		select groupid from board where ishidden=false Group by groupid
+	</select>
+    <select id="getHotThreads" resultType="org.kbs.archiver.ThreadEntity">
+        select thread.*,board.cname as boardname from thread,board
+          where thread.boardid=board.boardid and board.ishidden=false and thread.isvisible=true and TIMESTAMPDIFF(DAY,lastposttime,sysdate()) &lt; 300
+        <if test="groupid!=null">
+            and board.groupid=#{groupid}
+        </if>
+          order by thread.articlenumber desc limit #{count};
+    </select>
+    <select id="getNewestThreads" resultType="org.kbs.archiver.ThreadEntity">
+        select thread.*,board.cname as boardname from thread,board
+        where thread.boardid=board.boardid and board.ishidden=false and thread.isvisible=true
+        order by thread.lastposttime desc limit #{count};
+    </select>
+
+<!-- nocache    <cache /> -->
+</mapper>

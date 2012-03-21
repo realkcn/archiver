@@ -7,7 +7,13 @@
             <div class="nav-collapse">
                 <ul class="nav">
                     <li class="active">
-            <a href="${request.docbase}boards.html">归档站首页</a>
+                        <s:if test="#request.docbase==null">
+                            <s:set var="docbase" value="'./'" scope="request" />
+                        </s:if>
+            <a href="${request.docbase}">归档站首页</a>
+                    </li>
+                    <li class="active">
+                        <a href="${request.docbase}boards.html">版面列表</a>
                     </li>
                     <li class="active">
             <a class="active" href="${request.docbase}search.jsp">搜索</a>
@@ -21,10 +27,11 @@
         </div>
     </div>
 </div>
+<s:if test="#request.nobreadcrumbs==null">
 <div class="container">
     <ul class="breadcrumb">
         <li>
-            <a href="${request.docbase}boards.html">首页</a> <span class="divider">/</span>
+            <a href="${request.docbase}">首页</a> <span class="divider">/</span>
         </li>
         <s:if test="board!=null">
         <li>
@@ -36,3 +43,4 @@
         </li>
     </ul>
 </div>
+</s:if>

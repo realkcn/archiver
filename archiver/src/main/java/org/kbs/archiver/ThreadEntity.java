@@ -16,6 +16,16 @@ public class ThreadEntity {
 	private long threadid;
 	private String encodingurl;
 	private long originid;
+
+    public String getBoardname() {
+        return boardname;
+    }
+
+    public void setBoardname(String boardname) {
+        this.boardname = boardname;
+    }
+
+    private String boardname;
 	
 	public long getOriginid() {
 		return originid;

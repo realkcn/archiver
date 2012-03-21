@@ -88,12 +88,16 @@
 		<property name="mapperInterface" value="org.kbs.archiver.persistence.AttachmentMapper" />
 		<property name="sqlSessionTemplate" ref="sqlSession" />
 	</bean>
+    <bean id="frontpageMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="org.kbs.archiver.persistence.FrontPageMapper" />
+        <property name="sqlSessionTemplate" ref="sqlSession" />
+    </bean>
 	<bean id="boardSeq" class="org.kbs.archiver.CachedSequence" destroy-method="flush">
-		<constructor-arg index="0" value="board" type="String" />
+		<constructor-arg index="0" value="board" type="java.lang.String" />
 		<constructor-arg index="1" ref="sequenceMapper" />
 	</bean>
 	<bean id="threadSeq" class="org.kbs.archiver.CachedSequence" destroy-method="flush">
-		<constructor-arg index="0" value="thread" type="String" />
+		<constructor-arg index="0" value="thread" type="java.lang.String" />
 		<constructor-arg index="1" ref="sequenceMapper" />
 	</bean>
 	<bean id="articleSeq" class="org.kbs.archiver.CachedSequence" destroy-method="flush">

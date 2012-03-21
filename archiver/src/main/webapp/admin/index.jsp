@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
-<s:set var="docbase" value="'../'" scope="request" />
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<s:set var="docbase" value="'../'" scope="request" />
 <html>
 <head>
 <title>水木社区归档管理</title>
