@@ -36,6 +36,15 @@ public class SearchArticleSolr extends ActionSupport {
     private String boardname=null;
     private String sbyt=null; //sort by time
     private String aonly=null; //attachment only
+    private String firstonly; //only search first article of thread
+
+    public String getFirstonly() {
+        return firstonly;
+    }
+
+    public void setFirstonly(String firstonly) {
+        this.firstonly = firstonly;
+    }
 
     public String getSbyt() {
         return sbyt;
@@ -218,7 +227,10 @@ public class SearchArticleSolr extends ActionSupport {
             }
         }
         if (!StringUtils.isEmpty(aonly)&&aonly.equals("true")) {
-            querystring+="attachment:[1 TO *] ";
+            querystring+="attachment:true ";
+        }
+        if (!StringUtils.isEmpty(firstonly)&&firstonly.equals("true")) {
+            querystring+="isfirst:true ";
         }
 	    ModifiableSolrParams params = new ModifiableSolrParams();
 	    params.set("fl","articleid");   

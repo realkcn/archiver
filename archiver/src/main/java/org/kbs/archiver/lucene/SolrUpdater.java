@@ -61,7 +61,9 @@ public class SolrUpdater {
 		document.addField("author", article.getAuthor());
 		document.addField("subject", article.getSubject());
 		document.addField("body", body);
-        document.addField("attachment", article.getAttachment());
+        document.addField("attachment", (article.getAttachment()>0));
+        document.addField("isfirst", article.getOriginid()==article.getReplyid());
+
 		try {
 			solr.add(document);
 		} catch (SolrServerException e) {

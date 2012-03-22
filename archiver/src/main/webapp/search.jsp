@@ -67,6 +67,9 @@
                 <label class="checkbox inline">
                     <input type="checkbox" id="aonly" name="aonly" value="true" <s:if test="aonly!=null">checked="true"</s:if> />仅带附件文章
                 </label>
+                <label class="checkbox inline">
+                    <input type="checkbox" id="firstonly" name="firstonly" value="true" <s:if test="firstonly!=null">checked="true"</s:if> />仅搜主题第一篇
+                </label>
             </div>
             <div class="form-actions">
                 <input type="submit" class="btn btn-primary" value="搜索" />
@@ -78,7 +81,7 @@
 	<s:actionerror cssClass="label label-important" />
 	<s:if test="articlelist!=null">
 		<pg:pager total="${totalsize}"
-			urlprefix="searchArticle.do?boardname=${boardname}&body=${body}&author=${author}&start=${start}&end=${end}&subject=${subject}&sbyt=${sbyt}&aonly=${aonly}&pageno=" urlsuffix=""
+			urlprefix="searchArticle.do?boardname=${boardname}&body=${body}&author=${author}&start=${start}&end=${end}&subject=${subject}&firstonly=${firstonly}&sbyt=${sbyt}&aonly=${aonly}&pageno=" urlsuffix=""
 			jsgoGenerate="true" currentpage="${pageno}" pagesize="${pagesize}" />
   一共 ${totalsize} 篇 <br />
   <s:if test="totalsize>0">
