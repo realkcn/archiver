@@ -14,3 +14,9 @@
 </script>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link href="${request.docbase}bootstrap/css/bootstrap.css" rel="stylesheet">
+<script type="text/javascript" src="${request.docbase}scripts/jquery-1.7.1.pack.js" ></script>
+
+<!--[if IE 6]>
+
+<link href="${request.docbase}bootstrap/css/ie6.min.css" rel="stylesheet">
+<![endif]-->

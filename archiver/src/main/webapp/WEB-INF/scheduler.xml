@@ -11,6 +11,7 @@
     <bean id="FrontPageCache" class="org.kbs.archiver.cache.NewestThreadCache">
         <property name="frontPageMapper" ref="frontpageMapper"/>
         <property name="offsetdate" value="3"/>
+        <property name="threadMaxAge" value="30"/>
     </bean>
 
     <bean name="FrontPageCacheJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">

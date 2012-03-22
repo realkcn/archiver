@@ -30,20 +30,11 @@
 <s:if test="#request.nobreadcrumbs==null">
 <div class="container">
     <ul class="breadcrumb">
-        <li>
             <a href="${request.docbase}">首页</a> <span class="divider">/</span>
-        </li>
         <s:if test="board!=null">
-        <li>
             <a href="${request.docbase}board-${board.boardid}.html">${board.cname}</a> <span class="divider">/</span>
-        </li>
         </s:if>
-        <li class="active">
-            <a href="#">${request.pagedetail}</a>
-        </li>
-    <s:if test="board!=null">
-        <li style="float:right"><a href="http://www.newsmth.net/nForum/board/${board.name}" target="_blank">回主站[${board.cname}]版</a>
-        </li>
+            ${request.pagedetail}<s:if test="board!=null"><a style="float: right" href="http://www.newsmth.net/nForum/board/${board.name}" target="_blank">回主站[${board.cname}]版</a>
     </s:if>
     </ul>
 </div>

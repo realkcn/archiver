@@ -17,10 +17,9 @@
 
     <jsp:include page="include/htmlheader.jsp"/>
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
+    <script type="text/javascript" src="${request.docbase}scripts/jquery-ui-1.8.18.custom.min.js"></script>
 </head>
 <body onLoad='javascript:document.getElementById("boardsearch").focus()'>
-<script type="text/javascript" src="${request.docbase}scripts/jquery-1.7.1.pack.js" ></script>
-<script type="text/javascript" src="${request.docbase}scripts/jquery-ui-1.8.18.custom.min.js"></script>
 <s:set var="pagedetail" value="'版面列表'" scope="request"/>
 <jsp:include page="include/header.jsp"/>
 <div class="container">

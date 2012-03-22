@@ -16,6 +16,16 @@ public class NewestThreadCache extends TimerTask {
     private static final Logger LOG = LoggerFactory.getLogger(NewestThreadCache.class);
     private boolean inited=false;
 
+    public int getThreadMaxAge() {
+        return threadMaxAge;
+    }
+
+    public void setThreadMaxAge(int threadMaxAge) {
+        this.threadMaxAge = threadMaxAge;
+    }
+
+    private int threadMaxAge=100;
+
     public void setFrontPageMapper(FrontPageMapper frontPageMapper) {
         this.frontPageMapper = frontPageMapper;
     }
@@ -34,11 +44,13 @@ public class NewestThreadCache extends TimerTask {
 
     public void startup()
     {
-        LOG.info("init newest thread cache start");
-        frontPageMapper.deleteAll();
-        frontPageMapper.insertNewestThread(getOffsetdate()*24);
-        inited=true;
-        LOG.info("init newest thread cache end");
+        if (!inited) {
+            LOG.info("init newest thread cache start");
+            frontPageMapper.deleteAll();
+            frontPageMapper.insertNewestThread(getOffsetdate()*24);
+            inited=true;
+            LOG.info("init newest thread cache end");
+        }
     }
 
     public void addthread(ThreadEntity thread,String groupid,String boardname) {
@@ -55,7 +67,7 @@ public class NewestThreadCache extends TimerTask {
     public void run() {
         LOG.info("start newest thread cache");
 //        frontPageMapper.insertNewestThread(24);
-        frontPageMapper.deleteOldThread(getOffsetdate()*24);
+        frontPageMapper.deleteOldThread(threadMaxAge*24,getOffsetdate()*24);
         LOG.info("end newest thread cache");
     }
 }

@@ -16,7 +16,7 @@ public interface FrontPageMapper {
     public List<ThreadEntity> getNewestThreads(@Param("count")int count);
     public List<String> getGroups();
     public void insertNewestThread(@Param("offsethour")int offsethour);
-    public void deleteOldThread(@Param("offsethour")int offsethour);
+    public void deleteOldThread(@Param("threadmaxage")int threadmaxage,@Param("offsethour")int offsethour);
     public void deleteAll();
     public void deleteByid(@Param("threadid")long threadid);
     public void addThread(ThreadEntity thread);
