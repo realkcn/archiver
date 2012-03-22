@@ -32,6 +32,7 @@
     <ul class="breadcrumb">
             <a href="${request.docbase}">首页</a> <span class="divider">/</span>
         <s:if test="board!=null">
+            <a href="${request.docbase}boards.html">版面列表</a> <span class="divider">/</span>
             <a href="${request.docbase}board-${board.boardid}.html">${board.cname}</a> <span class="divider">/</span>
         </s:if>
             ${request.pagedetail}<s:if test="board!=null"><a style="float: right" href="http://www.newsmth.net/nForum/board/${board.name}" target="_blank">回主站[${board.cname}]版</a>
