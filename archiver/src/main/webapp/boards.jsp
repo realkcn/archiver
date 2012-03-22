@@ -45,7 +45,7 @@
         <tr>
             <td><s:property value="#boardindex.count"/></td>
             <td><a href="board-${boardid}.html"><s:property value="name"/></a></td>
-            <td><a href="board-${boardid}.html"><s:property value="cname"/></a></td>
+            <td><a href="board-${boardid}.html">${cname}</a></td>
             <td>${threads}</td>
             <td>${articles}</td>
         </tr>
