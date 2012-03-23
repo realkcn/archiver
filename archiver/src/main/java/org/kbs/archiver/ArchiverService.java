@@ -242,10 +242,12 @@ public class ArchiverService extends TimerTask {
 		}
 		// 处理索引
 		SolrUpdater solrUpdater = new SolrUpdater();
-		if (!solrUpdater.init()) {
+		if (!solrUpdater.init(ctx)) {
 			solrUpdater.delete(articleid);
 			solrUpdater.commit();
-		}
+		} else {
+            LOG.error("init solr failed.");
+        }
 	}
 
 	/**
