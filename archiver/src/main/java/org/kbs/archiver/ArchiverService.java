@@ -225,7 +225,7 @@ public class ArchiverService extends TimerTask {
 		if (board != null)
 			board.setThreads(0);
 		if (thread != null)
-			if (thread.getArticlenumber() > 1) {// 是否处理第一篇是该文章的情况？
+			if (thread.getArticlenumber() > 1) {//TODO 是否处理第一篇是该文章的情况？
 				thread.setArticlenumber(thread.getArticlenumber() - 1);
 				threadMapper.update(thread);
 			} else {
