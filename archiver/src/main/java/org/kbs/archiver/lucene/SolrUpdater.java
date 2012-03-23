@@ -31,8 +31,7 @@ public class SolrUpdater {
 		WebApplicationContext webApplicationContext = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(ServletActionContext
 						.getServletContext());
-		init(webApplicationContext);
-		return true;
+		return init(webApplicationContext);
 	}
 	
 	public boolean init(ApplicationContext appcontext) {
@@ -41,7 +40,8 @@ public class SolrUpdater {
 	    try {
 			solr = new CommonsHttpSolrServer(config.getProperty("solrurl"));
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+            LOG.error("solr server initial failed:",e);
+            return false;
 		}
 		if (solr==null) {
 			LOG.error("solr server initial failed: {}",config.getProperty("solrurl"));
