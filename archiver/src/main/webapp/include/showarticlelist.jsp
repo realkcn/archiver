@@ -4,15 +4,27 @@
          pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <table border="1">
-<s:iterator value="articlelist">
+<s:if test="boardname!=null">
+    <s:set var="columncount" value="'4'" scope="page"/>
+</s:if>
+<s:else>
+    <s:set var="columncount" value="'3'" scope="page"/>
+</s:else>
+<s:iterator value="articlelist" status="indexcount">
+    <s:if test="#indexcount.first==true">
+        <tr><td colspan="${pageScope.columncount}">
+            <script type="text/javascript">/*728*90，读帖页*/ var cpro_id = 'u825487';</script><script src="http://cpro.baidu.com/cpro/ui/c.js" type="text/javascript"></script>
+        </td>
+        </tr>
+    </s:if>
     <tr><s:if test="boardname!=null">
         <td><a href="board-${boardid}.html">${boardname}</a></td></s:if>
         <td><a href="abyu-${author}.html">${author}</a></td>
         <td>${subject}</td>
         <td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
     </tr>
-    <tr><s:if test="boardname!=null">
-        <td colSpan="4"></s:if><s:else><td colspan="3"></s:else><s:set name="body" value="body"
+    <tr>
+        <td colSpan="${pageScope.columncount}"><s:set name="body" value="body"
                                scope="request" />
             <%
                 out.print(org.kbs.archiver.util.AnsiToHtml
