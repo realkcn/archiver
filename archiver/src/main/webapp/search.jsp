@@ -62,13 +62,13 @@
             <div class="control-group">
                 <label class="control-label" for="boardname">搜索选项：</label>
                 <label class="checkbox inline">
-                    <input type="checkbox" id="sbyt" name="sbyt" value="true" <s:if test="sbyt!=null">checked="true" </s:if>/>按发表时间排序
+                    <input type="checkbox" id="sbyt" name="sbyt" value="true" <s:if test="sbyt=='true'">checked="true" </s:if>/>按发表时间排序
                 </label>
                 <label class="checkbox inline">
-                    <input type="checkbox" id="aonly" name="aonly" value="true" <s:if test="aonly!=null">checked="true"</s:if> />仅带附件文章
+                    <input type="checkbox" id="aonly" name="aonly" value="true" <s:if test="aonly=='true'">checked="true"</s:if> />仅带附件文章
                 </label>
                 <label class="checkbox inline">
-                    <input type="checkbox" id="firstonly" name="firstonly" value="true" <s:if test="firstonly!=null">checked="true"</s:if> />仅搜主题第一篇
+                    <input type="checkbox" id="firstonly" name="firstonly" value="true" <s:if test="firstonly=='true'">checked="true"</s:if> />仅搜主题第一篇
                 </label>
             </div>
             <div class="form-actions">
