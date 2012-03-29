@@ -4,7 +4,7 @@
          pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <table border="1">
-<s:if test="boardname==null">
+<s:if test="board==null">
     <s:set var="columncount" value="'4'" scope="page"/>
 </s:if>
 <s:else>
