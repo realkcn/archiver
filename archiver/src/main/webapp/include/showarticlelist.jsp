@@ -4,7 +4,7 @@
          pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <table border="1">
-<s:if test="boardname!=null">
+<s:if test="boardname==null">
     <s:set var="columncount" value="'4'" scope="page"/>
 </s:if>
 <s:else>
@@ -20,7 +20,9 @@
     <tr><s:if test="boardname!=null">
         <td><a href="board-${boardid}.html">${boardname}</a></td></s:if>
         <td><a href="abyu-${author}.html">${author}</a></td>
-        <td>${subject}</td>
+        <td><s:if test="thread==null"><a href="searchThreadByAURL.do?aurl=${encodingurl}"><s:property value="subject"/></a></s:if>
+            <s:else><s:property value="subject"/></s:else>
+        </td>
         <td><s:date name="posttime" format="yyyy-MM-dd HH:mm:ss" /></td>
     </tr>
     <tr>

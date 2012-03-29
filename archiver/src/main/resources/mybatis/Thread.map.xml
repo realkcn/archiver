@@ -57,6 +57,10 @@
 		resultType="org.kbs.archiver.ThreadEntity">
 		select * from thread where boardid=#{boardid}
 	</select>
+    <select id="getByArticleURL" parameterType="String" resultType="String">
+        select thread.encodingurl from thread,article where article.encodingurl=#{encodingurl}
+        and thread.threadid=article.threadid
+    </select>
 	<cache eviction="FIFO" flushInterval="300000" size="1024"
 		readOnly="true" />
 </mapper>

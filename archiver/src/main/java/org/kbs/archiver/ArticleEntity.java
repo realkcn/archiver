@@ -20,7 +20,7 @@ public class ArticleEntity {
 	private long replyid;
 	private int datasize;
 	private String boardname;
-	
+
 	public int getDatasize() {
 		return datasize;
 	}

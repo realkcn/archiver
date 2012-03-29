@@ -53,6 +53,10 @@
 			<result name="success">/search.jsp</result>
 			<result name="error">/search.jsp</result>
 		</action>
+        <action name="searchThreadByAURL" class="org.kbs.archiver.action.SearchThread"
+                method="searchByArticleURL">
+            <result name="success" type="redirect">/thread-${threadurl}.html</result>
+        </action>
 	</package>
 	<package name="admin" extends="struts-default" namespace="/admin">
 		<action name="deleteArticle" class="org.kbs.archiver.action.admin.Delete"
