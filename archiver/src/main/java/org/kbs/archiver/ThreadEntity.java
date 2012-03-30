@@ -16,6 +16,15 @@ public class ThreadEntity {
 	private long threadid;
 	private String encodingurl;
 	private long originid;
+    private boolean isvisible=true;
+
+    public boolean isIsvisible() {
+        return isvisible;
+    }
+
+    public void setIsvisible(boolean isvisible) {
+        this.isvisible = isvisible;
+    }
 
     public String getGroupid() {
         return groupid;

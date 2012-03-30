@@ -107,7 +107,8 @@ public class Delete extends ActionSupport {
 								.getServletContext());
 				ArchiverService service = new ArchiverService(
 						webApplicationContext);
-				service.deleteByAuthor(author);
+                service.invisibleByAuthor(author);
+//				service.deleteByAuthor(author);
 				this.addActionMessage("同作者删除成功。author=" + author);
 				return SUCCESS;
 			} else
@@ -126,7 +127,8 @@ public class Delete extends ActionSupport {
 								.getServletContext());
 				ArchiverService service = new ArchiverService(
 						webApplicationContext);
-				service.deleteThread(thread.getThreadid());
+                service.invisibleThread(thread.getThreadid());
+//				service.deleteThread(thread.getThreadid());
 				this.addActionMessage("删除主题成功。id=" + threadid);
 				return SUCCESS;
 			} else
@@ -145,7 +147,8 @@ public class Delete extends ActionSupport {
 								.getServletContext());
 				ArchiverService service = new ArchiverService(
 						webApplicationContext);
-				service.deleteArticle(article.getArticleid());
+                service.invisibleArticle(article.getArticleid());
+//				service.deleteArticle(article.getArticleid());
 				this.addActionMessage("删除文章成功。id=" + articleid);
 				return SUCCESS;
 			} else

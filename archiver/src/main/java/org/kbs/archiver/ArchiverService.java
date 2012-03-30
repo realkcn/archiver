@@ -202,6 +202,78 @@ public class ArchiverService extends TimerTask {
 		}
 	}
 
+    public synchronized void invisibleArticle(long articleid) {
+        BoardMapper boardMapper = (BoardMapper) ctx.getBean("boardMapper");
+        ThreadMapper threadMapper = (ThreadMapper) ctx.getBean("threadMapper");
+        FrontPageMapper frontPageMapper = (FrontPageMapper) ctx.getBean("frontpageMapper");
+        ArticleMapper articleMapper = (ArticleMapper) ctx
+                .getBean("articleMapper");
+        ArticleEntity article = articleMapper.get(articleid);
+        ThreadEntity thread = threadMapper.get(article.getThreadid());
+        BoardEntity board = boardMapper.get(article.getBoardid());
+        if (article==null)
+            return;
+        article.setIsvisible(false);
+        articleMapper.update(article);
+
+        if (board != null)
+            board.setThreads(0);
+        if (thread!=null) {
+            if (thread.getArticlenumber() > 1) {//TODO 是否处理第一篇是该文章的情况？
+                thread.setArticlenumber(thread.getArticlenumber() - 1);
+                threadMapper.update(thread);
+            } else {
+                thread.setIsvisible(false);
+                threadMapper.update(thread);
+                frontPageMapper.deleteByid(thread.getThreadid());
+                if (board != null)
+                    board.setThreads(-1);
+            }
+        }
+
+        if (board != null) {
+            board.setArticles(-1);
+            // System.out.println(board.toString());
+            boardMapper.updateLast(board); // 其实这里和归档进程有竞争问题
+        }
+
+        SolrUpdater solrUpdater = new SolrUpdater();
+        if (!solrUpdater.init(ctx)) {
+            solrUpdater.delete(articleid);
+            solrUpdater.commit();
+        } else {
+            LOG.error("init solr failed.");
+        }
+    }
+
+    public synchronized void invisibleThread(long threadid) {
+        BoardMapper boardMapper = (BoardMapper) ctx.getBean("boardMapper");
+        ThreadMapper threadMapper = (ThreadMapper) ctx.getBean("threadMapper");
+        FrontPageMapper frontPageMapper = (FrontPageMapper) ctx.getBean("frontpageMapper");
+        ArticleMapper articleMapper = (ArticleMapper) ctx
+                .getBean("articleMapper");
+        List<ArticleEntity> articlelist = articleMapper.getByThreadPerPage(
+                threadid, 0, -1);
+        ThreadEntity thread = threadMapper.get(threadid);
+        if (thread==null)
+            return;
+        thread.setIsvisible(false);
+        threadMapper.update(thread);
+
+        BoardEntity board = boardMapper.get(thread.getBoardid());
+        for (ArticleEntity article : articlelist) {
+            article.setIsvisible(false);
+            articleMapper.update(article);
+        }
+        // 处理thread
+        frontPageMapper.deleteByid(thread.getThreadid());
+        if (board != null) {
+            board.setThreads(-1);
+            board.setArticles(-articlelist.size());
+            boardMapper.updateLast(board); // 其实这里和归档进程有竞争问题
+        }
+    }
+
 	public synchronized void deleteArticle(long articleid) {
 		BoardMapper boardMapper = (BoardMapper) ctx.getBean("boardMapper");
 		ThreadMapper threadMapper = (ThreadMapper) ctx.getBean("threadMapper");
@@ -366,4 +438,14 @@ public class ArchiverService extends TimerTask {
 		}
 
 	}
+
+    public void invisibleByAuthor(String author) {
+        ArticleMapper articleMapper = (ArticleMapper) ctx
+                .getBean("articleMapper");
+        List<ArticleEntity> articlelist = articleMapper.getByAuthorPerPage(
+                author, 0, -1);
+        for (ArticleEntity article : articlelist) {
+            invisibleArticle(article.getArticleid());
+        }
+    }
 }

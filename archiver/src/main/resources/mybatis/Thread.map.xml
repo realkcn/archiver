@@ -12,18 +12,18 @@
 	<insert id="insert" parameterType="org.kbs.archiver.ThreadEntity">
 		insert into
 		thread(threadid,boardid,subject,posttime,articlenumber,author,lastreply,lastposttime,
-		originid,encodingurl) values
+		originid,encodingurl,isvisible) values
 		(#{threadid},#{boardid},#{subject},#{posttime},#{articlenumber},#{author},
-		#{lastreply},#{lastposttime},#{originid},#{encodingurl})
+		#{lastreply},#{lastposttime},#{originid},#{encodingurl},#{isvisible})
 		ON DUPLICATE KEY UPDATE
 		boardid=#{boardid},subject=#{subject},posttime=#{posttime},articlenumber=#{articlenumber},
-		author=#{author},lastreply=#{lastreply},lastposttime=#{lastposttime},originid=#{originid},encodingurl=#{encodingurl}
+		author=#{author},lastreply=#{lastreply},lastposttime=#{lastposttime},originid=#{originid},encodingurl=#{encodingurl},isvisible=#{isvisible}
 	</insert>
 
 	<update id="update" parameterType="org.kbs.archiver.ThreadEntity">
 		update thread set
 		boardid=#{boardid},subject=#{subject},posttime=#{posttime},articlenumber=#{articlenumber},
-		author=#{author},lastreply=#{lastreply},lastposttime=#{lastposttime},originid=#{originid},encodingurl=#{encodingurl}
+		author=#{author},lastreply=#{lastreply},lastposttime=#{lastposttime},originid=#{originid},encodingurl=#{encodingurl},isvisible=#{isvisible}
 		where threadid=#{threadid}
 	</update>
 	<update id="resetOriginidByBoard">
@@ -51,7 +51,7 @@
 	</select>
 	<select id="getByEncodingUrl" parameterType="String"
 		resultType="org.kbs.archiver.ThreadEntity">
-		select * from thread where encodingurl=#{encodingurl}
+		select * from thread where encodingurl=#{encodingurl} and isvisible=true
 	</select>
 	<select id="getThreadsOnBoard" parameterType="long"
 		resultType="org.kbs.archiver.ThreadEntity">
