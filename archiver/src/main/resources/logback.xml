@@ -35,6 +35,7 @@
 	<logger name="com.opensymphony" level="WARN" />
 	<logger name="org.mybatis" level="WARN" />
 	<logger name="org.apache.ibatis" level="WARN" />
+    <logger name="org.tuckey" level="DEBUG" />
 
 	<!-- jdbc pool -->
 	<logger name="org.apache.commons.dbcp" level="WARN" />
