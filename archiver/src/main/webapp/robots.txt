@@ -1,18 +1,26 @@
 User-agent: msnbot
 Disallow: /abyu*
+Disallow: /search*
+Disallow: /Search*
 Allow: /
 
 User-agent: Sogou
 Disallow: /abyu*
+Disallow: /search*
+Disallow: /Search*
 Allow: /
 
 User-agent: Slurp
 Crawl-delay: 2
 Disallow: /abyu*
+Disallow: /search*
+Disallow: /Search*
 Allow: /
 
 User-agent: Googlebot
 Disallow: /abyu*
+Disallow: /search*
+Disallow: /Search*
 Allow: /
 
 User-agent: Mediapartners-Google
@@ -21,6 +29,8 @@ Allow: /
 
 User-agent: Baiduspider
 Disallow: /abyu*
+Disallow: /search*
+Disallow: /Search*
 Allow: /
 
 User-agent: *
