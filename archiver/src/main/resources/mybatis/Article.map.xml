@@ -88,11 +88,11 @@
 	</select>
 	<select id="getByEncodingUrl" parameterType="String"
 		resultType="org.kbs.archiver.ArticleEntity">
-		select * from article where encodingurl=#{encodingurl}
+		select * from article where encodingurl=#{encodingurl} and isvisible=true
 	</select>
 	<select id="getArticlesOnThread" parameterType="long"
 		resultType="org.kbs.archiver.ArticleEntity">
-		select * from article where articleid=#{articleid}
+		select * from article where articleid=#{articleid} and isvisible=true
 	</select>
 	<select id="getFilenamesByBoard" parameterType="long"
 		resultType="String">
