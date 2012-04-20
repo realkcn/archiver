@@ -1,4 +1,4 @@
-<%@page import="org.jasig.cas.client.authentication.AttributePrincipal"%>
+<%@page import="org.kbs.sso.principal.AttributePrincipal"%>
 <%
 	AttributePrincipal principal = (AttributePrincipal) request
 			.getUserPrincipal();
