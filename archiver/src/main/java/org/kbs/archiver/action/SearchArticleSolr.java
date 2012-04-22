@@ -252,8 +252,10 @@ public class SearchArticleSolr extends ActionSupport {
 			if (article == null) {
 				// todo
 			} else {
-				article.setBody(articleBodyMapper.get(articleid));
-				articlelist.add(article);
+                if (article.isIsvisible()) {
+				    article.setBody(articleBodyMapper.get(articleid));
+				    articlelist.add(article);
+                }
 			}
 	    }
         dealAttachment();
