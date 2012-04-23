@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kbs.archiver.ArchiverBoardImpl;
 import org.kbs.archiver.BoardEntity;
 import org.kbs.archiver.persistence.ArticleMapper;
@@ -11,13 +12,16 @@ import org.kbs.archiver.persistence.AttachmentMapper;
 import org.kbs.archiver.persistence.BoardMapper;
 import org.kbs.archiver.persistence.ThreadMapper;
 import org.kbs.library.InitTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath:applicationContext-test.xml"})
 public class TestArchiverBoardImpl  {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		InitTest.init();
 	}
 
 	@Ignore("damage data")

@@ -17,7 +17,7 @@
         <target>System.out</target>  
     </appender>  
       
-    <logger name="org.springframework" level="INFO"/>  
+    <logger name="org.springframework" level="INFO"/>
     <logger name="org.apache.struts2" level="INFO"/>  
     <logger name="com.opensymphony" level="INFO"/>  
     <logger name="org.mybatis" level="INFO" />

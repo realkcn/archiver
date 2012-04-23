@@ -78,6 +78,7 @@
             <groupId>org.kbs</groupId>
             <artifactId>sso</artifactId>
             <version>1.0</version>
+            <classifier>client</classifier>
         </dependency>
 
         <dependency>

@@ -134,4 +134,5 @@
         <constructor-arg index="0" value="attachment"/>
         <constructor-arg index="1" ref="sequenceMapper"/>
     </bean>
+    <bean id="applicationContextInstance" class="org.kbs.library.spring.ApplicationContextInstance"/>
 </beans>

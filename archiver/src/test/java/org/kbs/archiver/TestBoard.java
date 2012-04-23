@@ -5,24 +5,27 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kbs.archiver.persistence.BoardMapper;
 import org.kbs.library.DBTools;
 import org.kbs.library.InitTest;
+import org.kbs.sso.principal.AttributePrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath:applicationContext-test.xml"})
 public class TestBoard {
-	@BeforeClass
-	public static void setUp() throws Exception {
-		InitTest.init();
-		boardMapper=(BoardMapper) InitTest.getAppContext().getBean("boardMapper");
-	}
-
-	//@Autowired  
+	@Autowired
     private static BoardMapper boardMapper; 
 
 	@Test
 	public void testBoardDB() {
+        AttributePrincipal principal=new AttributePrincipal("",new HashMap<String, Object>());
 		/*
 		BoardEntity board = new BoardEntity();
 		board.setName("hello");

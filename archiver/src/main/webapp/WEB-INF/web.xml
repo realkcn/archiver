@@ -29,16 +29,18 @@
         <filter-name>SSOFilter</filter-name>
         <filter-class>org.kbs.sso.client.SSOFilter</filter-class>
         <init-param>
-            <param-name>casServerUrlPrefix</param-name>
-            <param-value>http://localhost:8080/sso/</param-value>
+            <param-name>serverURL</param-name>
+            <param-value>http://sso.newsmth.net/login</param-value>
         </init-param>
+        <!--
         <init-param>
             <param-name>serverName</param-name>
-            <param-value>http://localhost:8081/archiver</param-value>
+            <param-value>http://archiver.newsmth.net</param-value>
         </init-param>
+        -->
         <init-param>
-            <param-name>redirectAfterValidation</param-name>
-            <param-value>true</param-value>
+            <param-name>validateURL</param-name>
+            <param-value>http://sso.newsmth.net/serviceValidate</param-value>
         </init-param>
     </filter>
     <filter-mapping>

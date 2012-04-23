@@ -16,15 +16,19 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kbs.archiver.lucene.SolrUpdater;
 import org.kbs.library.InitTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations={"classpath:applicationContext-test.xml"})
 public class TestSolrUpdater {
 	static SolrUpdater solrUpdater;
 
 	@BeforeClass
 	public static void initialize() {
-		InitTest.init();
 		solrUpdater = new SolrUpdater();
 	}
 
