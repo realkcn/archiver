@@ -19,15 +19,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TestSequenceDB {
 
     @Autowired
-    private CachedSequence threadseq;
+    protected CachedSequence threadSeq;
 
     @Autowired
-    private CachedSequence articleseq;
+    protected CachedSequence articleSeq;
 
 	@Test
 	public void test() {
-        threadseq.getValue();
-        articleseq.getValue();
+        threadSeq.getValue();
+        articleSeq.getValue();
 		/*
 		for (long i=0;i<50;i++) {
 			long value;

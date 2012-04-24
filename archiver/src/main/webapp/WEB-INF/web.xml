@@ -11,7 +11,11 @@
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 
-	<filter>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <filter>
 		<filter-name>UrlRewriteFilter</filter-name>
 		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
 		<init-param>
@@ -32,12 +36,10 @@
             <param-name>serverURL</param-name>
             <param-value>http://sso.newsmth.net/login</param-value>
         </init-param>
-        <!--
         <init-param>
             <param-name>serverName</param-name>
-            <param-value>http://archiver.newsmth.net</param-value>
+            <param-value>http://localhost:8080</param-value>
         </init-param>
-        -->
         <init-param>
             <param-name>validateURL</param-name>
             <param-value>http://sso.newsmth.net/serviceValidate</param-value>
@@ -73,9 +75,6 @@
 		<servlet-name>ViewStatusMessages</servlet-name>
 		<url-pattern>/admin/LogStatus</url-pattern>
 	</servlet-mapping>
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
 	<servlet-mapping>
 		<servlet-name>Startup</servlet-name>
 		<url-pattern>/StartupLoadServlet</url-pattern>

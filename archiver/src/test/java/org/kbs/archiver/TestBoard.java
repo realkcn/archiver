@@ -21,7 +21,7 @@ import java.util.HashMap;
 @ContextConfiguration(locations={"classpath:applicationContext-test.xml"})
 public class TestBoard {
 	@Autowired
-    private static BoardMapper boardMapper; 
+    protected static BoardMapper boardMapper;
 
 	@Test
 	public void testBoardDB() {

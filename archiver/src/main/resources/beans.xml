@@ -135,4 +135,18 @@
         <constructor-arg index="1" ref="sequenceMapper"/>
     </bean>
     <bean id="applicationContextInstance" class="org.kbs.library.spring.ApplicationContextInstance"/>
+    <bean id="conversionService"
+          class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="org.kbs.library.spring.StringToDateConverter">
+                    <property name="patterns">
+                        <set>
+                            <value>yyyy-MM-dd HH:mm:ss</value>
+                        </set>
+                    </property>
+                </bean>
+            </set>
+        </property>
+    </bean>
 </beans>
