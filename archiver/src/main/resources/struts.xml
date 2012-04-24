@@ -85,4 +85,13 @@
 			<result name="error">index.jsp</result>
 		</action>
 	</package>
+    <package name="user" extends="struts-default" namespace="/user">
+        <action name="userDelete" class="userDeleteAction" method="Delete">
+            <result name="success">index.jsp</result>
+            <result name="error">index.jsp</result>
+            <result name="redirect" type="redirect">
+                <param name="location">${contextPath}</param>
+            </result>
+        </action>
+    </package>
 </struts>

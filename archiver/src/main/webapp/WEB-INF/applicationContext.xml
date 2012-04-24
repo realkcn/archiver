@@ -10,4 +10,5 @@
             http://www.springframework.org/schema/context/spring-context-3.1.xsd">
     <import resource="classpath:beans.xml" />
     <import resource="scheduler.xml" />
+    <import resource="actions.xml" />
 </beans>
