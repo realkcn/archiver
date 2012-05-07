@@ -20,3 +20,5 @@
 
 <link href="${request.docbase}bootstrap/css/ie6.min.css" rel="stylesheet">
 <![endif]-->
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
+<script type="text/javascript" src="${request.docbase}scripts/jquery-ui-1.8.20.custom.min.js"></script>

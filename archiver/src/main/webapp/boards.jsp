@@ -16,8 +16,6 @@
     <meta http-equiv="description" content="水木社区版面列表">
 
     <jsp:include page="include/htmlheader.jsp"/>
-    <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
-    <script type="text/javascript" src="${request.docbase}scripts/jquery-ui-1.8.18.custom.min.js"></script>
 </head>
 <body onLoad='javascript:document.getElementById("boardsearch").focus()'>
 <s:set var="pagedetail" value="'版面列表'" scope="request"/>

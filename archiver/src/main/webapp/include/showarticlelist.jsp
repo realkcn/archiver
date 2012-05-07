@@ -2,6 +2,8 @@
          session="false"
          import="java.util.*,org.kbs.archiver.*,javax.activation.MimetypesFileTypeMap"
          pageEncoding="UTF-8"%>
+<%@ page import="org.kbs.sso.principal.AttributePrincipal" %>
+<%@ page import="org.kbs.sso.client.SSOFilter" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <table border="1">
 <s:if test="board==null">
@@ -10,6 +12,15 @@
 <s:else>
     <s:set var="columncount" value="'3'" scope="page"/>
 </s:else>
+<%
+    AttributePrincipal principal= SSOFilter.getPrincipal(request);
+    String name=null;
+    long firstlogin=0;
+    if (principal!=null) {
+        name=principal.getName();
+        firstlogin=Long.valueOf((String)principal.get("firstlogin")).longValue();
+    }
+%>
 <s:iterator value="articlelist" status="indexcount">
     <s:if test="#indexcount.first==true">
         <tr><td colspan="${pageScope.columncount}">
