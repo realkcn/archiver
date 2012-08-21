@@ -73,7 +73,10 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
                     .getBoardid());
             filenameset.clear();
             for (String f : filenames) {
-                filenameset.add(f);
+                if (f.charAt(1)=='/')
+                    filenameset.add(f.substring(4)); //忽略开始的"x/M."
+                else
+                    filenameset.add(f.substring(2)); //忽略开始的"M."
             }
         }
 
@@ -299,7 +302,13 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
                         + board.getName() + " index:" + count);
             } else {
                 if (!useLastUpdate) {
-                    if (!filenameset.contains(fh.getFilename())) {
+                    String f;
+                    if (fh.getFilename().charAt(1)=='/')
+                        f=fh.getFilename().substring(4); //忽略开始的"x/M."
+                    else
+                        f=fh.getFilename().substring(2); //忽略开始的"M."
+
+                    if (!filenameset.contains(f)) {
                         articlelist.add(fh);
                     }
                 } else {
