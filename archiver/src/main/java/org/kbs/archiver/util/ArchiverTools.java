@@ -26,7 +26,6 @@ public class ArchiverTools {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		init();
 		Options options = new Options();
 		options.addOption("h", "help", false, "show help.");

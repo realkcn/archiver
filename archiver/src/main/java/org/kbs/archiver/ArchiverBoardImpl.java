@@ -275,6 +275,21 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
                     + " articles " + threads.size() + " threads,update "
                     + oldthreads.size() + "threads");
         }
+
+        /*
+        //TODO: 处理被删除的文章
+
+        String deleteDirFile=boardpath+".DELETED";
+        if (new java.io.File(deleteDirFile).exists()) {
+            ArrayList<FileHeaderInfo> deletelist = fhset.readBBSDir(deleteDirFile);
+            for (FileHeaderInfo fh:deletelist) {
+
+            }
+            if (!testonly) {
+                batchsqlsession.flushStatements();
+            }
+        }
+        */
     }
 
     public Integer call() throws Exception {
