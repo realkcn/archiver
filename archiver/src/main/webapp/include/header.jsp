@@ -2,7 +2,7 @@
 <%@ page import="org.kbs.sso.client.SSOFilter" %>
 <%@ page import="org.kbs.sso.principal.AttributePrincipal" %>
 <%@ page import="org.apache.commons.lang3.StringEscapeUtils" %>
-<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <div class="navbar">
     <div class="navbar-inner">

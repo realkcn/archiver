@@ -50,7 +50,7 @@
 	<select id="get" parameterType="long" resultType="org.kbs.archiver.ArticleEntity">
 		select
 		article.*,board.cname boardname from article,board where
-		articleid=#{articleid} and board.boardid=article.boardid and ishidden=true
+		articleid=#{articleid} and board.boardid=article.boardid and ishidden=false
 	</select>
 	<!-- articleid,author,posttime,attachment,subject,isvisible,encodingurl -->
 	<select id="getByThreadPerPage" resultType="org.kbs.archiver.ArticleEntity">

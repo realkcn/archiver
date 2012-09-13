@@ -33,5 +33,11 @@ Disallow: /search*
 Disallow: /Search*
 Allow: /
 
+User-agent: JikeSpider
+Disallow: /abyu*
+Disallow: /search*
+Disallow: /Search*
+Allow: /
+
 User-agent: *
 Disallow: /

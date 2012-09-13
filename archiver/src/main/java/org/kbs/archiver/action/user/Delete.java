@@ -1,7 +1,7 @@
 package org.kbs.archiver.action.user;
 
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.kbs.archiver.ArchiverService;
 import org.kbs.archiver.ArticleEntity;

@@ -12,6 +12,10 @@
   })();
 
 </script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F297f41fd537cd673a7f4f6341cd3d224' type='text/javascript'%3E%3C/script%3E"));
+</script>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link href="${request.docbase}bootstrap/css/bootstrap.css" rel="stylesheet">
 <script type="text/javascript" src="${request.docbase}scripts/jquery-1.7.1.pack.js" ></script>

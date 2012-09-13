@@ -1,7 +1,7 @@
 package org.kbs.archiver.action;
 
 import com.opensymphony.xwork2.ActionSupport;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.kbs.archiver.persistence.ThreadMapper;
 
 /**
