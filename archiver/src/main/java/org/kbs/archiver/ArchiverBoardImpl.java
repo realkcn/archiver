@@ -73,6 +73,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
                     .getBoardid());
             filenameset.clear();
             for (String f : filenames) {
+		if (f.length()>2)
                 if (f.charAt(1)=='/')
                     filenameset.add(f.substring(4)); //忽略开始的"x/M."
                 else
