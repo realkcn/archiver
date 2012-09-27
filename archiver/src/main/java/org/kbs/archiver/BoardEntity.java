@@ -14,6 +14,7 @@ public class BoardEntity {
 	private String groupid;
 	private String section;
 	private boolean ignored;
+    private long lastdeletedid;
 	
 	@Override
 	public String toString() {
@@ -163,4 +164,12 @@ public class BoardEntity {
 	public void setIgnored(boolean ignored) {
 		this.ignored = ignored;
 	}
+
+    public long getLastdeletedid() {
+        return lastdeletedid;
+    }
+
+    public void setLastdeletedid(long lastdeletedid) {
+        this.lastdeletedid = lastdeletedid;
+    }
 }

@@ -1,0 +1,61 @@
+package org.kbs.archiver;/**
+ * User: kcn
+ * Date: 12-9-26
+ * Time: 下午4:53
+ */
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Date;
+
+public class DeletedEntity {
+    private static final Logger LOG = LoggerFactory.getLogger(DeletedEntity.class);
+
+    private long boardid;
+    private long originid;
+    private Date deletetime;
+    private String deleteby;
+
+    @Override
+    public String toString() {
+        return "DeletedEntity{" +
+                "boardid=" + boardid +
+                ", originid=" + originid +
+                ", deletetime=" + deletetime +
+                ", deleteby='" + deleteby + '\'' +
+                '}';
+    }
+
+    public long getBoardid() {
+        return boardid;
+    }
+
+    public void setBoardid(long boardid) {
+        this.boardid = boardid;
+    }
+
+    public long getOriginid() {
+        return originid;
+    }
+
+    public void setOriginid(long originid) {
+        this.originid = originid;
+    }
+
+    public Date getDeletetime() {
+        return deletetime;
+    }
+
+    public void setDeletetime(Date deletetime) {
+        this.deletetime = deletetime;
+    }
+
+    public String getDeleteby() {
+        return deleteby;
+    }
+
+    public void setDeleteby(String deleteby) {
+        this.deleteby = deleteby;
+    }
+}

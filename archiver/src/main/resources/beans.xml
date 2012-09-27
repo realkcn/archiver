@@ -94,6 +94,10 @@
         <property name="mapperInterface" value="org.kbs.archiver.persistence.BoardMapper"/>
         <property name="sqlSessionTemplate" ref="sqlSession"/>
     </bean>
+    <bean id="deletedMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="org.kbs.archiver.persistence.DeletedMapper"/>
+        <property name="sqlSessionTemplate" ref="sqlSession"/>
+    </bean>
     <bean id="articleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
         <property name="mapperInterface" value="org.kbs.archiver.persistence.ArticleMapper"/>
         <property name="sqlSessionTemplate" ref="sqlSession"/>

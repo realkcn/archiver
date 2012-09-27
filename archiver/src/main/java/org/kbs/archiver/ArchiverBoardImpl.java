@@ -254,45 +254,75 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
             }
         }
 
-        if ((articlelist.size() > 0)) { // 更新board表的lastid,threads
-            if (articlelist.size() > 0) {
-                board.setLastarticleid(articlelist.get(articlelist.size() - 1)
-                        .getArticleid());
-                board.setThreads(threads.size());
-                board.setArticles(articlelist.size());
-            } else {
-                //不更新threads和articles计数
-                board.setThreads(0);
-                board.setArticles(0);
-            }
-            if (!testonly) {
-                batchsqlsession
-                        .update("org.kbs.archiver.persistence.BoardMapper.updateLast",
-                                board);
-                batchsqlsession.flushStatements();
-            }
-            LOG.info(" Archiver "
-                    + board.getName() + " end:add " + articlelist.size()
-                    + " articles " + threads.size() + " threads,update "
-                    + oldthreads.size() + "threads");
+        board.setLastdeletedid(dealDeleted(boardpath,board.getBoardid(),batchsqlsession,board.getLastdeletedid()));
+
+        // 更新board表的lastid,threads,lastdelete
+        if (articlelist.size() > 0) {
+            board.setLastarticleid(articlelist.get(articlelist.size() - 1)
+                    .getArticleid());
+            board.setThreads(threads.size());
+            board.setArticles(articlelist.size());
+        } else {
+            //不更新threads和articles计数
+            board.setThreads(0);
+            board.setArticles(0);
         }
-
-        /*
-        //TODO: 处理被删除的文章
-
-        String deleteDirFile=boardpath+".DELETED";
-        if (new java.io.File(deleteDirFile).exists()) {
-            ArrayList<FileHeaderInfo> deletelist = fhset.readBBSDir(deleteDirFile);
-            for (FileHeaderInfo fh:deletelist) {
-
-            }
-            if (!testonly) {
-                batchsqlsession.flushStatements();
-            }
+        if (!testonly) {
+            batchsqlsession
+                    .update("org.kbs.archiver.persistence.BoardMapper.updateLast",
+                            board);
+            batchsqlsession.flushStatements();
         }
-        */
+        LOG.info(" Archiver "
+                + board.getName() + " end:add " + articlelist.size()
+                + " articles " + threads.size() + " threads,update "
+                + oldthreads.size() + "threads");
     }
 
+    private long dealDeleted(String boardpath,long boardid,SqlSessionTemplate sqlSession,long lastdeletedid) {
+        String deleteDirFile=boardpath+".DELETED";
+        FileHeaderSet fhset = new FileHeaderSet();
+        DeletedEntity deletedEntity=new DeletedEntity();
+
+        if (new java.io.File(deleteDirFile).exists()) {
+            ArrayList<FileHeaderInfo> deletelist = fhset.readBBSDir(deleteDirFile);
+            boolean found=false;
+            boolean loop=true;
+            while (loop) {
+                for (FileHeaderInfo fh:deletelist) {
+                    if (!found) {
+                        if (fh.getOriginid()==lastdeletedid) {
+                            found=true;
+                        }
+                        continue;
+                    }
+                    deletedEntity.setOriginid(fh.getOriginid());
+                    deletedEntity.setDeletetime(new Date());
+                    int mark=fh.getTitle().lastIndexOf('-');
+                    String deleteby;
+                    if (mark!=-1) {
+                        deleteby=fh.getTitle().substring(mark + 2);
+                        mark=deleteby.indexOf(' ');
+                        if (mark!=-1)
+                            deleteby=deleteby.substring(0,mark-1);
+                    } else deleteby="";
+                    deletedEntity.setDeleteby(deleteby);
+                    deletedEntity.setBoardid(boardid);
+                    if (!testonly)
+                        sqlSession.insert(
+                                "org.kbs.archiver.persistence.DeletedMapper.insert",
+                                deletedEntity);
+                    lastdeletedid=fh.getOriginid();
+                }
+                if (found) {
+                    loop=false;
+                } else {
+                    found=true;
+                }
+            }
+        }
+        return lastdeletedid;
+    }
     public Integer call() throws Exception {
         while (!Thread.interrupted()) {
             BoardEntity board = workqueue.take();
