@@ -14,6 +14,7 @@ import java.util.List;
  */
 
 public interface DeletedMapper {
-    public List<ArticleEntity> getArticles(@Param("begin")int begin,@Param("count")int count);
+    public List<DeletedEntity> getArticles(@Param("begin")int begin,@Param("count")int count);
     public void insert(DeletedEntity entity);
+    public int count();
 }

@@ -7,4 +7,5 @@
         web action bean
     </description>
     <bean id="userDeleteAction" class="org.kbs.archiver.action.user.Delete" scope="prototype" />
+    <bean id="adminShowDeletedAction" class="org.kbs.archiver.action.admin.ShowDeleted" scope="prototype" />
 </beans>

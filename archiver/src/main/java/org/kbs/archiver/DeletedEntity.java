@@ -16,6 +16,60 @@ public class DeletedEntity {
     private long originid;
     private Date deletetime;
     private String deleteby;
+    private String cname;
+    private String author;
+    private long articleid;
+    private Date posttime;
+    private String subject;
+    private  String encodingurl;
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public long getArticleid() {
+        return articleid;
+    }
+
+    public void setArticleid(long articleid) {
+        this.articleid = articleid;
+    }
+
+    public Date getPosttime() {
+        return posttime;
+    }
+
+    public void setPosttime(Date posttime) {
+        this.posttime = posttime;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getEncodingurl() {
+        return encodingurl;
+    }
+
+    public void setEncodingurl(String encodingurl) {
+        this.encodingurl = encodingurl;
+    }
 
     @Override
     public String toString() {
