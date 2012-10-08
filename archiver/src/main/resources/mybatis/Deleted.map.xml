@@ -9,9 +9,8 @@
         select count(*) from deleted;
     </select>
     <insert id="insert">
-        insert into
+        insert ignore into
         deleted(boardid,originid,deletetime,deleteby) values
         (#{boardid},#{originid},#{deletetime},#{deleteby})
-        On DUPLICATE KEY UPDATE originid=#{originid}
     </insert>
 </mapper>

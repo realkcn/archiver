@@ -22,7 +22,7 @@
 <s:set var="pagedetail" value="已删除文章列表" scope="request" />
 <jsp:include page="../include/header.jsp" />
 <div class="container">
-    <pg:pager total="${totalsize}" urlprefix="showDeleted?pageno=" urlsuffix="" currentpage="${pageno}" pagesize="${pagesize}" />
+    <pg:pager total="${totalsize}" urlprefix="showDeleted.do?pageno=" urlsuffix="" currentpage="${pageno}" pagesize="${pagesize}" />
 
     一共删除了 ${totalsize} 篇文章 <br />
     <jsp:include page="../include/pagerindex.jsp" />
