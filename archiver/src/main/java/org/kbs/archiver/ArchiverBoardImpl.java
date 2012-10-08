@@ -254,7 +254,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
             }
         }
 
-        board.setLastdeletedid(dealDeleted(boardpath,board.getBoardid(),batchsqlsession,board.getLastdeletedid()));
+        board.setLastdeleteid(dealDeleted(boardpath,board.getBoardid(),batchsqlsession,board.getLastdeleteid()));
 
         // 更新board表的lastid,threads,lastdelete
         if (articlelist.size() > 0) {
@@ -279,7 +279,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
                 + oldthreads.size() + "threads");
     }
 
-    public long dealDeleted(String boardpath,long boardid,SqlSessionTemplate sqlSession,long lastdeletedid) {
+    public long dealDeleted(String boardpath,long boardid,SqlSessionTemplate sqlSession,long lastdeleteid) {
         String deleteDirFile=boardpath+".DELETED";
         FileHeaderSet fhset = new FileHeaderSet();
         DeletedEntity deletedEntity=new DeletedEntity();
@@ -288,15 +288,16 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
             ArrayList<FileHeaderInfo> deletelist = fhset.readBBSDir(deleteDirFile);
             boolean found=false;
             boolean loop=true;
-            while (loop) {
+            do {
                 for (FileHeaderInfo fh:deletelist) {
                     if (!found) {
-                        if (fh.getOriginid()==lastdeletedid) {
+                        if (fh.getArticleid()==lastdeleteid) {
                             found=true;
                         }
                         continue;
                     }
-                    deletedEntity.setOriginid(fh.getOriginid());
+//		System.out.println(fh.getArticleid()+"--"+lastdeleteid+"--"+loop+"--"+found);
+                    deletedEntity.setOriginid(fh.getArticleid());
                     deletedEntity.setDeletetime(new Date());
                     int mark=fh.getTitle().lastIndexOf('-');
                     String deleteby;
@@ -308,20 +309,22 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
                     } else deleteby="";
                     deletedEntity.setDeleteby(deleteby);
                     deletedEntity.setBoardid(boardid);
+                    System.out.println("  insert "+fh.toString());
                     if (!testonly)
                         sqlSession.insert(
                                 "org.kbs.archiver.persistence.DeletedMapper.insert",
                                 deletedEntity);
-                    lastdeletedid=fh.getOriginid();
+                    lastdeleteid=fh.getArticleid();
                 }
                 if (found) {
                     loop=false;
                 } else {
                     found=true;
                 }
-            }
+		System.out.println(loop+"--"+found);
+            } while (loop);
         }
-        return lastdeletedid;
+        return lastdeleteid;
     }
     public Integer call() throws Exception {
         while (!Thread.interrupted()) {

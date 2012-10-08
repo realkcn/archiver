@@ -8,5 +8,6 @@
         insert into
         deleted(boardid,originid,deletetime,deleteby) values
         (#{boardid},#{originid},#{deletetime},#{deleteby})
+        On DUPLICATE KEY UPDATE originid=#{originid}
     </insert>
 </mapper>
