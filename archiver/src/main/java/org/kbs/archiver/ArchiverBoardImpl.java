@@ -309,7 +309,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
                     } else deleteby="";
                     deletedEntity.setDeleteby(deleteby);
                     deletedEntity.setBoardid(boardid);
-                    System.out.println("  insert "+fh.toString());
+//                    System.out.println("  insert "+fh.toString());
                     if (!testonly)
                         sqlSession.insert(
                                 "org.kbs.archiver.persistence.DeletedMapper.insert",
@@ -321,7 +321,6 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
                 } else {
                     found=true;
                 }
-		System.out.println(loop+"--"+found);
             } while (loop);
         }
         return lastdeleteid;
