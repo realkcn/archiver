@@ -34,10 +34,10 @@ public class TestDeleted {
         theboard.setLastdeletedid(-1);
         try {
             ArchiverBoardImpl worker=new ArchiverBoardImpl(InitTest.getAppContext(),null, "src/test/resources/data");
-            MockSqlSessionTemplate sqlSessionTemplate=new MockSqlSessionTemplate(null);
-            worker.setTestonly(true);
-
+            worker.work(theboard);
         } catch (SimpleException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }

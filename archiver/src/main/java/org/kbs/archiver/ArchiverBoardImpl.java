@@ -279,7 +279,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
                 + oldthreads.size() + "threads");
     }
 
-    private long dealDeleted(String boardpath,long boardid,SqlSessionTemplate sqlSession,long lastdeletedid) {
+    public long dealDeleted(String boardpath,long boardid,SqlSessionTemplate sqlSession,long lastdeletedid) {
         String deleteDirFile=boardpath+".DELETED";
         FileHeaderSet fhset = new FileHeaderSet();
         DeletedEntity deletedEntity=new DeletedEntity();
