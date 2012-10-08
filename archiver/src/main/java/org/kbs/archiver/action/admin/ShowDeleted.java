@@ -53,6 +53,10 @@ public class ShowDeleted extends ActionSupport {
         return articlelist;
     }
 
+    public int getTotalsize() {
+        return pager.getTotalsize();
+    }
+
     public void setArticlelist(List<DeletedEntity> articlelist) {
         this.articlelist = articlelist;
     }
