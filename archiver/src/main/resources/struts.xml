@@ -84,7 +84,9 @@
 			<result name="success">index.jsp</result>
 			<result name="error">index.jsp</result>
 		</action>
-        <action name="showDeleted" class="org.kbs.archiver.action.admin.ShowDeleted"
+    </package>
+    <package name="monitor" extends="struts-default" namespace="/monitor">
+    <action name="showDeleted" class="org.kbs.archiver.action.monitor.ShowDeleted"
                 method="show">
             <result name="success">showdeleted.jsp</result>
             <result name="error">showdeleted.jsp</result>

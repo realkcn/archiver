@@ -88,7 +88,16 @@
 			<role-name>role1</role-name>
 		</auth-constraint>
 	</security-constraint>
-	<login-config>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>monitor</web-resource-name>
+            <url-pattern>/monitor/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>role2</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
 		<auth-method>BASIC</auth-method>
 		<realm-name>admin</realm-name>
 	</login-config>

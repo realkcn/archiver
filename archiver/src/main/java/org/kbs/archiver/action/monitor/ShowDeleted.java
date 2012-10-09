@@ -1,11 +1,10 @@
-package org.kbs.archiver.action.admin;/**
+package org.kbs.archiver.action.monitor;/**
  * User: kcn
  * Date: 12-10-8
  * Time: 下午4:46
  */
 
 import com.opensymphony.xwork2.ActionSupport;
-import org.kbs.archiver.ArticleEntity;
 import org.kbs.archiver.DeletedEntity;
 import org.kbs.archiver.persistence.DeletedMapper;
 import org.kbs.archiver.util.Pager;
