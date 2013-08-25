@@ -345,7 +345,7 @@ public class ArchiverBoardImpl implements Callable<Integer>, Runnable {
         int count = 0;
         for (FileHeaderInfo fh : dirlist) {
             count++;
-            if (fh.getFilename().isEmpty()) {
+            if (fh.getFilename().isEmpty()||(fh.getFilename().length()<8)) {
                 System.out.println("invalid fileheader-board:"
                         + board.getName() + " index:" + count);
             } else {

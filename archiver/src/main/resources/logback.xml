@@ -31,8 +31,8 @@
 		</encoder>
 	</appender>
 	<logger name="org.springframework" level="WARN" />
-	<logger name="org.apache.struts2" level="WARN" />
-	<logger name="com.opensymphony" level="WARN" />
+	<logger name="org.apache.struts2" level="ERROR" />
+	<logger name="com.opensymphony" level="ERROR" />
 	<logger name="org.mybatis" level="WARN" />
 	<logger name="org.apache.ibatis" level="WARN" />
         <logger name="org.tuckey" level="WARN" />

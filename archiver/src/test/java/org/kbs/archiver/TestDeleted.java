@@ -31,7 +31,7 @@ public class TestDeleted {
         theboard.setThreads(0);
         theboard.setArticles(0);
         theboard.setIshidden(false);
-        theboard.setLastdeletedid(-1);
+//        theboard.setLastdeletedid(-1);
         try {
             ArchiverBoardImpl worker=new ArchiverBoardImpl(InitTest.getAppContext(),null, "src/test/resources/data");
             worker.work(theboard);
