@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.net.ServerSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.io.IOException;
 import java.io.InputStream;
@@ -76,8 +77,9 @@ public class ArchiverDaemon {
 		System.out.println("Set use last update:" + useLastUpdate);
 
 		//listen port
+		InetAddress addr = InetAddress.getByName("10.0.4.236");
 		try {
-			server = new ServerSocket(5111);
+			server = new ServerSocket(5111, 0, addr);
 		} catch (IOException e) {
 			LOG.error("cannot bind to port");
 			return;
