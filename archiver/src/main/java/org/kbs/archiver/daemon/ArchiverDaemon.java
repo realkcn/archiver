@@ -25,8 +25,9 @@ public class ArchiverDaemon {
 
     private static final Logger LOG = LoggerFactory.getLogger(ArchiverDaemon.class);
 	private static ClassPathXmlApplicationContext appContext;
-	private static ArrayBlockingQueue< TwoObject<BoardEntity,FileHeaderInfo> > workqueue;
+	private static ArrayBlockingQueue< TwoObject<BoardEntity,FileHeaderInfo> > [] workqueue;
 	private static BoardMapper boardMapper;
+	private static int nThreads;
 
 	public static void init() {
 		appContext = new ClassPathXmlApplicationContext(
@@ -90,7 +91,7 @@ public class ArchiverDaemon {
 		boardMapper = (BoardMapper) appContext.getBean("boardMapper");
 
 		//producer - consumer : init consumers
-		int nThreads = 0;
+		nThreads = 0;
 		Properties config = (Properties) appContext.getBean("configproperties");
 		if (config.get("workerthreads") != null)
 			nThreads = Integer.parseInt((String) config.get("workerthreads"));
@@ -99,9 +100,12 @@ public class ArchiverDaemon {
 
 		try {
 			Thread[] workerthread = new Thread[nThreads];
-			workqueue = new ArrayBlockingQueue< TwoObject<BoardEntity,FileHeaderInfo> >(20);
+			workqueue = new ArrayBlockingQueue[nThreads];
+			for (int i=0; i < nThreads; i++){
+				workqueue[i] = new ArrayBlockingQueue< TwoObject<BoardEntity,FileHeaderInfo> >(20);
+			}
 			for (int i = 0; i < nThreads; i++) {
-				ArticleImpl worker = new ArticleImpl(appContext, workqueue, filename);
+				ArticleImpl worker = new ArticleImpl(appContext, workqueue[i], filename);
 				worker.setTestonly(testonly);
 				worker.setUseLastUpdate(useLastUpdate);
 				workerthread[i] = new Thread(worker);
@@ -177,6 +181,13 @@ public class ArchiverDaemon {
 				bname[29] = 0;
 				String boardname = new String(bname, 0, len, "GBK");
 
+				//FIXME: test only, handle Test board only
+				/*
+				if(! boardname.equals("Test")){
+					continue;
+				}
+				*/
+
 				//get board
 				BoardEntity board = boardMapper.getByName(boardname);
 				if (board == null) {
@@ -185,9 +196,14 @@ public class ArchiverDaemon {
 				}
 
 				//producer add
-				LOG.warn("add article: " + boardname + ":" + fh.getArticleid() );
 				TwoObject<BoardEntity,FileHeaderInfo> param = new TwoObject<BoardEntity,FileHeaderInfo>(board,fh);
-				workqueue.put( param );
+				int queue_key = (int)(board.getBoardid() % nThreads);
+				if(workqueue[queue_key].remainingCapacity() <= 0){
+					LOG.warn("queue " + queue_key + "full:" + boardname + ":" + fh.getArticleid() );
+					continue;
+				}
+				workqueue[queue_key].put( param );
+				LOG.warn("add article: " + boardname + ":" + fh.getArticleid() + ": to Q" + queue_key );
 			}
 		}
 	}

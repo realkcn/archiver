@@ -91,6 +91,7 @@ public class ArchiverService extends TimerTask {
 			try {
 				for (BoardEntity theBoard : boards) {
 					if (!theBoard.isIgnored())
+					//if (!theBoard.isIgnored() && !theBoard.getName().equals("Test") )
 						workqueue.put(theBoard);
 				}
 				// 设置线程结束标志

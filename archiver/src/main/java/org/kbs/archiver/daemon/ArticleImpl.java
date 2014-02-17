@@ -236,7 +236,7 @@ public class ArticleImpl implements Callable<Integer>, Runnable {
             batchsqlsession.flushStatements();
         }
 
-        LOG.warn("Add Article Done: " + board.getName() + ":" + article.getOriginid() );
+        LOG.warn("Add Article Done: " + board.getName() + ":" + article.getArticleid() );
     }
 
 /*
