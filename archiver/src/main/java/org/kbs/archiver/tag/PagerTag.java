@@ -146,6 +146,7 @@ public class PagerTag extends TagSupport {
 
 	@Override
 	public int doEndTag() throws JspException {
+		if (pagesize==0) pagesize=20;
 		totalpage = total / pagesize + ((total % pagesize > 0) ? 1 : 0);
 		pageContext.getRequest().setAttribute("currentPageNumber",new Integer(currentpage));
 		pageContext.getRequest().setAttribute("totalpage",new Integer(totalpage));
