@@ -25,7 +25,11 @@ public class DeletedEntity {
     private String body;
 
     public String getBody() {
-        return body;
+
+        if (body!=null)
+            return body;
+        else
+            return "";
     }
 
     public void setBody(String body) {
@@ -36,14 +40,14 @@ public class DeletedEntity {
     }
 
     public String getCname() {
-        return cname;
+        if (cname!=null)
+            return cname;
+        else
+            return "内部版面";
     }
 
     public void setCname(String cname) {
-        if (cname!=null)
-            this.cname = cname;
-        else
-            this.cname="内部版面";
+        this.cname = cname;
     }
 
     public String getAuthor() {
@@ -71,7 +75,10 @@ public class DeletedEntity {
     }
 
     public String getSubject() {
-        return subject;
+        if (subject!=null)
+            return subject;
+        else
+            return "已删除";
     }
 
     public void setSubject(String subject) {
