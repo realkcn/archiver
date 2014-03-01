@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.kbs.archiver.persistence.DeletedMapper">
     <select id="getArticles" resultType="org.kbs.archiver.DeletedEntity">
-        select article.*,articlebody.body,board.cname,deleted.deleteby,deleted.deletetime from articlebody,article,deleted,board
-          where article.originid=deleted.originid and article.boardid=deleted.boardid and deleted.boardid=board.boardid and articlebody.articleid=article.articleid order by deleted.deletetime desc limit #{begin},#{count};
+        select article.*,articlebody.body,board.cname,p.deleteby,p.deletetime from (select * from deleted order by deleted.deletetime desc limit
+        #{begin},#{count}) p left join  (article,articlebody,board) on (board.boardid=p.boardid and p.originid=article.originid and p.boardid=article.boardid and articlebody.articleid=article.articleid);
+
     </select>
     <select id="count" resultType="int">
         select count(*) from deleted;
