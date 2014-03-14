@@ -149,12 +149,14 @@ public class ArchiverService extends TimerTask {
 							+ board.getName() + " cname:" + board.getCname()
 							+ " hidden:" + board.isIshidden());
 				} else {
+					if (!board.isIgnored()) {
 					board.set(bh);
 					if (!testonly)
 						boardMapper.update(board);
 					LOG.info("update board:" + board.getBoardid() + " name:"
 							+ board.getName() + " cname:" + board.getCname()
 							+ " hidden:" + board.isIshidden());
+					}
 				}
 			}
 		}
@@ -164,7 +166,7 @@ public class ArchiverService extends TimerTask {
 			// 隐藏版面不检查
 			if (board.isIshidden() == true)
 				continue;
-			for (BoardHeaderInfo bh : bhset) {
+			for (BoardHeaderInfo  bh : bhset) {
 				if (bh.getFilename().equals(board.getName())) {
 					found = true;
 					break;
