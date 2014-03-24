@@ -5,8 +5,6 @@ import org.kbs.archiver.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -19,7 +17,6 @@ import org.kbs.archiver.persistence.*;
 import org.kbs.library.AttachmentData;
 import org.kbs.library.Converter;
 import org.kbs.library.FileHeaderInfo;
-import org.kbs.library.FileHeaderSet;
 import org.kbs.library.SimpleException;
 import org.kbs.library.TwoObject;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -31,7 +28,7 @@ public class ArticleImpl implements Callable<Integer>, Runnable {
     private ApplicationContext ctx;
     // private BoardEntity board;
     private String boardbasedir;
-    private HashSet<String> filenameset = new HashSet<String>();
+//    private HashSet<String> filenameset = new HashSet<String>();
     private boolean testonly = false;
     private BlockingQueue< TwoObject<BoardEntity,FileHeaderInfo> > workqueue;
     private boolean useLastUpdate = true;
@@ -180,7 +177,7 @@ public class ArticleImpl implements Callable<Integer>, Runnable {
                             .insert("org.kbs.archiver.persistence.ArticleMapper.insert",
                                     article);
                 HashMap<String, Object> map = new HashMap<String, Object>();
-                map.put("articleid", new Long(article.getArticleid()));
+                map.put("articleid", article.getArticleid());
                 map.put("body", body.getFirst());
                 if (!testonly)
                     batchsqlsession
@@ -288,12 +285,21 @@ public class ArticleImpl implements Callable<Integer>, Runnable {
     }
 */
 
+    public static final int TIME_FOR_SCAN=60*60*1000;
     public Integer call() throws Exception {
+        Date lastscan=new Date(System.currentTimeMillis()-TIME_FOR_SCAN);
+        ArchiverService service=new ArchiverService(ctx);
         while (!Thread.interrupted()) {
+            if (System.currentTimeMillis()-lastscan.getTime()>TIME_FOR_SCAN) {
+            //do archiver for 1 hours
+                service.run();
+                lastscan.setTime(System.currentTimeMillis());
+            }
             TwoObject<BoardEntity,FileHeaderInfo> param = workqueue.take();
             if (param.getFirst().getBoardid() == -1)
                 break;
             work(param);
+            //do miss task
         }
         return 0;
     }
