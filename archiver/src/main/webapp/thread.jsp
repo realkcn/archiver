@@ -5,7 +5,6 @@
 <html> 
   <head> 
     
-    <title>水木-${board.cname}-<s:property value="thread.subject" /></title> 
  <meta http-equiv="pragma" content="no-cache"> 
  <meta http-equiv="cache-control" content="no-cache"> 
  <meta http-equiv="expires" content="0">    
@@ -14,6 +13,7 @@
  <link rel="stylesheet" type="text/css" href="css/ansi.css" />
   
 <jsp:include page="include/htmlheader.jsp" />
+  <title>水木-${board.cname}-<s:property value="thread.subject" /></title> 
 </head> 
   
   <body>

@@ -7,7 +7,6 @@
 <html>
 <head>
 
-<title>水木社区作者文章列表</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -17,6 +16,7 @@
 <link rel="stylesheet" type="text/css" href="css/ansi.css" />
 
 <jsp:include page="include/htmlheader.jsp" />
+<title>水木社区作者文章列表</title>
 </head>
 <body>
 <s:if test="boardname==null">

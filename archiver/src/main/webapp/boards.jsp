@@ -5,7 +5,6 @@
 <html>
 <head>
 
-    <title>水木社区归档站 - 版面列表</title>
 
     <meta http-equiv="cache-control" content="max-age=120;">
     <meta http-equiv="expires" content="<%
@@ -16,6 +15,7 @@
     <meta http-equiv="description" content="水木社区版面列表">
 
     <jsp:include page="include/htmlheader.jsp"/>
+    <title>水木社区归档站 - 版面列表</title>
 </head>
 <body onLoad='javascript:document.getElementById("boardsearch").focus()'>
 <s:set var="pagedetail" value="'版面列表'" scope="request"/>

@@ -48,7 +48,6 @@
 %>
 <html>
 <head>
-    <title>水木社区归档站</title>
     <meta http-equiv="cache-control" content="max-age=120;">
     <meta http-equiv="expires" content="<%
     SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); //use iso8601 time format.....maybe change to rfc2616?
@@ -57,6 +56,7 @@
 %>">
     <meta http-equiv="description" content="水木社区归档站首页">
     <jsp:include page="include/htmlheader.jsp"/>
+    <title>水木社区归档站</title>
 </head>
 <body>
 <s:set var="nobreadcrumbs" value="'true'" scope="request" />

@@ -5,7 +5,6 @@
 <html>
   <head> 
     
-    <title>水木社区归档站 - ${board.name}/${board.cname}</title> 
     
  <meta http-equiv="pragma" content="no-cache"> 
  <meta http-equiv="cache-control" content="no-cache"> 
@@ -14,6 +13,7 @@
   
  
 <jsp:include page="include/htmlheader.jsp" />
+  <title>水木社区归档站 - ${board.name}/${board.cname}</title> 
   </head>
     <pg:pager total="${totalsize}" urlprefix="board-${boardid}-" urlsuffix=".html" currentpage="${pageno}" pagesize="${pagesize}" />
 
