@@ -7,12 +7,10 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 @SuppressWarnings("serial")
 public class PagerSupport extends TagSupport {
-	private PagerTag pager;
 	private boolean isvalid=true;
 
 	@Override
 	public int doStartTag() throws JspException {
-		setPager((PagerTag)pageContext.getRequest().getAttribute(PagerTag.getDefaultid()));
 		return EVAL_BODY_INCLUDE;
 	}
 
@@ -44,14 +42,7 @@ public class PagerSupport extends TagSupport {
 	/**
 	 * @return the pager
 	 */
-	public PagerTag getPager() {
-		return pager;
-	}
-
-	/**
-	 * @param pager the pager to set
-	 */
-	public void setPager(PagerTag pager) {
-		this.pager = pager;
+	public Pager getPager() {
+    return (Pager)pageContext.getRequest().getAttribute(PagerTag.getDefaultid());
 	}
 }
