@@ -3,6 +3,7 @@ package org.kbs.archiver.tag;
 import java.io.IOException;
 
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.TagSupport;
 
 @SuppressWarnings("serial")
@@ -28,7 +29,13 @@ public class PagerTag extends TagSupport {
     pager.setJsgoGenerate(jsgoGenerate);
 	}
 
-	public static final String getDefaultid() {
+  @Override
+  public void setPageContext(PageContext pageContext) {
+    pager=new Pager();
+    super.setPageContext(pageContext);
+  }
+
+  public static final String getDefaultid() {
 		return defaultid;
 	}
 
@@ -68,7 +75,6 @@ public class PagerTag extends TagSupport {
 
 	@Override
 	public int doStartTag() throws JspException {
-    pager=new Pager();
 		pageContext.getRequest().setAttribute(defaultid, pager);
 		return EVAL_BODY_INCLUDE;
 	}

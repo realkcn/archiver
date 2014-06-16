@@ -7,22 +7,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>archiver Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	<profiles>
-		<profile>
-			<id>tomcat</id>
-			<dependencies>
-				<dependency>
-					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
-					<version>5.1.18</version>
-					<scope>compile</scope>
-				</dependency>
-			</dependencies>
-		</profile>
-	</profiles>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jetty.version>6.1.26</jetty.version>
+        <mysql.version>5.1.18</mysql.version>
 		<org.springframework.version>3.1.4.RELEASE</org.springframework.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -49,7 +37,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.18</version>
+			<version>${mysql.version}</version>
 			<scope>provided</scope>
 		</dependency>
         <dependency>
@@ -281,6 +269,7 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
+
 	<build>
 		<finalName>archiver</finalName>
 		<testResources>
@@ -330,18 +319,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.0-beta-1</version>
-				<configuration>
-					<url>http://localhost:8080/manager/html/</url>
-					<server>ar.newsmth.net</server>
-					<path>/archiver</path>
-					<update>true</update>
-					<uriEncoding>UTF-8</uriEncoding>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
@@ -367,6 +344,18 @@
 					<classpathScope>compile</classpathScope>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>${mysql.version}</version>
+                </dependency>
+                </dependencies>
+            </plugin>
 		</plugins>
 
 	</build>
